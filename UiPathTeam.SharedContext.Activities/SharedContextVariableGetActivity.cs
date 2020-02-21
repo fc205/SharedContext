@@ -5,7 +5,7 @@ using System.ComponentModel;
 namespace UiPathTeam.SharedContext.Activities
 {
     [DisplayName("Get Variable from Context")]
-    public class SharedContextGetActivity : CodeActivity
+    public class SharedContextVariableGetActivity : CodeActivity
     {
         [Category("Input")]
         [RequiredArgument]
@@ -26,7 +26,7 @@ namespace UiPathTeam.SharedContext.Activities
         [Description("The Value of the variable.")]
         public OutArgument<string> Value { get; set; }
 
-        public SharedContextGetActivity()
+        public SharedContextVariableGetActivity()
         {
             this.RaiseException = true;
         }
@@ -42,7 +42,7 @@ namespace UiPathTeam.SharedContext.Activities
                 contextClient = ContextClientArgument.GetValue(context.DataContext) as ContextClient;
                 if (contextClient == null)
                 {
-                    throw (new ArgumentException("FileClient was not provided and cannot be retrieved from the container."));
+                    throw (new ArgumentException("ContextClient was not provided and cannot be retrieved from the container."));
                 }
             }
             else
@@ -50,7 +50,7 @@ namespace UiPathTeam.SharedContext.Activities
                 contextClient = ContextClient.Get(context);
             }
 
-            aValue = contextClient.Get(Name.Get(context), this.RaiseException);
+            aValue = contextClient.GetVariable(Name.Get(context), this.RaiseException);
 
             Value.Set(context, aValue);
         }

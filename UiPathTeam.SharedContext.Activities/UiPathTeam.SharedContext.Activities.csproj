@@ -85,14 +85,32 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="UiPath.Activities.Api.Base, Version=19.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UiPath.Activities.Api.19.10.0\lib\net452\UiPath.Activities.Api.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="UiPath.Api.Base, Version=19.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UiPath.Activities.Api.19.10.0\lib\net452\UiPath.Api.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="UiPath.Robot.Activities.Api, Version=19.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UiPath.Activities.Api.19.10.0\lib\net452\UiPath.Robot.Activities.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="UiPath.Studio.Activities.Api, Version=19.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UiPath.Activities.Api.19.10.0\lib\net452\UiPath.Studio.Activities.Api.dll</HintPath>
+    </Reference>
+    <Reference Include="UiPath.Studio.Api.Base, Version=19.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\UiPath.Activities.Api.19.10.0\lib\net452\UiPath.Studio.Api.Base.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContextClientFile.cs" />
     <Compile Include="ContextClient.cs" />
-    <Compile Include="SharedContextGetActivity.cs" />
+    <Compile Include="SharedContextMessageReceiveActivity.cs" />
+    <Compile Include="SharedContextVariableGetActivity.cs" />
+    <Compile Include="GetProcessInfoActivity.cs" />
     <Compile Include="SharedContextScopeActivity.cs" />
-    <Compile Include="SharedContextSetActivity.cs" />
+    <Compile Include="SharedContextMessageSendActivity.cs" />
+    <Compile Include="SharedContextVariableSetActivity.cs" />
     <Page Include="SharedContextScopeActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -20,10 +20,32 @@ namespace UiPathTeam.SharedContext.Activities
         protected string contextName;
 
         abstract public void Dispose();
-        abstract public void Set(string iVariableName, string iVariableValue);
-        abstract public string Get(string iVariableName, bool iRaiseException);
+        abstract public void SetVariable(string iVariableName, string iVariableValue);
+        abstract public string GetVariable(string iVariableName, bool iRaiseException);
+        abstract public bool GetNextMessage(string iProcessName, ref ContextMessage oContextMessage);
+        abstract public void AddNewMessage(string iProcessName, ContextMessage iMessage);
         abstract public void ClearAll();
         abstract public string GetResource();
+    }
+
+    public class ContextContent : Object
+    {
+        public Dictionary<string, string> GlobalVariables;
+        public Dictionary<string, List<ContextMessage>> Messages;
+
+        public ContextContent()
+        {
+            this.GlobalVariables = new Dictionary<string, string>();
+            this.Messages = new Dictionary<string, List<ContextMessage>>();
+        }
+    }
+
+    public struct ContextMessage
+    {
+        public string From;
+        public string To;
+        public string Message;
+        public DateTime DateSent;
     }
 
     public class ContextClient : IDisposable
@@ -59,14 +81,24 @@ namespace UiPathTeam.SharedContext.Activities
             }
         }
 
-        public void Set(string iVariableName, string iVariableValue)
+        public void SetVariable(string iVariableName, string iVariableValue)
         {
-            this.myContextClient.Set(iVariableName, iVariableValue);
+            this.myContextClient.SetVariable(iVariableName, iVariableValue);
         }
 
-        public string Get(string iVariableName, bool iRaiseException)
+        public string GetVariable(string iVariableName, bool iRaiseException)
         {
-            return this.myContextClient.Get(iVariableName, iRaiseException);
+            return this.myContextClient.GetVariable(iVariableName, iRaiseException);
+        }
+
+        public bool GetNextMessage(string iProcessName, ref ContextMessage oContextMessage)
+        {
+            return this.myContextClient.GetNextMessage(iProcessName, ref oContextMessage);
+        }
+
+        public void AddNewMessage(string iProcessName, ContextMessage iMessage)
+        {
+            this.myContextClient.AddNewMessage(iProcessName, iMessage);
         }
 
         public void ClearAll()

@@ -61,6 +61,7 @@ namespace UiPathTeam.SharedContext.Activities
                 Handler = new Sequence { DisplayName = "Interact with the Context" }
             };
             this.Lock = true;
+            this.Retries = 5;
         }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -109,7 +110,7 @@ namespace UiPathTeam.SharedContext.Activities
                     context.ScheduleAction(Body, aContext, OnCompleted, OnFaulted);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 CleanupContext();
                 throw;

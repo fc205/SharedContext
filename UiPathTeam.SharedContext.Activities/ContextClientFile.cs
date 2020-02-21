@@ -12,10 +12,10 @@ namespace UiPathTeam.SharedContext.Activities
     public class ContextClientFile : IContextClient
     {
         private string fileName;
-
         private FileStream fileStream;
 
-        private Dictionary<string, string> deserialisedFileContents;
+        private ContextContent deserialisedFileContents;
+
         private string originalFileContents;
 
         public ContextClientFile(string iContextName, Dictionary<string, string> iArguments)
@@ -68,7 +68,7 @@ namespace UiPathTeam.SharedContext.Activities
 
                 string nowString = DateTime.Now.ToFileTime().ToString();
                 var aRandom = new System.Random(int.Parse(nowString.Substring(nowString.Length - 9, 9)));
-                System.Threading.Thread.Sleep(aRandom.Next(0, 500));
+                System.Threading.Thread.Sleep(aRandom.Next(0, 100 * retriesAttempted));
 
                 retriesAttempted++;
             }
@@ -82,7 +82,7 @@ namespace UiPathTeam.SharedContext.Activities
 
                 try
                 {
-                    this.deserialisedFileContents = JsonConvert.DeserializeObject<Dictionary<string, string>>(this.originalFileContents);
+                    this.deserialisedFileContents = JsonConvert.DeserializeObject<ContextContent>(this.originalFileContents);
                 }
                 catch (Exception e)
                 {
@@ -90,12 +90,12 @@ namespace UiPathTeam.SharedContext.Activities
                                                 DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") + 
                                                 " > " + 
                                                 e.Message);
-                    this.deserialisedFileContents = new Dictionary<string, string>();
+                    this.deserialisedFileContents = null;
                 }
 
                 if (this.deserialisedFileContents == null)
                 {
-                    this.deserialisedFileContents = new Dictionary<string, string>();
+                    this.deserialisedFileContents = new ContextContent();
                 }
 
             }
@@ -148,16 +148,16 @@ namespace UiPathTeam.SharedContext.Activities
 
         //////////////////////////////////////////////////
 
-        public override void Set(string iVariableName, string iVariableValue)
+        public override void SetVariable(string iVariableName, string iVariableValue)
         {
-            this.deserialisedFileContents[iVariableName] = iVariableValue;
+            this.deserialisedFileContents.GlobalVariables[iVariableName] = iVariableValue;
         }
 
-        public override string Get(string iVariableName, bool iRaiseException)
+        public override string GetVariable(string iVariableName, bool iRaiseException)
         {
-            if(this.deserialisedFileContents.ContainsKey(iVariableName))
+            if(this.deserialisedFileContents.GlobalVariables.ContainsKey(iVariableName))
             {
-                return this.deserialisedFileContents[iVariableName];
+                return this.deserialisedFileContents.GlobalVariables[iVariableName];
             }
 
             string errorMessage = "Variable Name " + iVariableName + " does not exist in context " + this.contextName;
@@ -170,9 +170,36 @@ namespace UiPathTeam.SharedContext.Activities
             return "";
         }
 
+        public override bool GetNextMessage(string iProcessName, ref ContextMessage oContextMessage)
+        {
+            if (!this.deserialisedFileContents.Messages.ContainsKey(iProcessName))
+            {
+                // Process has never interacted with SharedContext
+                this.deserialisedFileContents.Messages[iProcessName] = new List<ContextMessage>();
+            }
+
+            if(this.deserialisedFileContents.Messages[iProcessName].Count == 0)
+            {
+                return false;
+            }
+            oContextMessage = this.deserialisedFileContents.Messages[iProcessName].First<ContextMessage>();
+            this.deserialisedFileContents.Messages[iProcessName].RemoveAt(0);
+            return true;
+        }
+
+        public override void AddNewMessage(string iProcessName, ContextMessage iMessage)
+        {
+            if (!this.deserialisedFileContents.Messages.ContainsKey(iProcessName))
+            {
+                this.deserialisedFileContents.Messages[iProcessName] = new List<ContextMessage>();
+            }
+            this.deserialisedFileContents.Messages[iProcessName].Add(iMessage);
+        }
+
         public override void ClearAll()
         {
-            this.deserialisedFileContents = new Dictionary<string, string>();
+            this.deserialisedFileContents.GlobalVariables.Clear();
+            this.deserialisedFileContents.Messages.Clear();
         }
 
         public override string GetResource()
@@ -182,7 +209,7 @@ namespace UiPathTeam.SharedContext.Activities
 
         //////////////////////////////////////////////////
 
-        public string GetFileName(int iNumber = 0)
+        public string GetFileName()
         {
             string anOutputFileName = "";
             string aFolder = "";
@@ -199,14 +226,10 @@ namespace UiPathTeam.SharedContext.Activities
 
             if (this.fileName == "")
             {
-                if(iNumber <= 0)
-                {
-                    anOutputFileName = Path.Combine(aFolder, this.contextName + ".txt");
-                }
-                else
-                {
-                    anOutputFileName = Path.Combine(aFolder, this.contextName + iNumber.ToString() + ".txt");
-                }
+                string aFileName = Environment.UserDomainName + "_" + 
+                                   Environment.UserName + "_" + 
+                                   this.contextName + ".txt";
+                anOutputFileName = Path.Combine(aFolder, aFileName);
             }
             else
             {
