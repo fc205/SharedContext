@@ -5,7 +5,7 @@ using UiPath.Robot.Activities.Api;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Get Information about the current process")]
+    [DisplayName("Get Process info")]
     public class GetProcessInfoActivity : CodeActivity
     {
         [Category("Output")]

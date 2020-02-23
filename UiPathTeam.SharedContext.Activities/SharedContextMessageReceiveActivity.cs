@@ -5,7 +5,7 @@ using UiPath.Robot.Activities.Api;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Gets the oldest Message in the queue for this Process")]
+    [DisplayName("Receive Latest Message")]
     public class SharedContextMessageReceiveActivity : CodeActivity
     {
         [Category("Input Optional")]
@@ -13,14 +13,19 @@ namespace UiPathTeam.SharedContext.Activities
         public InArgument<ContextClient> ContextClient { get; set; }
 
         [Category("Output")]
-        [DisplayName("Message Content")]
-        [Description("The contents of the Message received")]
-        public OutArgument<string> MessageContent { get; set; }
+        [DisplayName("Action")]
+        [Description("The action to be performed")]
+        public OutArgument<string> Action { get; set; }
 
         [Category("Output")]
-        [DisplayName("Origin Process")]
+        [DisplayName("Arguments")]
+        [Description("The arguments of the Action (in Json format)")]
+        public OutArgument<string> ArgumentsJson { get; set; }
+
+        [Category("Output")]
+        [DisplayName("From")]
         [Description("Origin Process of the Message.")]
-        public OutArgument<string> OriginProcess { get; set; }
+        public OutArgument<string> From { get; set; }
 
         [Category("Output")]
         [DisplayName("Time sent")]
@@ -68,8 +73,9 @@ namespace UiPathTeam.SharedContext.Activities
 
             if (contextClient.GetNextMessage(currentProcess, ref aNewContextMessage))
             {
-                this.MessageContent.Set(context, aNewContextMessage.Message);
-                this.OriginProcess.Set(context, aNewContextMessage.From);
+                this.Action.Set(context, aNewContextMessage.Action);
+                this.ArgumentsJson.Set(context, aNewContextMessage.ArgumentsJson);
+                this.From.Set(context, aNewContextMessage.From);
                 this.TimeSent.Set(context, aNewContextMessage.DateSent);
 
                 this.QueueEmpty.Set(context, false);

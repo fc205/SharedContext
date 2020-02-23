@@ -44,7 +44,8 @@ namespace UiPathTeam.SharedContext.Activities
     {
         public string From;
         public string To;
-        public string Message;
+        public string Action;
+        public string ArgumentsJson;
         public DateTime DateSent;
     }
 

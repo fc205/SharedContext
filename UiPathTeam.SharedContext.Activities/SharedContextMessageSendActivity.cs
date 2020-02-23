@@ -5,20 +5,26 @@ using UiPath.Robot.Activities.Api;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Add New Message for a Different Process")]
+    [DisplayName("Send Message")]
     public class SharedContextMessageSendActivity : CodeActivity
     {
         [Category("Input")]
         [RequiredArgument]
-        [DisplayName("Destination Process")]
-        [Description("Destination Process for the Message. The message will be placed in a queue for the Process to dequeue.")]
-        public InArgument<string> DestinationProcess { get; set; }
+        [DisplayName("To")]
+        [Description("Destination Process for the Message.")]
+        public InArgument<string> To { get; set; }
 
         [Category("Input")]
         [RequiredArgument]
-        [DisplayName("MessageContent")]
-        [Description("The contents of the Message to be passed to Destination Process")]
-        public InArgument<string> MessageContent { get; set; }
+        [DisplayName("Action")]
+        [Description("The action to be performed")]
+        public InArgument<string> Action { get; set; }
+
+        [Category("Input")]
+        [RequiredArgument]
+        [DisplayName("Arguments")]
+        [Description("The arguments of the Action (in Json format)")]
+        public InArgument<string> ArgumentsJson { get; set; }
 
         [Category("Input Optional")]
         [Description("Shared Context object to be used when not in a Shared Context Scope.")]
@@ -57,8 +63,9 @@ namespace UiPathTeam.SharedContext.Activities
 
             ContextMessage aNewContextMessage;
             aNewContextMessage.From = currentProcess;
-            aNewContextMessage.Message = this.MessageContent.Get(context);
-            aNewContextMessage.To = this.DestinationProcess.Get(context);
+            aNewContextMessage.Action = this.Action.Get(context);
+            aNewContextMessage.ArgumentsJson = this.ArgumentsJson.Get(context);
+            aNewContextMessage.To = this.To.Get(context);
             aNewContextMessage.DateSent = DateTime.Now;
 
             contextClient.AddNewMessage(currentProcess, aNewContextMessage);

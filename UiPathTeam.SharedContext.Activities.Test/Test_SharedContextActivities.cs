@@ -20,7 +20,8 @@ namespace UiPathTeam.SharedContext.Activities.Test
         public const string Test_SetVariableValue = "aValue456";
 
         public const string Test_SendDestination = "DummyProcess";
-        public const string Test_SendMessage = "KillRoy was here!";
+        public const string Test_SendMessage_Action = "Do-Something";
+        public const string Test_SendMessage_Arguments = "{\"some_argument\":\"aValue\"}";
 
         protected string ClearEnvironmentForTest(bool preserveFile = false)
         {
@@ -100,8 +101,9 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var sendMessageContextActivity = new SharedContextMessageSendActivity
             {
-                DestinationProcess = Test_SendDestination,
-                MessageContent = Test_SendMessage,
+                To = Test_SendDestination,
+                Action = Test_SendMessage_Action,
+                ArgumentsJson = Test_SendMessage_Arguments,
                 ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
             };
 
@@ -110,7 +112,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             contextClient.Dispose();
 
             string fileContents = File.ReadAllText(aFileName);
-            Assert.IsTrue(fileContents.Contains("{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[{\"From\":\"DummyProcess\",\"To\":\"DummyProcess\",\"Message\":\"KillRoy was here!\",\"DateSent\":\""));
+            Assert.IsTrue(fileContents.Contains("{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[{\"From\":\"DummyProcess\",\"To\":\"DummyProcess\",\"Action\":\"Do-Something\",\"ArgumentsJson\":\"{\\\"some_argument\\\":\\\"aValue\\\"}\",\"DateSent\":"));
         }
 
         [TestMethod]
@@ -121,8 +123,9 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var sendMessageContextActivity = new SharedContextMessageSendActivity
             {
-                DestinationProcess = Test_SendDestination,
-                MessageContent = Test_SendMessage,
+                To = Test_SendDestination,
+                Action = Test_SendMessage_Action,
+                ArgumentsJson = Test_SendMessage_Arguments,
                 ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
             };
 
@@ -137,10 +140,32 @@ namespace UiPathTeam.SharedContext.Activities.Test
             contextClient.Dispose();
 
             string fileContents = File.ReadAllText(aFileName);
-            Assert.IsTrue(output["MessageContent"].ToString() == Test_SendMessage);
-            Assert.IsTrue(output["OriginProcess"].ToString() == Test_SendDestination);
+            Assert.IsTrue(output["Action"].ToString() == Test_SendMessage_Action);
+            Assert.IsTrue(output["ArgumentsJson"].ToString() == Test_SendMessage_Arguments);
+            Assert.IsTrue(output["From"].ToString() == Test_SendDestination);
             Assert.IsTrue(((DateTime)output["TimeSent"]).ToString("YYYY-MM-DD") == DateTime.Now.ToString("YYYY-MM-DD"));
             Assert.IsTrue(!(bool)output["QueueEmpty"]);
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]}}");
+        }
+
+        [TestMethod]
+        public void SharedContextReceiveMessageEmpty()
+        {
+            string aFileName = ClearEnvironmentForTest();
+            ContextClient contextClient = SetUpContextClient();
+
+            var receiveMessageContextActivity = new SharedContextMessageReceiveActivity
+            {
+                ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
+            };
+
+            var output = WorkflowInvoker.Invoke(receiveMessageContextActivity);
+
+            contextClient.Dispose();
+
+            string fileContents = File.ReadAllText(aFileName);
+
+            Assert.IsTrue((bool)output["QueueEmpty"]);
             Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]}}");
         }
 
