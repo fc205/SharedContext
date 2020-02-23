@@ -82,8 +82,8 @@
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <usa:SharedContextSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="SharedContextSetActivity_9" Name="aMessage" Value="[&quot;Starting execution of &quot; + aWhoAmI]" />
-              <usa:SharedContextSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="SharedContextSetActivity_10" Name="aWho" Value="[aWhoAmI]" />
+              <usa:SharedContextVariableSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableSetActivity_1" Name="aMessage" Value="[&quot;Starting execution of &quot; + aWhoAmI]" />
+              <usa:SharedContextVariableSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableSetActivity_2" Name="aWho" Value="[aWhoAmI]" />
             </Sequence>
           </ActivityAction>
         </usa:SharedContextScopeActivity.Body>
@@ -123,8 +123,8 @@
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <usa:SharedContextGetActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="521,22" sap2010:WorkflowViewState.IdRef="SharedContextGetActivity_5" Name="aWho" RaiseException="True" Value="[aWhoChangedLast]" />
-                        <usa:SharedContextGetActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="521,22" sap2010:WorkflowViewState.IdRef="SharedContextGetActivity_6" Name="aMessage" RaiseException="True" Value="[aReceivedMessage]" />
+                        <usa:SharedContextVariableGetActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="521,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableGetActivity_1" Name="aWho" RaiseException="True" Value="[aWhoChangedLast]" />
+                        <usa:SharedContextVariableGetActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="521,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableGetActivity_2" Name="aMessage" RaiseException="True" Value="[aReceivedMessage]" />
                         <If Condition="[aWhoChangedLast &lt;&gt; aWhoAmI]" sap:VirtualizedContainerService.HintSize="521,647" sap2010:WorkflowViewState.IdRef="If_2">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -142,8 +142,8 @@
                               <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Warn" Message="[&quot;Hello &quot; + aWhoChangedLast + &quot;! I'm &quot; + aWhoAmI + &quot; and I have received your message.&quot;]" />
                               <Delay Duration="00:00:00.1000000" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_3" />
                               <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Warn" Message="[aReceivedMessage]" />
-                              <usa:SharedContextSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="SharedContextSetActivity_11" Name="aWho" Value="[aWhoAmI]" />
-                              <usa:SharedContextSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="SharedContextSetActivity_12" Name="aMessage" Value="[aWhoAmI + &quot; for &quot; + aWhoChangedLast + &quot; &gt; I read you loud and clear! &gt; &quot; + DateTime.Now.ToString(&quot;MM/dd/yyyy hh:mm:ss.fffff tt&quot;)]" />
+                              <usa:SharedContextVariableSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableSetActivity_3" Name="aWho" Value="[aWhoAmI]" />
+                              <usa:SharedContextVariableSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableSetActivity_4" Name="aMessage" Value="[aWhoAmI + &quot; for &quot; + aWhoChangedLast + &quot; &gt; I read you loud and clear! &gt; &quot; + DateTime.Now.ToString(&quot;MM/dd/yyyy hh:mm:ss.fffff tt&quot;)]" />
                             </Sequence>
                           </If.Then>
                         </If>

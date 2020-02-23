@@ -8,7 +8,7 @@
     "UiPath.System.Activities": "[19.10.1]",
     "UiPath.UIAutomation.Activities": "[19.11.2]",
     "UiPath.WebAPI.Activities": "[1.4.4]",
-    "UiPathTeam.SharedContext.Activities": "[1.0.10]"
+    "UiPathTeam.SharedContext.Activities": "[1.0.12]"
   },
   "webServices": [],
   "schemaVersion": "4.0",
