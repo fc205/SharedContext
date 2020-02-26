@@ -33,8 +33,14 @@ namespace UiPathTeam.SharedContext.Activities
             var executorRuntime = context.GetExtension<IExecutorRuntime>();
             var jobInfo = executorRuntime.RunningJobInformation;
 
+            string currentProcess = jobInfo.ProcessName.ToString();
+            if (currentProcess.Contains("_"))
+            {
+                currentProcess = currentProcess.Split('_')[0];
+            }
+
             JobId.Set(context, jobInfo.JobId.ToString());
-            ProcessName.Set(context, jobInfo.ProcessName.ToString());
+            ProcessName.Set(context, currentProcess);
             ProcessVersion.Set(context, jobInfo.ProcessVersion.ToString());
             WorkflowFilePath.Set(context, jobInfo.WorkflowFilePath.ToString());
         }
