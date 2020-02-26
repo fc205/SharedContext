@@ -19,6 +19,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
         public const string Test_SetVariableName = "aVariable123";
         public const string Test_SetVariableValue = "aValue456";
 
+        public const string Test_SendOrigin = "DummyProcess";
         public const string Test_SendDestination = "DummyProcess";
         public const string Test_SendMessage_Action = "Do-Something";
         public const string Test_SendMessage_Arguments = "{\"some_argument\":\"aValue\"}";
@@ -142,7 +143,8 @@ namespace UiPathTeam.SharedContext.Activities.Test
             string fileContents = File.ReadAllText(aFileName);
             Assert.IsTrue(output["Action"].ToString() == Test_SendMessage_Action);
             Assert.IsTrue(output["ArgumentsJson"].ToString() == Test_SendMessage_Arguments);
-            Assert.IsTrue(output["From"].ToString() == Test_SendDestination);
+            Assert.IsTrue(output["To"].ToString() == Test_SendOrigin);
+            Assert.IsTrue(output["From"].ToString() == Test_SendOrigin);
             Assert.IsTrue(((DateTime)output["TimeSent"]).ToString("YYYY-MM-DD") == DateTime.Now.ToString("YYYY-MM-DD"));
             Assert.IsTrue(!(bool)output["QueueEmpty"]);
             Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]}}");

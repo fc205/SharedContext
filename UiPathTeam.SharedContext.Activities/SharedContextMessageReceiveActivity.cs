@@ -37,6 +37,11 @@ namespace UiPathTeam.SharedContext.Activities
         [Description("Was this Message Queue empty?")]
         public OutArgument<bool> QueueEmpty { get; set; }
 
+        [Category("Output")]
+        [DisplayName("To")]
+        [Description("Destination Process of the Message (for reference).")]
+        public OutArgument<string> To { get; set; }
+
         protected override void Execute(CodeActivityContext context)
         {
             ContextClient contextClient = null;
@@ -63,6 +68,11 @@ namespace UiPathTeam.SharedContext.Activities
                 var jobInfo = executorRuntime.RunningJobInformation;
 
                 currentProcess = jobInfo.ProcessName.ToString();
+
+                if (currentProcess.Contains("_"))
+                {
+                    currentProcess = currentProcess.Split('_')[0];
+                }
             }
             else
             {
@@ -77,6 +87,8 @@ namespace UiPathTeam.SharedContext.Activities
                 this.ArgumentsJson.Set(context, aNewContextMessage.ArgumentsJson);
                 this.From.Set(context, aNewContextMessage.From);
                 this.TimeSent.Set(context, aNewContextMessage.DateSent);
+
+                this.To.Set(context, currentProcess);
 
                 this.QueueEmpty.Set(context, false);
             }

@@ -30,6 +30,11 @@ namespace UiPathTeam.SharedContext.Activities
         [Description("Shared Context object to be used when not in a Shared Context Scope.")]
         public InArgument<ContextClient> ContextClient { get; set; }
 
+        [Category("Output")]
+        [DisplayName("From")]
+        [Description("Origin Process of the Message (for reference).")]
+        public OutArgument<string> From { get; set; }
+
         protected override void Execute(CodeActivityContext context)
         {
             ContextClient contextClient = null;
@@ -55,6 +60,11 @@ namespace UiPathTeam.SharedContext.Activities
                 var jobInfo = executorRuntime.RunningJobInformation;
 
                 currentProcess = jobInfo.ProcessName.ToString();
+
+                if (currentProcess.Contains("_"))
+                {
+                    currentProcess = currentProcess.Split('_')[0];
+                }
             }
             else
             {
@@ -68,7 +78,9 @@ namespace UiPathTeam.SharedContext.Activities
             aNewContextMessage.To = this.To.Get(context);
             aNewContextMessage.DateSent = DateTime.Now;
 
-            contextClient.AddNewMessage(currentProcess, aNewContextMessage);
+            this.From.Set(context, currentProcess);
+
+            contextClient.AddNewMessage(aNewContextMessage.To, aNewContextMessage);
         }
     }
 }
