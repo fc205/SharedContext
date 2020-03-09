@@ -121,7 +121,7 @@ namespace UiPathTeam.SharedContext.Activities
         {
             if (aContext != null)
             {
-                aContext.Dispose();
+                aContext.MyDispose();
             }
         }
         private void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)

@@ -59,7 +59,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var output = WorkflowInvoker.Invoke(setContextActivity);
 
-            contextClient.Dispose();
+            contextClient.MyDispose();
 
             string fileContents = File.ReadAllText(aFileName);
             Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{}}");
@@ -87,7 +87,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             WorkflowInvoker.Invoke(setContextActivity);
             var output = WorkflowInvoker.Invoke(getContextActivity);
 
-            contextClient.Dispose();
+            contextClient.MyDispose();
 
             string fileContents = File.ReadAllText(aFileName);
             Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{}}");
@@ -110,7 +110,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var output = WorkflowInvoker.Invoke(sendMessageContextActivity);
 
-            contextClient.Dispose();
+            contextClient.MyDispose();
 
             string fileContents = File.ReadAllText(aFileName);
             Assert.IsTrue(fileContents.Contains("{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[{\"From\":\"DummyProcess\",\"To\":\"DummyProcess\",\"Action\":\"Do-Something\",\"ArgumentsJson\":\"{\\\"some_argument\\\":\\\"aValue\\\"}\",\"DateSent\":"));
@@ -138,7 +138,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             WorkflowInvoker.Invoke(sendMessageContextActivity);
             var output = WorkflowInvoker.Invoke(receiveMessageContextActivity);
 
-            contextClient.Dispose();
+            contextClient.MyDispose();
 
             string fileContents = File.ReadAllText(aFileName);
             Assert.IsTrue(output["Action"].ToString() == Test_SendMessage_Action);
@@ -163,7 +163,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var output = WorkflowInvoker.Invoke(receiveMessageContextActivity);
 
-            contextClient.Dispose();
+            contextClient.MyDispose();
 
             string fileContents = File.ReadAllText(aFileName);
 

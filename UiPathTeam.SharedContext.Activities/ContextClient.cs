@@ -14,12 +14,12 @@ namespace UiPathTeam.SharedContext.Activities
         File
     }
 
-    public abstract class IContextClient : IDisposable
+    public abstract class IContextClient
     {
         protected Dictionary<string, string> arguments;
         protected string contextName;
 
-        abstract public void Dispose();
+        abstract public void MyDispose();
         abstract public void SetVariable(string iVariableName, string iVariableValue);
         abstract public string GetVariable(string iVariableName, bool iRaiseException);
         abstract public bool GetNextMessage(string iProcessName, ref ContextMessage oContextMessage);
@@ -49,7 +49,7 @@ namespace UiPathTeam.SharedContext.Activities
         public DateTime DateSent;
     }
 
-    public class ContextClient : IDisposable
+    public class ContextClient
     {
         private IContextClient myContextClient;
 
@@ -66,20 +66,9 @@ namespace UiPathTeam.SharedContext.Activities
             }
         }
 
-        public void Dispose()
+        public void MyDispose()
         {
-            if (this.myContextClient != null)
-            {
-                this.myContextClient.Dispose();
-            }
-        }
-
-        ~ContextClient()
-        {
-            if (this.myContextClient != null)
-            {
-                Dispose();
-            }
+            this.myContextClient.MyDispose();
         }
 
         public void SetVariable(string iVariableName, string iVariableValue)

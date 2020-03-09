@@ -18,6 +18,8 @@ namespace UiPathTeam.SharedContext.Activities
 
         private string originalFileContents;
 
+        private bool disposed = false;
+
         public ContextClientFile(string iContextName, Dictionary<string, string> iArguments)
         {
             this.fileName = "";
@@ -38,6 +40,7 @@ namespace UiPathTeam.SharedContext.Activities
                 {
                     if(doLock)
                     {
+                        Console.WriteLine("[Sharedcontext] Opening FileStream. Taking a lock on the file");
                         this.fileStream = new FileStream(this.GetFileName(),
                                                         FileMode.OpenOrCreate,
                                                         FileAccess.ReadWrite,
@@ -46,9 +49,10 @@ namespace UiPathTeam.SharedContext.Activities
                     }
                     else
                     {
+                        Console.WriteLine("[Sharedcontext] Opening FileStream. NOT taking a lock on the file");
                         this.fileStream = new FileStream(this.GetFileName(),
                                                         FileMode.OpenOrCreate,
-                                                        FileAccess.ReadWrite,
+                                                        FileAccess.Read,
                                                         FileShare.ReadWrite
                                                         );
                     }
@@ -60,7 +64,7 @@ namespace UiPathTeam.SharedContext.Activities
 
                 if (this.fileStream != null) break;
 
-                Console.WriteLine("FileStream conflict with " +
+                Console.WriteLine("[Sharedcontext] FileStream conflict with " +
                                     this.GetFileName() +
                                     " @ " +
                                     DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") +
@@ -80,13 +84,16 @@ namespace UiPathTeam.SharedContext.Activities
                 StreamReader sr = new StreamReader(this.fileStream);
                 this.originalFileContents = sr.ReadToEnd();
 
+                Console.WriteLine("[Sharedcontext] Read File Contents: " + this.originalFileContents);
+
+
                 try
                 {
                     this.deserialisedFileContents = JsonConvert.DeserializeObject<ContextContent>(this.originalFileContents);
                 }
                 catch (Exception e)
                 {
-                    Console.Error.WriteLine("Error deserializing the file. Emptying the file. > " + 
+                    Console.WriteLine("[Sharedcontext] Error deserializing the file. Emptying the file. > " + 
                                                 DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") + 
                                                 " > " + 
                                                 e.Message);
@@ -101,49 +108,88 @@ namespace UiPathTeam.SharedContext.Activities
             }
             else
             {
-                throw new Exception("Could not open FileStream within the retries.");
+                throw new Exception("[Sharedcontext] Could not open FileStream within the retries.");
             }
         }
 
-        public override void Dispose()
+        public override void MyDispose()
         {
-            string newFileContents = "";
-
-            newFileContents = JsonConvert.SerializeObject(this.deserialisedFileContents);
-
-            try
+            if (!this.disposed)
             {
+                bool doLock = this.arguments["Lock"] == "Y" ? true : false;
 
-                if (newFileContents != this.originalFileContents)
+                if(!doLock)
                 {
+                    Console.WriteLine("[Sharedcontext] Closing file WITHOUT writing");
+
                     if (this.fileStream != null)
                     {
-                        this.fileStream.Position = 0;
-                        Byte[] newFileContentsBytes = Encoding.UTF8.GetBytes(newFileContents);
-                        this.fileStream.SetLength(newFileContentsBytes.Length);
-                        this.fileStream.Write(newFileContentsBytes, 0, newFileContentsBytes.Length);
-                        this.fileStream.Flush();
+                        this.fileStream.Close();
+                        this.fileStream.Dispose();
+                    }
+                    this.disposed = true;
+                    return;
+                }
+
+                string newFileContents = "";
+
+                newFileContents = JsonConvert.SerializeObject(this.deserialisedFileContents);
+
+                Console.WriteLine("[Sharedcontext] End File Contents before write: " + newFileContents);
+
+                try
+                {
+
+                    if (newFileContents != this.originalFileContents)
+                    {
+                        if (this.fileStream != null)
+                        {
+                            this.fileStream.Position = 0;
+                            Byte[] newFileContentsBytes = Encoding.UTF8.GetBytes(newFileContents);
+                            this.fileStream.SetLength(newFileContentsBytes.Length);
+                            this.fileStream.Write(newFileContentsBytes, 0, newFileContentsBytes.Length);
+                            this.fileStream.Flush();
+                            Console.WriteLine("[Sharedcontext] Writing new contents to file");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("[Sharedcontext] Same contents, not writing");
+                    }
+
+                    if (this.fileStream != null)
+                    {
+                        Console.WriteLine("[Sharedcontext] Closing file");
+                        this.fileStream.Close();
+                        this.fileStream.Dispose();
+
+                        try
+                        {
+                            throw new Exception("[Sharedcontext] Could not open FileStream within the retries.");
+                        }
+                        catch(Exception e)
+                        {
+                            Console.WriteLine(e.StackTrace);
+                        }
+
                     }
                 }
-
-                if (this.fileStream != null)
+                catch(Exception e)
                 {
-                    this.fileStream.Close();
-                    this.fileStream.Dispose();
+                    Console.WriteLine("[Sharedcontext] Something went wrong on " + this.GetHashCode().ToString());
+                    Console.WriteLine("[Sharedcontext] Error: " + e.Message);
+                    Console.WriteLine("[Sharedcontext] Stack Trace: " + e.StackTrace);
                 }
-            }
-            catch(Exception e)
-            {
 
+                this.disposed = true;
             }
         }
 
         ~ContextClientFile()
         {
-            if (this.fileStream != null)
-            {
-                this.Dispose();
-            }
+
+                this.MyDispose();
+
         }
 
         //////////////////////////////////////////////////
