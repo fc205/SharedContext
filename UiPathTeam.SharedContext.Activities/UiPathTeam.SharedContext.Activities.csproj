@@ -10,11 +10,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UiPathTeam.SharedContext.Activities</RootNamespace>
     <AssemblyName>UiPathTeam.SharedContext.Activities</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -71,23 +73,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NamedPipeWrapper, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NamedPipeWrapper.1.5.0\lib\net40\NamedPipeWrapper.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationFramework" />
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="UiPath.Activities.Api.Base, Version=19.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\UiPath.Activities.Api.19.10.0\lib\net452\UiPath.Activities.Api.Base.dll</HintPath>
-    </Reference>
     <Reference Include="UiPath.Api.Base, Version=19.10.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\UiPath.Activities.Api.19.10.0\lib\net452\UiPath.Api.Base.dll</HintPath>
     </Reference>
@@ -103,14 +106,25 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dependencies\BookmarkResumptionHelper.cs" />
+    <Compile Include="Dependencies\CheckParentConstraint.cs" />
+    <Compile Include="ContextClientNamedPipe.cs" />
     <Compile Include="ContextClientFile.cs" />
     <Compile Include="ContextClient.cs" />
+    <Compile Include="NamedPipeTrigger.cs" />
+    <Compile Include="NamedPipeTriggerDesigner.xaml.cs">
+      <DependentUpon>NamedPipeTriggerDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SharedContextMessageReceiveActivity.cs" />
     <Compile Include="SharedContextVariableGetActivity.cs" />
     <Compile Include="GetProcessInfoActivity.cs" />
     <Compile Include="SharedContextScopeActivity.cs" />
     <Compile Include="SharedContextMessageSendActivity.cs" />
     <Compile Include="SharedContextVariableSetActivity.cs" />
+    <Page Include="NamedPipeTriggerDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
     <Page Include="SharedContextScopeActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

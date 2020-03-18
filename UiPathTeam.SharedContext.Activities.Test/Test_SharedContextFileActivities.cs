@@ -10,7 +10,7 @@ using System.Threading;
 namespace UiPathTeam.SharedContext.Activities.Test
 {
     [TestClass]
-    public class Test_SharedContextActivities
+    public class Test_SharedContextFileActivities
     {
         public const string Test_ContextName = "aTestContext";
         public const contextType Test_ContextType = contextType.File;
@@ -40,12 +40,17 @@ namespace UiPathTeam.SharedContext.Activities.Test
         {
             var aDictionary = new Dictionary<string, string>();
             aDictionary["Retries"] = Test_Retries.ToString();
-            aDictionary["Lock"] = "Y";
-            return new ContextClient(Test_ContextType, Test_ContextName, aDictionary);
+
+            ContextClient aContext;
+            aContext = new ContextClient(Test_ContextType, Test_ContextName, aDictionary);
+            aContext.CreateServer();
+            aContext.CreateClient();
+            aContext.ClearAll();
+            return aContext;
         }
 
         [TestMethod]
-        public void SharedContextSetVariable()
+        public void SCFileSetVariable()
         {
             string aFileName = ClearEnvironmentForTest();
             ContextClient contextClient = SetUpContextClient();
@@ -62,11 +67,11 @@ namespace UiPathTeam.SharedContext.Activities.Test
             contextClient.MyDispose();
 
             string fileContents = File.ReadAllText(aFileName);
-            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{}}");
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{},\"TakeLock\":false}");
         }
 
         [TestMethod]
-        public void SharedContextGetVariable()
+        public void SCFileGetVariable()
         {
             string aFileName = ClearEnvironmentForTest();
             ContextClient contextClient = SetUpContextClient();
@@ -90,12 +95,12 @@ namespace UiPathTeam.SharedContext.Activities.Test
             contextClient.MyDispose();
 
             string fileContents = File.ReadAllText(aFileName);
-            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{}}");
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{},\"TakeLock\":false}");
             Assert.IsTrue(output["Value"].ToString() == Test_SetVariableValue);
         }
 
         [TestMethod]
-        public void SharedContextSendMessage()
+        public void SCFileSendMessage()
         {
             string aFileName = ClearEnvironmentForTest();
             ContextClient contextClient = SetUpContextClient();
@@ -117,7 +122,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
         }
 
         [TestMethod]
-        public void SharedContextReceiveMessage()
+        public void SCFileReceiveMessage()
         {
             string aFileName = ClearEnvironmentForTest();
             ContextClient contextClient = SetUpContextClient();
@@ -147,11 +152,11 @@ namespace UiPathTeam.SharedContext.Activities.Test
             Assert.IsTrue(output["From"].ToString() == Test_SendOrigin);
             Assert.IsTrue(((DateTime)output["TimeSent"]).ToString("YYYY-MM-DD") == DateTime.Now.ToString("YYYY-MM-DD"));
             Assert.IsTrue(!(bool)output["QueueEmpty"]);
-            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]}}");
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]},\"TakeLock\":false}");
         }
 
         [TestMethod]
-        public void SharedContextReceiveMessageEmpty()
+        public void SCFileReceiveMessageEmpty()
         {
             string aFileName = ClearEnvironmentForTest();
             ContextClient contextClient = SetUpContextClient();
@@ -168,11 +173,11 @@ namespace UiPathTeam.SharedContext.Activities.Test
             string fileContents = File.ReadAllText(aFileName);
 
             Assert.IsTrue((bool)output["QueueEmpty"]);
-            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]}}");
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]},\"TakeLock\":false}");
         }
 
         [TestMethod]
-        public void SharedContextScopeWithSharedContextSetInside()
+        public void SCFileScopeWithSharedContextSetInside()
         {
             string aFileName = this.ClearEnvironmentForTest();
 
@@ -201,11 +206,11 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             Assert.IsTrue(File.Exists(aFileName));
             string fileContents = File.ReadAllText(aFileName);
-            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{}}");
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{},\"TakeLock\":false}");
         }
 
         [TestMethod]
-        public void SharedContextScopeWithClearInside()
+        public void SCFileScopeWithClearInside()
         {
             string aFileName = this.ClearEnvironmentForTest();
 
@@ -227,11 +232,11 @@ namespace UiPathTeam.SharedContext.Activities.Test
             var output = WorkflowInvoker.Invoke(sharedContextScopeActivity);
 
             Assert.IsTrue(output["FilePath"].ToString() == aFileName);
-            Assert.IsTrue(File.ReadAllText(aFileName) == "{\"GlobalVariables\":{},\"Messages\":{}}");
+            Assert.IsTrue(File.ReadAllText(aFileName) == "{\"GlobalVariables\":{},\"Messages\":{},\"TakeLock\":false}");
         }
 
         [TestMethod]
-        public void SharedContextScopeWithSharedContextGetInside()
+        public void SCFileScopeWithSharedContextGetInside()
         {
             string aFileName = this.ClearEnvironmentForTest();
 
@@ -261,7 +266,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
         }
 
         [TestMethod]
-        public void SharedContextScopeWithSharedContextGetInsideException()
+        public void SCFileScopeWithSharedContextGetInsideException()
         {
             string aFileName = this.ClearEnvironmentForTest();
 
@@ -292,7 +297,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             }
             catch(Exception e)
             {
-                Assert.IsTrue(e.Message == "Variable Name " + Test_SetVariableName + " does not exist in context " + Test_ContextName);
+                Assert.IsTrue(e.Message == "[SharedContext] Variable Name " + Test_SetVariableName + " does not exist in context " + Test_ContextName);
             }
         }
 
@@ -327,7 +332,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
         }
 
         [TestMethod]
-        public void SharedContextTryToOpenLockedFile()
+        public void SCFileTryToOpenLockedFile()
         {
             string aFileName = this.ClearEnvironmentForTest();
 
@@ -351,7 +356,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
                             Thread.Sleep(200);
                         }
                     }
-                    catch(Exception e)
+                    catch(Exception)
                     {
                         Console.WriteLine("Could not lock File > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                         Thread.Sleep(50);

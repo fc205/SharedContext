@@ -21,22 +21,17 @@ namespace UiPathTeam.SharedContext.Activities
 
         [Category("Context")]
         [RequiredArgument]
-        [Description("Type of context to use (Only File is available currently).")]
+        [Description("Type of context to use (File and Named Pipes are available currently).")]
         public contextType Type { get; set; }
 
         [Category("Context")]
         [RequiredArgument]
-        [DisplayName("Clear context")]
-        [Description("Clear the context at the beginning of the scope")]
+        [DisplayName("Clear context and persist")]
+        [Description("Clear the context at the beginning of the scope and persist")]
         public bool Clear { get; set; }
 
         [Category("Context")]
         [RequiredArgument]
-        [DisplayName("Take lock")]
-        [Description("Take a lock on the resource throughout the Scope activity")]
-        public bool Lock { get; set; }
-
-        [Category("File")]
         [DisplayName("Retries")]
         [Description("Number of retries of the opening of the file that the Scope activity will try before raising an exception.")]
         public InArgument<int> Retries { get; set; }
@@ -60,25 +55,19 @@ namespace UiPathTeam.SharedContext.Activities
                 Argument = new DelegateInArgument<ContextClient>("ContextClient"),
                 Handler = new Sequence { DisplayName = "Interact with the Context" }
             };
-            this.Lock = true;
             this.Retries = 5;
         }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
-
-            if (Type != contextType.File && Retries == null)
-            {
-                metadata.AddValidationError("If Context Type is set to File, Retries is also required");
-            }
         }
 
         protected override void Execute(NativeActivityContext context)
         {
             string aFolder = "";
 
-            if (Retries.Get(context) <= 0) 
+            if (Retries == null || Retries.Get(context) <= 0) 
             {
                 throw new Exception("Retries cannot be zero or negative.");
             }
@@ -92,15 +81,20 @@ namespace UiPathTeam.SharedContext.Activities
             {
                 Dictionary<string, string>  aArguments = new Dictionary<string, string>();
 
-                aArguments["Lock"] = this.Lock?"Y":"N";
                 aArguments["Folder"] = aFolder;
                 aArguments["Retries"] = Retries.Get(context).ToString();
 
                 aContext = new ContextClient(Type, Name.Get(context), aArguments);
 
-                if(this.Clear)
+                if (this.Clear)
                 {
+                    aContext.CreateServer();
+                    aContext.CreateClient();
                     aContext.ClearAll();
+                }
+                else
+                {
+                    aContext.CreateClient();
                 }
 
                 if (Body != null)
@@ -110,8 +104,9 @@ namespace UiPathTeam.SharedContext.Activities
                     context.ScheduleAction(Body, aContext, OnCompleted, OnFaulted);
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 CleanupContext();
                 throw;
             }
