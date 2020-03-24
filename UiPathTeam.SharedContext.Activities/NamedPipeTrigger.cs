@@ -30,6 +30,14 @@ namespace UiPathTeam.SharedContext.Activities
         BookmarkResumptionHelper BookmarkResumptionHelper;
         private Bookmark RuntimeBookmark;
 
+        protected override bool CanInduceIdle
+        {
+            get
+            {
+                return true; // we create bookmarks
+            }
+        }
+
         private NamedPipeClient<ContextContent> _client;
 
         public NamedPipeTrigger()

@@ -24,9 +24,37 @@ namespace UiPathTeam.SharedContext.Activities.Test
         public const string Test_SendMessage_Action = "Do-Something";
         public const string Test_SendMessage_Arguments = "{\"some_argument\":\"aValue\"}";
 
-        [TestMethod]
-        public void SCNamedPipeScopeWithSharedContextSetInside()
+        protected ContextClient SetUpContextClient()
         {
+            var aDictionary = new Dictionary<string, string>();
+            aDictionary["Retries"] = Test_Retries.ToString();
+
+            ContextClient aContext;
+            aContext = new ContextClient(Test_ContextType, Test_ContextName, aDictionary);
+            aContext.CreateClient();
+            aContext.ClearAll();
+            return aContext;
+        }
+
+        protected ContextServer SetUpContextServer()
+        {
+            var aDictionary = new Dictionary<string, string>();
+            aDictionary["Retries"] = Test_Retries.ToString();
+
+            ContextServer aContext;
+            aContext = new ContextServer(Test_ContextType, Test_ContextName, aDictionary);
+            aContext.CreateServer();
+            return aContext;
+        }
+
+        [TestMethod]
+        public void SCNamedPipeScopeWithSharedContextSetGetInside()
+        {
+            var sharedContextServerScope = new SharedContextServerScope
+            {
+                Name = Test_ContextName
+            };
+
             var sharedContextScopeActivity = new SharedContextScopeActivity
             {
                 Name = Test_ContextName,
@@ -46,6 +74,14 @@ namespace UiPathTeam.SharedContext.Activities.Test
                 Name = Test_SetVariableName
             };
 
+            sharedContextServerScope.Body.Handler = new Sequence()
+            {
+                Activities =
+                {
+                   sharedContextScopeActivity
+                }
+            };
+
             sharedContextScopeActivity.Body.Handler = new Sequence()
             {
                 Activities =
@@ -55,12 +91,47 @@ namespace UiPathTeam.SharedContext.Activities.Test
                 }
             };
 
-            var output = WorkflowInvoker.Invoke(sharedContextScopeActivity);
+            var output = WorkflowInvoker.Invoke(sharedContextServerScope);
+        }
+
+        [TestMethod]
+        public void SCNamedPipeScopeNakedSetGet()
+        {
+            var aContextServer = this.SetUpContextServer();
+            var aContextClient = this.SetUpContextClient();
+
+            var setContextActivity = new SharedContextVariableSetActivity
+            {
+                Name = Test_SetVariableName,
+                Value = Test_SetVariableValue,
+                ContextClient = new InArgument<ContextClient>((ctx) => aContextClient)
+            };
+
+            var getContextActivity = new SharedContextVariableGetActivity
+            {
+                Name = Test_SetVariableName,
+                ContextClient = new InArgument<ContextClient>((ctx) => aContextClient)
+            };
+
+            var sharedContextSequence = new Sequence()
+            {
+                Activities =
+                {
+                   setContextActivity,
+                   getContextActivity
+                }
+            };
+
+            WorkflowInvoker.Invoke(setContextActivity);
+            var output = WorkflowInvoker.Invoke(getContextActivity);
+
+            Assert.IsTrue(output["Value"].ToString() == Test_SetVariableValue);
         }
 
         public void NewThread()
         {
             Console.WriteLine("In thread > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            var aContextServer = this.SetUpContextServer();
 
             var sharedContextScopeActivity = new SharedContextScopeActivity
             {
@@ -140,6 +211,8 @@ namespace UiPathTeam.SharedContext.Activities.Test
         [TestMethod]
         public void SCNamedPipeTryToOpenTwoContextScopes()
         {
+            var aContextServer = this.SetUpContextServer();
+
             var sharedContextScopeActivityInner = new SharedContextScopeActivity
             {
                 Name = Test_ContextName,
@@ -167,6 +240,13 @@ namespace UiPathTeam.SharedContext.Activities.Test
             var output = WorkflowInvoker.Invoke(sharedContextScopeActivityOuter);
 
             Console.WriteLine("Kilroy was here");
+        }
+
+        [TestMethod]
+        public void SCNamedPipeTrigger()
+        {
+
+
         }
     }
 }

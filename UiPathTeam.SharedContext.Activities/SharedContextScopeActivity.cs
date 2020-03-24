@@ -88,7 +88,6 @@ namespace UiPathTeam.SharedContext.Activities
 
                 if (this.Clear)
                 {
-                    aContext.CreateServer();
                     aContext.CreateClient();
                     aContext.ClearAll();
                 }

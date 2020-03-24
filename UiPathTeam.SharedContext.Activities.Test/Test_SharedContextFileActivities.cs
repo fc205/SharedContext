@@ -43,7 +43,6 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             ContextClient aContext;
             aContext = new ContextClient(Test_ContextType, Test_ContextName, aDictionary);
-            aContext.CreateServer();
             aContext.CreateClient();
             aContext.ClearAll();
             return aContext;

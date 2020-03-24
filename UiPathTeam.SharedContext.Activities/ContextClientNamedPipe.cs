@@ -7,8 +7,6 @@ namespace UiPathTeam.SharedContext.Activities
 {
     public class ContextClientNamedPipe : IContextClient
     {
-        private NamedPipeServer<ContextContent> theServer;
-        private int Lock;
         private NamedPipeClient<ContextContent> theClient;
 
         private int retriesMax;
@@ -19,22 +17,10 @@ namespace UiPathTeam.SharedContext.Activities
         public ContextClientNamedPipe(string iContextName, Dictionary<string, string> iArguments)
         {
             this.retriesUsed = 0;
-            this.Lock = -1;
             this.contextName = iContextName;
             this.arguments = iArguments;
             this.retriesMax = int.Parse(this.arguments["Retries"]);
-            this.theServer = null;
             this.theClient = null;
-        }
-
-        public override void CreateServer()
-        {
-            this.deserialisedContextContents = new ContextContent();
-            this.theServer = new NamedPipeServer<ContextContent>(this.GetResource());
-            this.theServer.ClientMessage += TheServer_ClientMessage;
-            this.theServer.ClientDisconnected += TheServer_ClientDisconnected;
-            this.theServer.Error += TheServer_Error;
-            this.theServer.Start();
         }
 
         public override void CreateClient(bool iLock = true)
@@ -57,14 +43,8 @@ namespace UiPathTeam.SharedContext.Activities
             if(!this.disposed)
             {
                 this.theClient.PushMessage(this.deserialisedContextContents);
-                Thread.Sleep(200);
+                Thread.Sleep(20);
                 this.theClient.Stop();
-
-                if(this.theServer != null)
-                {
-                    Thread.Sleep(200);
-                    this.theServer.Stop();
-                }
                 this.disposed = true;
             }
         }
@@ -74,39 +54,9 @@ namespace UiPathTeam.SharedContext.Activities
             this.MyDispose();
         }
 
-        private void TheServer_ClientMessage(NamedPipeConnection<ContextContent, ContextContent> connection, ContextContent message)
-        {
-            if(message.TakeLock)
-            {
-                if (this.Lock != -1 && this.Lock != connection.Id)
-                {
-                    // This is LOCKED
-                    throw new Exception("[SharedContext] Already locked!");
-                }
-                else
-                {
-                    // No lock
-                    this.Lock = connection.Id;
-                }
-            }
-            else
-            {
-                this.deserialisedContextContents = message;
-                this.theServer.PushMessage(this.deserialisedContextContents);
-            }
-        }
-
-        private void TheServer_ClientDisconnected(NamedPipeConnection<ContextContent, ContextContent> connection)
-        {
-            if (this.Lock != -1 && this.Lock == connection.Id)
-            {
-                // This is LOCKED by ME!
-                this.Lock = -1;
-            }
-        }
-
         private void TheClient_ServerMessage(NamedPipeConnection<ContextContent, ContextContent> connection, ContextContent message)
         {
+            this.deserialisedContextContents = message;
             // Mostly ignore...
             // This is for the Trigger only
         }
@@ -134,12 +84,6 @@ namespace UiPathTeam.SharedContext.Activities
             {
                 Console.WriteLine("[SharedContext] Could not open FileStream within the retries.");
             }
-        }
-
-        private void TheServer_Error(Exception exception)
-        {
-            Console.Error.WriteLine("[SharedContext] There is an error!!");
-            Console.Error.WriteLine(exception.Message);
         }
 
         //////////////////////////////////////////////////

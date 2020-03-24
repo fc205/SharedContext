@@ -13,6 +13,7 @@ namespace UiPathTeam.SharedContext.Activities
     {
         private string fileName;
         private FileStream fileStream;
+        private string originalContextContents;
 
         private bool disposed = false;
 
@@ -21,12 +22,6 @@ namespace UiPathTeam.SharedContext.Activities
             this.fileName = "";
             this.contextName = iContextName;
             this.arguments = iArguments;
-        }
-
-        public override void CreateServer()
-        {
-            // Do nothing. There is persistence.
-            return;
         }
 
         public override void CreateClient(bool iLock = true)

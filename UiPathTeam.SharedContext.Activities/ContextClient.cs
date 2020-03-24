@@ -9,49 +9,16 @@ using System.Threading.Tasks;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    public enum contextType
-    {
-        File,
-        NamedPipe
-    }
-
     public abstract class IContextClient
     {
         protected Dictionary<string, string> arguments;
 
         public string contextName;
         public ContextContent deserialisedContextContents;
-        public string originalContextContents;
 
-        abstract public void CreateServer();
         abstract public void CreateClient(bool iLock = true);
         abstract public void MyDispose();
         abstract public string GetResource();
-    }
-
-    [Serializable]
-    public class ContextContent : Object
-    {
-        public Dictionary<string, string> GlobalVariables;
-        public Dictionary<string, List<ContextMessage>> Messages;
-        public bool TakeLock;
-
-        public ContextContent()
-        {
-            this.TakeLock = false;
-            this.GlobalVariables = new Dictionary<string, string>();
-            this.Messages = new Dictionary<string, List<ContextMessage>>();
-        }
-    }
-
-    [Serializable]
-    public struct ContextMessage
-    {
-        public string From;
-        public string To;
-        public string Action;
-        public string ArgumentsJson;
-        public DateTime DateSent;
     }
 
     public class ContextClient
@@ -72,11 +39,6 @@ namespace UiPathTeam.SharedContext.Activities
                 default:
                     throw new Exception("[SharedContext] Unknown Context Type");
             }
-        }
-
-        public void CreateServer()
-        {
-            this.myContextClient.CreateServer();
         }
 
         public void CreateClient(bool iLock = true)
