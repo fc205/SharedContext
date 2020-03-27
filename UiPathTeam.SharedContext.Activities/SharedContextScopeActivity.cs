@@ -103,9 +103,10 @@ namespace UiPathTeam.SharedContext.Activities
                     context.ScheduleAction(Body, aContext, OnCompleted, OnFaulted);
                 }
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("[SharedContext] There is an error!!");
+                Console.WriteLine(exception.Message);
                 CleanupContext();
                 throw;
             }

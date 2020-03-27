@@ -15,6 +15,8 @@ namespace UiPathTeam.SharedContext.Activities
 
         private bool disposed = false;
 
+        private static Semaphore mySemaphore = new Semaphore(0, 1);
+
         public ContextServerNamedPipe(string iContextName, Dictionary<string, string> iArguments)
         {
             this.retriesUsed = 0;
@@ -27,9 +29,13 @@ namespace UiPathTeam.SharedContext.Activities
 
         public override void CreateServer()
         {
+            Console.WriteLine("[SharedContext Server] Starting... " + this.GetResource());
+
             this.deserialisedContextContents = new ContextContent();
+
             this.theServer = new NamedPipeServer<ContextContent>(this.GetResource());
             this.theServer.ClientMessage += TheServer_ClientMessage;
+            this.theServer.ClientConnected += TheServer_ClientConnected;
             this.theServer.ClientDisconnected += TheServer_ClientDisconnected;
             this.theServer.Error += TheServer_Error;
             this.theServer.Start();
@@ -39,6 +45,8 @@ namespace UiPathTeam.SharedContext.Activities
         {
             if(!this.disposed)
             {
+                Console.WriteLine("[SharedContext Server] Destroying.");
+
                 this.theServer.Stop();
                 this.disposed = true;
             }
@@ -51,39 +59,58 @@ namespace UiPathTeam.SharedContext.Activities
 
         private void TheServer_ClientMessage(NamedPipeConnection<ContextContent, ContextContent> connection, ContextContent message)
         {
-            if(message.TakeLock)
+            Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Message: " + message.ToString());
+
+            if (ContextServerNamedPipe.mySemaphore.WaitOne(10000))
             {
-                if (this.Lock != -1 && this.Lock != connection.Id)
+                if (message.TakeLock)
                 {
-                    // This is LOCKED
-                    throw new Exception("[SharedContext] Already locked!");
+                    if (this.Lock != -1 && this.Lock != connection.Id)
+                    {
+                        // This is LOCKED
+                        ContextServerNamedPipe.mySemaphore.Release();
+                        throw new Exception("[SharedContext Server] Already locked!");
+                    }
+                    else
+                    {
+                        // No lock
+                        this.Lock = connection.Id;
+                    }
                 }
-                else
+
+                if (this.Lock != -1 && this.Lock == connection.Id && message.Commit)
                 {
-                    // No lock
-                    this.Lock = connection.Id;
+                    this.deserialisedContextContents = message;
+                    this.deserialisedContextContents.Commit = false;
                 }
-            }
-            else
-            {
-                this.deserialisedContextContents = message;
+
                 this.theServer.PushMessage(this.deserialisedContextContents);
+                ContextServerNamedPipe.mySemaphore.Release();
             }
+            Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Outcome: " + this.deserialisedContextContents.ToString());
+        }
+
+        private void TheServer_ClientConnected(NamedPipeConnection<ContextContent, ContextContent> connection)
+        {
+            // Do nothing
+            Console.WriteLine("[SharedContext Server] Client connected. " + connection.Name);
         }
 
         private void TheServer_ClientDisconnected(NamedPipeConnection<ContextContent, ContextContent> connection)
         {
+            Console.WriteLine("[SharedContext Server] Client disconnected. " + connection.Name);
+
             if (this.Lock != -1 && this.Lock == connection.Id)
             {
-                // This is LOCKED by ME!
+                // This is LOCKED by ME! Release the lock
                 this.Lock = -1;
             }
         }
 
         private void TheServer_Error(Exception exception)
         {
-            Console.Error.WriteLine("[SharedContext] There is an error!!");
-            Console.Error.WriteLine(exception.Message);
+            Console.WriteLine("[SharedContext Server] There is an error!!");
+            Console.WriteLine(exception.Message);
         }
 
         //////////////////////////////////////////////////

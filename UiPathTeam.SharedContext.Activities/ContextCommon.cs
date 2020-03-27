@@ -1,11 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UiPathTeam.SharedContext.Activities
 {
@@ -21,12 +16,19 @@ namespace UiPathTeam.SharedContext.Activities
         public Dictionary<string, string> GlobalVariables;
         public Dictionary<string, List<ContextMessage>> Messages;
         public bool TakeLock;
+        public bool Commit;
 
         public ContextContent()
         {
             this.TakeLock = false;
+            this.Commit = false;
             this.GlobalVariables = new Dictionary<string, string>();
             this.Messages = new Dictionary<string, List<ContextMessage>>();
+        }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
         }
     }
 

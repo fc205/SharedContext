@@ -68,7 +68,7 @@ namespace UiPathTeam.SharedContext.Activities
                 return this.myContextClient.deserialisedContextContents.GlobalVariables[iVariableName];
             }
 
-            string errorMessage = "[SharedContext] Variable Name " + iVariableName + " does not exist in context " + this.myContextClient.contextName;
+            string errorMessage = "[SharedContext Client] Variable Name " + iVariableName + " does not exist in context " + this.myContextClient.contextName;
 
             if (iRaiseException)
             {

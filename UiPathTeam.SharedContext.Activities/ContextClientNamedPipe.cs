@@ -25,7 +25,10 @@ namespace UiPathTeam.SharedContext.Activities
 
         public override void CreateClient(bool iLock = true)
         {
+            Console.WriteLine("[SharedContext Client] Connecting to Server. " + this.GetResource());
+
             this.deserialisedContextContents = new ContextContent();
+
             this.theClient = new NamedPipeClient<ContextContent>(this.GetResource());
             this.theClient.ServerMessage += TheClient_ServerMessage;
             this.theClient.Error += TheClient_Error;
@@ -42,6 +45,9 @@ namespace UiPathTeam.SharedContext.Activities
         {
             if(!this.disposed)
             {
+                Console.WriteLine("[SharedContext Client] Destroying.");
+
+                this.deserialisedContextContents.Commit = true;
                 this.theClient.PushMessage(this.deserialisedContextContents);
                 Thread.Sleep(20);
                 this.theClient.Stop();
@@ -56,16 +62,15 @@ namespace UiPathTeam.SharedContext.Activities
 
         private void TheClient_ServerMessage(NamedPipeConnection<ContextContent, ContextContent> connection, ContextContent message)
         {
+            Console.WriteLine("[SharedContext Client] Message received . " + connection.Name + " > Message: " + message.ToString());
             this.deserialisedContextContents = message;
-            // Mostly ignore...
-            // This is for the Trigger only
         }
 
         private void TheClient_Error(Exception exception)
         {
             if(this.retriesUsed < this.retriesMax)
             {
-                Console.WriteLine("[SharedContext] NamePipe conflict with " +
+                Console.WriteLine("[SharedContext Client] NamePipe conflict with " +
                     this.contextName +
                     " @ " +
                     DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") +
@@ -82,7 +87,7 @@ namespace UiPathTeam.SharedContext.Activities
             }
             else
             {
-                Console.WriteLine("[SharedContext] Could not open FileStream within the retries.");
+                Console.WriteLine("[SharedContext Client] Could not open FileStream within the retries.");
             }
         }
 

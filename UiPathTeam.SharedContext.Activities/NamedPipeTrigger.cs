@@ -66,6 +66,14 @@ namespace UiPathTeam.SharedContext.Activities
         {
             this._client = new NamedPipeClient<ContextContent>(Name.Get(context));
             this._client.ServerMessage += Event_Trigger;
+            this._client.Error += _client_Error;
+            this._client.Start();
+        }
+
+        private void _client_Error(Exception exception)
+        {
+            Console.WriteLine("[SharedContext] There is an error!!");
+            Console.WriteLine(exception.Message);
         }
 
         protected void StopMonitor(ActivityContext context)
