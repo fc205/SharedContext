@@ -64,15 +64,34 @@ namespace UiPathTeam.SharedContext.Activities
 
         protected void StartMonitor(NativeActivityContext context)
         {
-            this._client = new NamedPipeClient<ContextContent>(Name.Get(context));
-            this._client.ServerMessage += Event_Trigger;
+            string contextName = Environment.UserDomainName + "_" +
+                                   Environment.UserName + "_" +
+                                   Name.Get(context);
+
+            this._client = new NamedPipeClient<ContextContent>(contextName);
+
+            this._client.ServerMessage += _client_ServerMessage; ;
             this._client.Error += _client_Error;
+
             this._client.Start();
+
+            Console.WriteLine("[SharedContext Trigger] Started client. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+        }
+
+        private void _client_ServerMessage(NamedPipeConnection<ContextContent, ContextContent> connection, ContextContent message)
+        {
+            Console.WriteLine("[SharedContext Trigger] Received a message! > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+
+            if (RuntimeBookmark != null)
+            {
+                var args = new object();
+                BookmarkResumptionHelper.BeginResumeBookmark(RuntimeBookmark, args);
+            }
         }
 
         private void _client_Error(Exception exception)
         {
-            Console.WriteLine("[SharedContext] There is an error!!");
+            Console.WriteLine("[SharedContext Trigger] There is an error!! > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             Console.WriteLine(exception.Message);
         }
 
@@ -102,14 +121,6 @@ namespace UiPathTeam.SharedContext.Activities
         {
             StopMonitor(context);
             base.Abort(context);
-        }
-
-        protected virtual void Event_Trigger(object sender, object args)
-        {
-            if (RuntimeBookmark != null)
-            {
-                BookmarkResumptionHelper.BeginResumeBookmark(RuntimeBookmark, args);
-            }
         }
     }
 }

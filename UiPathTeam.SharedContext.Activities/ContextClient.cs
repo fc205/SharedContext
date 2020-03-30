@@ -1,11 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UiPathTeam.SharedContext.Activities
 {
@@ -50,7 +47,7 @@ namespace UiPathTeam.SharedContext.Activities
         {
             this.myContextClient.MyDispose();
         }
-
+        
         public string GetResource()
         {
             return this.myContextClient.GetResource();

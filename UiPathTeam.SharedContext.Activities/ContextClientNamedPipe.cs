@@ -25,7 +25,7 @@ namespace UiPathTeam.SharedContext.Activities
 
         public override void CreateClient(bool iLock = true)
         {
-            Console.WriteLine("[SharedContext Client] Connecting to Server. " + this.GetResource());
+            Console.WriteLine("[SharedContext Client] Connecting to Server. " + this.GetResource() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
             this.deserialisedContextContents = new ContextContent();
 
@@ -45,7 +45,7 @@ namespace UiPathTeam.SharedContext.Activities
         {
             if(!this.disposed)
             {
-                Console.WriteLine("[SharedContext Client] Destroying.");
+                Console.WriteLine("[SharedContext Client] Destroying. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
                 this.deserialisedContextContents.Commit = true;
                 this.theClient.PushMessage(this.deserialisedContextContents);
@@ -62,7 +62,7 @@ namespace UiPathTeam.SharedContext.Activities
 
         private void TheClient_ServerMessage(NamedPipeConnection<ContextContent, ContextContent> connection, ContextContent message)
         {
-            Console.WriteLine("[SharedContext Client] Message received . " + connection.Name + " > Message: " + message.ToString());
+            Console.WriteLine("[SharedContext Client] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             this.deserialisedContextContents = message;
         }
 
@@ -87,7 +87,7 @@ namespace UiPathTeam.SharedContext.Activities
             }
             else
             {
-                Console.WriteLine("[SharedContext Client] Could not open FileStream within the retries.");
+                Console.WriteLine("[SharedContext Client] Could not open FileStream within the retries. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             }
         }
 

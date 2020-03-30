@@ -29,7 +29,7 @@ namespace UiPathTeam.SharedContext.Activities
 
         public override void CreateServer()
         {
-            Console.WriteLine("[SharedContext Server] Starting... " + this.GetResource());
+            Console.WriteLine("[SharedContext Server] Starting... " + this.GetResource() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
             this.deserialisedContextContents = new ContextContent();
 
@@ -45,7 +45,7 @@ namespace UiPathTeam.SharedContext.Activities
         {
             if(!this.disposed)
             {
-                Console.WriteLine("[SharedContext Server] Destroying.");
+                Console.WriteLine("[SharedContext Server] Destroying. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
                 this.theServer.Stop();
                 this.disposed = true;
@@ -59,7 +59,7 @@ namespace UiPathTeam.SharedContext.Activities
 
         private void TheServer_ClientMessage(NamedPipeConnection<ContextContent, ContextContent> connection, ContextContent message)
         {
-            Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Message: " + message.ToString());
+            Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
             if (ContextServerNamedPipe.mySemaphore.WaitOne(10000))
             {
@@ -69,12 +69,13 @@ namespace UiPathTeam.SharedContext.Activities
                     {
                         // This is LOCKED
                         ContextServerNamedPipe.mySemaphore.Release();
-                        throw new Exception("[SharedContext Server] Already locked!");
+                        throw new Exception("[SharedContext Server] Already locked! > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                     }
                     else
                     {
                         // No lock
                         this.Lock = connection.Id;
+                        this.deserialisedContextContents.TakeLock = true;
                     }
                 }
 
@@ -87,29 +88,30 @@ namespace UiPathTeam.SharedContext.Activities
                 this.theServer.PushMessage(this.deserialisedContextContents);
                 ContextServerNamedPipe.mySemaphore.Release();
             }
-            Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Outcome: " + this.deserialisedContextContents.ToString());
+            Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Outcome: " + this.deserialisedContextContents.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
         }
 
         private void TheServer_ClientConnected(NamedPipeConnection<ContextContent, ContextContent> connection)
         {
             // Do nothing
-            Console.WriteLine("[SharedContext Server] Client connected. " + connection.Name);
+            Console.WriteLine("[SharedContext Server] Client connected. " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
         }
 
         private void TheServer_ClientDisconnected(NamedPipeConnection<ContextContent, ContextContent> connection)
         {
-            Console.WriteLine("[SharedContext Server] Client disconnected. " + connection.Name);
+            Console.WriteLine("[SharedContext Server] Client disconnected. " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
             if (this.Lock != -1 && this.Lock == connection.Id)
             {
                 // This is LOCKED by ME! Release the lock
                 this.Lock = -1;
+                this.deserialisedContextContents.TakeLock = false;
             }
         }
 
         private void TheServer_Error(Exception exception)
         {
-            Console.WriteLine("[SharedContext Server] There is an error!!");
+            Console.WriteLine("[SharedContext Server] There is an error!! > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             Console.WriteLine(exception.Message);
         }
 

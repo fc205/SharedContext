@@ -105,7 +105,7 @@ namespace UiPathTeam.SharedContext.Activities
             }
             catch (Exception exception)
             {
-                Console.WriteLine("[SharedContext] There is an error!!");
+                Console.WriteLine("[SharedContext Scope] There is an error!!");
                 Console.WriteLine(exception.Message);
                 CleanupContext();
                 throw;

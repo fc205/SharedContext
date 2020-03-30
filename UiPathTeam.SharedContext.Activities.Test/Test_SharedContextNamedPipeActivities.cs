@@ -283,34 +283,6 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
         public void NewThreadForTrigger()
         {
-            Console.WriteLine("In thread > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-
-            var sharedContextScopeActivity = new SharedContextScopeActivity
-            {
-                Name = Test_ContextName,
-                Type = Test_ContextType,
-                Clear = false,
-                Retries = Test_Retries
-            };
-
-            var setContextActivity = new SharedContextVariableSetActivity
-            {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue
-            };
-
-            sharedContextScopeActivity.Body.Handler = new Sequence()
-            {
-                Activities =
-                {
-                   setContextActivity
-                }
-            };
-
-            Console.WriteLine("In thread : about to execute > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-            WorkflowInvoker.Invoke(sharedContextScopeActivity);
-            Thread.Sleep(500);
-            Console.WriteLine("In thread : executed > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
         }
 
 
@@ -339,7 +311,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var monitorActv = new UiPath.Core.Activities.MonitorEvents()
             {
-                RepeatForever = true
+                RepeatForever = false
             };
             monitorActv.Triggers.Add(trigger);
             monitorActv.Handler = new ActivityAction<object>
@@ -349,17 +321,45 @@ namespace UiPathTeam.SharedContext.Activities.Test
             };
 
             var host = new WorkflowInvokerTest(new Sequence() { Activities = { monitorActv } } );
-            var task = Task.Run(() => { host.TestActivity(TimeSpan.FromSeconds(10)); });
+            var task = Task.Run(() => { host.TestActivity(TimeSpan.FromSeconds(15)); });
 
             // Trigger initialization takes time.
             Thread.Sleep(1000);
 
-            Thread thread1 = new Thread(NewThreadForTrigger);
-            thread1.Start();
+            Console.WriteLine("In thread > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
-            //Thread.Sleep(5000);
-            task.Wait(1000);
-            Assert.IsTrue(TaskStatus.RanToCompletion == task.Status);
+            var sharedContextScopeActivity = new SharedContextScopeActivity
+            {
+                Name = Test_ContextName,
+                Type = Test_ContextType,
+                Clear = false,
+                Retries = Test_Retries
+            };
+
+            var setContextActivity = new SharedContextVariableSetActivity
+            {
+                Name = Test_SetVariableName,
+                Value = Test_SetVariableValue
+            };
+
+            sharedContextScopeActivity.Body.Handler = new Sequence()
+            {
+                Activities =
+                {
+                   setContextActivity
+                }
+            };
+
+            Thread.Sleep(500);
+            Console.WriteLine("In thread : about to execute > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+
+            WorkflowInvoker.Invoke(sharedContextScopeActivity);
+
+            Thread.Sleep(500);
+            Console.WriteLine("In thread : executed > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+
+            task.Wait(6000);
+            // Assert.IsTrue(TaskStatus.RanToCompletion == task.Status);
             Assert.IsTrue(host.TextLines.Length == 1);
             Assert.IsTrue(host.TextLines[0] == $"Trigger triggered!!");
 
