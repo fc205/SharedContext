@@ -130,8 +130,8 @@
                                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                               </scg:Dictionary>
                             </sap:WorkflowViewStateService.ViewState>
-                            <usa:SharedContextVariableGetActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="755,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableGetActivity_3" Name="aWho" RaiseException="True" Value="[aWhoChangedLast]" />
-                            <usa:SharedContextVariableGetActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="755,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableGetActivity_4" Name="aMessage" RaiseException="True" Value="[aReceivedMessage]" />
+                            <usa:SharedContextVariableGetActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="755,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableGetActivity_3" Name="aWho" RaiseException="False" Value="[aWhoChangedLast]" />
+                            <usa:SharedContextVariableGetActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="755,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableGetActivity_4" Name="aMessage" RaiseException="False" Value="[aReceivedMessage]" />
                             <If Condition="[aWhoChangedLast &lt;&gt; aWhoAmI]" sap:VirtualizedContainerService.HintSize="755,647" sap2010:WorkflowViewState.IdRef="If_2">
                               <sap:WorkflowViewStateService.ViewState>
                                 <scg:Dictionary x:TypeArguments="x:String, x:Object">

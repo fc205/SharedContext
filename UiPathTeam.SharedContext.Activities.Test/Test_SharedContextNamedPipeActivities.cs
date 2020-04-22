@@ -235,8 +235,6 @@ namespace UiPathTeam.SharedContext.Activities.Test
             };
 
             var output = WorkflowInvoker.Invoke(sharedContextScopeActivityOuter);
-
-            Console.WriteLine("Kilroy was here");
         }
 
 
@@ -358,7 +356,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             Thread.Sleep(500);
             Console.WriteLine("In thread : executed > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
-            task.Wait(6000);
+            task.Wait(500);
             // Assert.IsTrue(TaskStatus.RanToCompletion == task.Status);
             Assert.IsTrue(host.TextLines.Length == 1);
             Assert.IsTrue(host.TextLines[0] == $"Trigger triggered!!");

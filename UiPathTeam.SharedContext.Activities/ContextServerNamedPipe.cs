@@ -15,7 +15,7 @@ namespace UiPathTeam.SharedContext.Activities
 
         private bool disposed = false;
 
-        private static Semaphore mySemaphore = new Semaphore(0, 1);
+        private static Mutex myMutex = new Mutex(false, "mySemaphore");
 
         public ContextServerNamedPipe(string iContextName, Dictionary<string, string> iArguments)
         {
@@ -61,39 +61,47 @@ namespace UiPathTeam.SharedContext.Activities
         {
             Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
-            if (ContextServerNamedPipe.mySemaphore.WaitOne(10000))
+            if (ContextServerNamedPipe.myMutex.WaitOne(10000))
             {
+                Console.WriteLine("[SharedContext Server] Mutex taken > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                 if (message.TakeLock)
                 {
+                    Console.WriteLine("[SharedContext Server] Message wants to take lock > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                     if (this.Lock != -1 && this.Lock != connection.Id)
                     {
                         // This is LOCKED
-                        ContextServerNamedPipe.mySemaphore.Release();
+                        ContextServerNamedPipe.myMutex.ReleaseMutex();
+                        Console.WriteLine("[SharedContext Server] Mutex released > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                         throw new Exception("[SharedContext Server] Already locked! > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                     }
                     else
                     {
                         // No lock
+                        Console.WriteLine("[SharedContext Server] No lock. Taking it now > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                         this.Lock = connection.Id;
-                        this.deserialisedContextContents.TakeLock = true;
                     }
                 }
 
                 if (this.Lock != -1 && this.Lock == connection.Id && message.Commit)
                 {
+                    Console.WriteLine("[SharedContext Server] Using message as new content > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                     this.deserialisedContextContents = message;
+                    this.deserialisedContextContents.TakeLock = false;
                     this.deserialisedContextContents.Commit = false;
                 }
 
+                Console.WriteLine("[SharedContext Server] Sending message to client " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                 this.theServer.PushMessage(this.deserialisedContextContents);
-                ContextServerNamedPipe.mySemaphore.Release();
+
+                ContextServerNamedPipe.myMutex.ReleaseMutex();
+                Console.WriteLine("[SharedContext Server] Mutex released > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             }
             Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Outcome: " + this.deserialisedContextContents.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
         }
 
         private void TheServer_ClientConnected(NamedPipeConnection<ContextContent, ContextContent> connection)
         {
-            // Do nothing
+            // Do nothing...
             Console.WriteLine("[SharedContext Server] Client connected. " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
         }
 

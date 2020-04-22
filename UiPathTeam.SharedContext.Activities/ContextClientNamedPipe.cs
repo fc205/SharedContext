@@ -13,6 +13,7 @@ namespace UiPathTeam.SharedContext.Activities
         private int retriesUsed;
 
         private bool disposed = false;
+        private bool initialised = false;
 
         public ContextClientNamedPipe(string iContextName, Dictionary<string, string> iArguments)
         {
@@ -37,8 +38,25 @@ namespace UiPathTeam.SharedContext.Activities
             if(iLock)
             {
                 this.deserialisedContextContents.TakeLock = true;
-                this.theClient.PushMessage(this.deserialisedContextContents);
             }
+            this.theClient.WaitForConnection();
+            this.theClient.PushMessage(this.deserialisedContextContents);
+
+            for(int i = 0; i < 10; i++)
+            {
+                if(this.initialised)
+                {
+                    break;
+                }
+                Thread.Sleep(100);
+            }
+
+            if(!this.initialised)
+            {
+                throw new Exception("[SharedContext Client] Could not connect to Server. Server did not respond.");
+            }
+
+            Console.WriteLine("[SharedContext Client] Connected to Server and initialised. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
         }
 
         public override void MyDispose()
@@ -49,6 +67,7 @@ namespace UiPathTeam.SharedContext.Activities
 
                 this.deserialisedContextContents.Commit = true;
                 this.theClient.PushMessage(this.deserialisedContextContents);
+
                 Thread.Sleep(20);
                 this.theClient.Stop();
                 this.disposed = true;
@@ -64,11 +83,14 @@ namespace UiPathTeam.SharedContext.Activities
         {
             Console.WriteLine("[SharedContext Client] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             this.deserialisedContextContents = message;
+            this.initialised = true;
         }
 
         private void TheClient_Error(Exception exception)
         {
-            if(this.retriesUsed < this.retriesMax)
+            Console.WriteLine("[SharedContext Client] Exception > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") + " > " + exception.Message);
+
+            if (this.retriesUsed < this.retriesMax)
             {
                 Console.WriteLine("[SharedContext Client] NamePipe conflict with " +
                     this.contextName +
