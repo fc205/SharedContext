@@ -26,8 +26,8 @@ namespace UiPathTeam.SharedContext.Activities
 
         [Category("Context")]
         [RequiredArgument]
-        [DisplayName("Clear context and persist")]
-        [Description("Clear the context at the beginning of the scope and persist")]
+        [DisplayName("Clear context")]
+        [Description("Clear the context at the beginning of the scope")]
         public bool Clear { get; set; }
 
         [Category("Context")]
@@ -47,6 +47,7 @@ namespace UiPathTeam.SharedContext.Activities
         public OutArgument<string> FilePath { get; set; }
 
         private ContextClient aContext;
+        private string _context;
 
         public SharedContextScopeActivity()
         {
@@ -65,6 +66,7 @@ namespace UiPathTeam.SharedContext.Activities
 
         protected override void Execute(NativeActivityContext context)
         {
+            this._context = Name.Get(context);
             string aFolder = "";
 
             if (Retries == null || Retries.Get(context) <= 0) 
@@ -77,14 +79,14 @@ namespace UiPathTeam.SharedContext.Activities
                 aFolder = Folder.Get(context);
             }
 
+            Dictionary<string, string> aArguments = new Dictionary<string, string>();
+
+            aArguments["Folder"] = aFolder;
+            aArguments["Retries"] = Retries.Get(context).ToString();
+
             try
             {
-                Dictionary<string, string>  aArguments = new Dictionary<string, string>();
-
-                aArguments["Folder"] = aFolder;
-                aArguments["Retries"] = Retries.Get(context).ToString();
-
-                aContext = new ContextClient(Type, Name.Get(context), aArguments);
+                aContext = new ContextClient(Type, this._context, aArguments);
 
                 if (this.Clear)
                 {

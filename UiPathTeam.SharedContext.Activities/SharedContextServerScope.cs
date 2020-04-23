@@ -3,6 +3,7 @@ using System.Activities;
 using System.Activities.Statements;
 using System.ComponentModel;
 using System.Collections.Generic;
+using nsWin32Calls;
 
 namespace UiPathTeam.SharedContext.Activities
 {
@@ -11,6 +12,8 @@ namespace UiPathTeam.SharedContext.Activities
     [Description("Creates a Named Pipe server for the shared context environment.")]
     public class SharedContextServerScope : NativeActivity
     {
+        private const string _mutexName = "Local\\SharedContextServerScope";
+
         [Browsable(false)]
         public ActivityAction<ContextServer> Body { get; set; }
 
@@ -20,6 +23,7 @@ namespace UiPathTeam.SharedContext.Activities
         public InArgument<string> Name { get; set; }
 
         private ContextServer aContext;
+        private string _context;
 
         public SharedContextServerScope()
         {
@@ -39,11 +43,18 @@ namespace UiPathTeam.SharedContext.Activities
         {
             try
             {
+                this._context = Name.Get(context);
+
+                if (!Win32Calls.TakeMutex(this.GetMutexName()))
+                {
+                    throw new Exception("There is already a Shared Context Server running!");
+                }
+
                 Dictionary<string, string>  aArguments = new Dictionary<string, string>();
 
                 aArguments["Retries"] = "5";
 
-                aContext = new ContextServer(contextType.NamedPipe, Name.Get(context), aArguments);
+                aContext = new ContextServer(contextType.NamedPipe, this._context, aArguments);
                 aContext.CreateServer();
 
                 if (Body != null)
@@ -56,27 +67,37 @@ namespace UiPathTeam.SharedContext.Activities
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                CleanupContext();
+                CleanupContext(false);
                 throw;
             }
         }
 
-        private void CleanupContext()
+        private void CleanupContext(bool releaseMutex)
         {
             if (aContext != null)
             {
                 aContext.MyDispose();
             }
+
+            if(releaseMutex)
+            {
+                Win32Calls.ReleaseMutex(this.GetMutexName());
+            }
         }
         private void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
             faultContext.CancelChildren();
-            CleanupContext();
+            CleanupContext(true);
         }
 
         private void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance)
         {
-            CleanupContext();
+            CleanupContext(true);
+        }
+
+        private string GetMutexName()
+        {
+            return _mutexName + this._context;
         }
     }
 }

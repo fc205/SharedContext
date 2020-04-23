@@ -110,15 +110,6 @@ namespace UiPathTeam.SharedContext.Activities.Test
                 ContextClient = new InArgument<ContextClient>((ctx) => aContextClient)
             };
 
-            var sharedContextSequence = new Sequence()
-            {
-                Activities =
-                {
-                   setContextActivity,
-                   getContextActivity
-                }
-            };
-
             WorkflowInvoker.Invoke(setContextActivity);
             var output = WorkflowInvoker.Invoke(getContextActivity);
 
@@ -234,7 +225,14 @@ namespace UiPathTeam.SharedContext.Activities.Test
                     }
             };
 
-            var output = WorkflowInvoker.Invoke(sharedContextScopeActivityOuter);
+            try
+            {
+                var output = WorkflowInvoker.Invoke(sharedContextScopeActivityOuter);
+            }
+            catch(Exception e)
+            {
+                Assert.IsTrue(e.Message == "[SharedContext Client] Could not open resource within the retries.");
+            }
         }
 
 

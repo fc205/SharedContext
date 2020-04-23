@@ -114,6 +114,7 @@
     <Compile Include="ContextClientNamedPipe.cs" />
     <Compile Include="ContextClientFile.cs" />
     <Compile Include="ContextClient.cs" />
+    <Compile Include="Dependencies\Win32Calls.cs" />
     <Compile Include="NamedPipeTrigger.cs" />
     <Compile Include="NamedPipeTriggerDesigner.xaml.cs">
       <DependentUpon>NamedPipeTriggerDesigner.xaml</DependentUpon>

@@ -66,7 +66,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             contextClient.MyDispose();
 
             string fileContents = File.ReadAllText(aFileName);
-            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{},\"TakeLock\":false}");
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{}}");
         }
 
         [TestMethod]
@@ -94,7 +94,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             contextClient.MyDispose();
 
             string fileContents = File.ReadAllText(aFileName);
-            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{},\"TakeLock\":false}");
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{}}");
             Assert.IsTrue(output["Value"].ToString() == Test_SetVariableValue);
         }
 
@@ -151,7 +151,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             Assert.IsTrue(output["From"].ToString() == Test_SendOrigin);
             Assert.IsTrue(((DateTime)output["TimeSent"]).ToString("YYYY-MM-DD") == DateTime.Now.ToString("YYYY-MM-DD"));
             Assert.IsTrue(!(bool)output["QueueEmpty"]);
-            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]},\"TakeLock\":false}");
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]}}");
         }
 
         [TestMethod]
@@ -172,7 +172,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             string fileContents = File.ReadAllText(aFileName);
 
             Assert.IsTrue((bool)output["QueueEmpty"]);
-            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]},\"TakeLock\":false}");
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]}}");
         }
 
         [TestMethod]
@@ -205,7 +205,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             Assert.IsTrue(File.Exists(aFileName));
             string fileContents = File.ReadAllText(aFileName);
-            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{},\"TakeLock\":false}");
+            Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{}}");
         }
 
         [TestMethod]
@@ -231,7 +231,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             var output = WorkflowInvoker.Invoke(sharedContextScopeActivity);
 
             Assert.IsTrue(output["FilePath"].ToString() == aFileName);
-            Assert.IsTrue(File.ReadAllText(aFileName) == "{\"GlobalVariables\":{},\"Messages\":{},\"TakeLock\":false}");
+            Assert.IsTrue(File.ReadAllText(aFileName) == "{\"GlobalVariables\":{},\"Messages\":{}}");
         }
 
         [TestMethod]
@@ -296,7 +296,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             }
             catch(Exception e)
             {
-                Assert.IsTrue(e.Message == "[SharedContext] Variable Name " + Test_SetVariableName + " does not exist in context " + Test_ContextName);
+                Assert.IsTrue(e.Message == "[SharedContext Client] Variable Name " + Test_SetVariableName + " does not exist in context " + Test_ContextName);
             }
         }
 

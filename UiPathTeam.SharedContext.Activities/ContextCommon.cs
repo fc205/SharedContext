@@ -15,13 +15,9 @@ namespace UiPathTeam.SharedContext.Activities
     {
         public Dictionary<string, string> GlobalVariables;
         public Dictionary<string, List<ContextMessage>> Messages;
-        public bool TakeLock;
-        public bool Commit;
 
         public ContextContent()
         {
-            this.TakeLock = false;
-            this.Commit = false;
             this.GlobalVariables = new Dictionary<string, string>();
             this.Messages = new Dictionary<string, List<ContextMessage>>();
         }

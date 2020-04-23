@@ -8,22 +8,13 @@ namespace UiPathTeam.SharedContext.Activities
     public class ContextServerNamedPipe : IContextServer
     {
         private NamedPipeServer<ContextContent> theServer;
-        private int Lock;
-
-        private int retriesMax;
-        private int retriesUsed;
 
         private bool disposed = false;
 
-        private static Mutex myMutex = new Mutex(false, "mySemaphore");
-
         public ContextServerNamedPipe(string iContextName, Dictionary<string, string> iArguments)
         {
-            this.retriesUsed = 0;
-            this.Lock = -1;
             this.contextName = iContextName;
             this.arguments = iArguments;
-            this.retriesMax = int.Parse(this.arguments["Retries"]);
             this.theServer = null;
         }
 
@@ -61,60 +52,30 @@ namespace UiPathTeam.SharedContext.Activities
         {
             Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
-            if (ContextServerNamedPipe.myMutex.WaitOne(10000))
+            Console.WriteLine("[SharedContext Server] Using message as new content > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            this.deserialisedContextContents = message;
+
+            Console.WriteLine("[SharedContext Server] Sending message to all other clients > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            foreach(var aConnection in this.theServer._connections)
             {
-                Console.WriteLine("[SharedContext Server] Mutex taken > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-                if (message.TakeLock)
+                if(aConnection.Id != connection.Id)
                 {
-                    Console.WriteLine("[SharedContext Server] Message wants to take lock > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-                    if (this.Lock != -1 && this.Lock != connection.Id)
-                    {
-                        // This is LOCKED
-                        ContextServerNamedPipe.myMutex.ReleaseMutex();
-                        Console.WriteLine("[SharedContext Server] Mutex released > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-                        throw new Exception("[SharedContext Server] Already locked! > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-                    }
-                    else
-                    {
-                        // No lock
-                        Console.WriteLine("[SharedContext Server] No lock. Taking it now > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-                        this.Lock = connection.Id;
-                    }
+                    aConnection.PushMessage(this.deserialisedContextContents);
                 }
-
-                if (this.Lock != -1 && this.Lock == connection.Id && message.Commit)
-                {
-                    Console.WriteLine("[SharedContext Server] Using message as new content > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-                    this.deserialisedContextContents = message;
-                    this.deserialisedContextContents.TakeLock = false;
-                    this.deserialisedContextContents.Commit = false;
-                }
-
-                Console.WriteLine("[SharedContext Server] Sending message to client " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-                this.theServer.PushMessage(this.deserialisedContextContents);
-
-                ContextServerNamedPipe.myMutex.ReleaseMutex();
-                Console.WriteLine("[SharedContext Server] Mutex released > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             }
-            Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Outcome: " + this.deserialisedContextContents.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
         }
 
         private void TheServer_ClientConnected(NamedPipeConnection<ContextContent, ContextContent> connection)
         {
-            // Do nothing...
+            // Send current context
             Console.WriteLine("[SharedContext Server] Client connected. " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            Console.WriteLine("[SharedContext Server] Sending context: " + this.deserialisedContextContents.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            connection.PushMessage(this.deserialisedContextContents);
         }
 
         private void TheServer_ClientDisconnected(NamedPipeConnection<ContextContent, ContextContent> connection)
         {
             Console.WriteLine("[SharedContext Server] Client disconnected. " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-
-            if (this.Lock != -1 && this.Lock == connection.Id)
-            {
-                // This is LOCKED by ME! Release the lock
-                this.Lock = -1;
-                this.deserialisedContextContents.TakeLock = false;
-            }
         }
 
         private void TheServer_Error(Exception exception)
