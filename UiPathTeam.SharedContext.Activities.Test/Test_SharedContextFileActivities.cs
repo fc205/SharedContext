@@ -4,7 +4,7 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using UiPathTeam.SharedContext.Context;
 using System.Threading;
 
 namespace UiPathTeam.SharedContext.Activities.Test
@@ -54,7 +54,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             string aFileName = ClearEnvironmentForTest();
             ContextClient contextClient = SetUpContextClient();
 
-            var setContextActivity = new SharedContextVariableSetActivity
+            var setContextActivity = new SetVariableActivity
             {
                 Name = Test_SetVariableName,
                 Value = Test_SetVariableValue,
@@ -75,14 +75,14 @@ namespace UiPathTeam.SharedContext.Activities.Test
             string aFileName = ClearEnvironmentForTest();
             ContextClient contextClient = SetUpContextClient();
 
-            var setContextActivity = new SharedContextVariableSetActivity
+            var setContextActivity = new SetVariableActivity
             {
                 Name = Test_SetVariableName,
                 Value = Test_SetVariableValue,
                 ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
             };
 
-            var getContextActivity = new SharedContextVariableGetActivity
+            var getContextActivity = new GetVariableActivity
             {
                 Name = Test_SetVariableName,
                 ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
@@ -104,7 +104,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             string aFileName = ClearEnvironmentForTest();
             ContextClient contextClient = SetUpContextClient();
 
-            var sendMessageContextActivity = new SharedContextMessageSendActivity
+            var sendMessageContextActivity = new SendMessageActivity
             {
                 To = Test_SendDestination,
                 Action = Test_SendMessage_Action,
@@ -126,7 +126,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             string aFileName = ClearEnvironmentForTest();
             ContextClient contextClient = SetUpContextClient();
 
-            var sendMessageContextActivity = new SharedContextMessageSendActivity
+            var sendMessageContextActivity = new SendMessageActivity
             {
                 To = Test_SendDestination,
                 Action = Test_SendMessage_Action,
@@ -134,7 +134,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
                 ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
             };
 
-            var receiveMessageContextActivity = new SharedContextMessageReceiveActivity
+            var receiveMessageContextActivity = new ReceiveMessageActivity
             {
                 ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
             };
@@ -160,7 +160,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             string aFileName = ClearEnvironmentForTest();
             ContextClient contextClient = SetUpContextClient();
 
-            var receiveMessageContextActivity = new SharedContextMessageReceiveActivity
+            var receiveMessageContextActivity = new ReceiveMessageActivity
             {
                 ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
             };
@@ -180,14 +180,14 @@ namespace UiPathTeam.SharedContext.Activities.Test
         {
             string aFileName = this.ClearEnvironmentForTest();
 
-            var sharedContextScopeActivity = new SharedContextScopeActivity
+            var sharedContextScopeActivity = new ClientScopeActivity
             {
                 Name = Test_ContextName,
                 Type = Test_ContextType,
                 Retries = Test_Retries
             };
 
-            var setContextActivity = new SharedContextVariableSetActivity
+            var setContextActivity = new SetVariableActivity
             {
                 Name = Test_SetVariableName,
                 Value = Test_SetVariableValue
@@ -213,7 +213,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
         {
             string aFileName = this.ClearEnvironmentForTest();
 
-            var sharedContextScopeActivity = new SharedContextScopeActivity
+            var sharedContextScopeActivity = new ClientScopeActivity
             {
                 Name = Test_ContextName,
                 Type = Test_ContextType,
@@ -239,14 +239,14 @@ namespace UiPathTeam.SharedContext.Activities.Test
         {
             string aFileName = this.ClearEnvironmentForTest();
 
-            var sharedContextScopeActivity = new SharedContextScopeActivity
+            var sharedContextScopeActivity = new ClientScopeActivity
             {
                 Name = Test_ContextName,
                 Type = Test_ContextType,
                 Retries = Test_Retries
             };
 
-            var getContextActivity = new SharedContextVariableGetActivity
+            var getContextActivity = new GetVariableActivity
             {
                 Name = Test_SetVariableName,
                 RaiseException = false
@@ -269,14 +269,14 @@ namespace UiPathTeam.SharedContext.Activities.Test
         {
             string aFileName = this.ClearEnvironmentForTest();
 
-            var sharedContextScopeActivity = new SharedContextScopeActivity
+            var sharedContextScopeActivity = new ClientScopeActivity
             {
                 Name = Test_ContextName,
                 Type = Test_ContextType,
                 Retries = Test_Retries
             };
 
-            var getContextActivity = new SharedContextVariableGetActivity
+            var getContextActivity = new GetVariableActivity
             {
                 Name = Test_SetVariableName,
                 RaiseException = true
@@ -305,14 +305,14 @@ namespace UiPathTeam.SharedContext.Activities.Test
             Console.WriteLine("In thread > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             string aFileName = ClearEnvironmentForTest(true);
 
-            var sharedContextScopeActivity = new SharedContextScopeActivity
+            var sharedContextScopeActivity = new ClientScopeActivity
             {
                 Name = Test_ContextName,
                 Type = Test_ContextType,
                 Retries = Test_Retries
             };
 
-            var setContextActivity = new SharedContextVariableSetActivity
+            var setContextActivity = new SetVariableActivity
             {
                 Name = Test_SetVariableName,
                 Value = Test_SetVariableValue

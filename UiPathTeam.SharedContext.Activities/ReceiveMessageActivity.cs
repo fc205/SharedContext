@@ -2,11 +2,12 @@
 using System.Activities;
 using System.ComponentModel;
 using UiPath.Robot.Activities.Api;
+using UiPathTeam.SharedContext.Context;
 
 namespace UiPathTeam.SharedContext.Activities
 {
     [DisplayName("Receive Latest Message")]
-    public class SharedContextMessageReceiveActivity : CodeActivity
+    public class ReceiveMessageActivity : CodeActivity
     {
         [Category("Input Optional")]
         [Description("Shared Context object to be used when not in a Shared Context Scope.")]

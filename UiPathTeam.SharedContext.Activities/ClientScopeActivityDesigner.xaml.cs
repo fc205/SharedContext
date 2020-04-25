@@ -14,9 +14,9 @@ using System.Windows.Shapes;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    public partial class SharedContextServerScopeDesigner
+    public partial class ClientScopeActivityDesigner
     {
-        public SharedContextServerScopeDesigner()
+        public ClientScopeActivityDesigner()
         {
             InitializeComponent();
         }

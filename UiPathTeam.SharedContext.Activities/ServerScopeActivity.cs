@@ -3,16 +3,17 @@ using System.Activities;
 using System.Activities.Statements;
 using System.ComponentModel;
 using System.Collections.Generic;
-using nsWin32Calls;
+using UiPathTeam.SharedContext.Dependencies;
+using UiPathTeam.SharedContext.Context;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [Designer(typeof(SharedContextServerScopeDesigner))]
+    [Designer(typeof(ServerScopeActivityDesigner))]
     [DisplayName("Shared Context Server Scope")]
     [Description("Creates a Named Pipe server for the shared context environment.")]
-    public class SharedContextServerScope : NativeActivity
+    public class ServerScopeActivity : NativeActivity
     {
-        private const string _mutexName = "Local\\SharedContextServerScope";
+        private const string _mutexName = "Local\\ServerScopeActivity";
 
         [Browsable(false)]
         public ActivityAction<ContextServer> Body { get; set; }
@@ -25,7 +26,7 @@ namespace UiPathTeam.SharedContext.Activities
         private ContextServer aContext;
         private string _context;
 
-        public SharedContextServerScope()
+        public ServerScopeActivity()
         {
             Body = new ActivityAction<ContextServer>
             {

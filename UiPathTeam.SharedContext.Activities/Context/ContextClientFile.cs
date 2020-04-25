@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UiPathTeam.SharedContext.Activities
+namespace UiPathTeam.SharedContext.Context
 {
     public class ContextClientFile : IContextClient
     {

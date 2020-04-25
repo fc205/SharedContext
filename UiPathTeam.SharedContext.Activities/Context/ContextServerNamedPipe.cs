@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NamedPipeWrapper;
 using System.Threading;
 
-namespace UiPathTeam.SharedContext.Activities
+namespace UiPathTeam.SharedContext.Context
 {
     public class ContextServerNamedPipe : IContextServer
     {
@@ -38,6 +38,25 @@ namespace UiPathTeam.SharedContext.Activities
             {
                 Console.WriteLine("[SharedContext Server] Destroying. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
+                bool connectionsActive = true;
+                for(int i = 0; i < 10; i++)
+                {
+                    if(this.theServer._connections.Count != 0)
+                    {
+                        Thread.Sleep(5);
+                    }
+                    else
+                    {
+                        connectionsActive = false;
+                        break;
+                    }
+                }
+
+                if (connectionsActive)
+                {
+                    Console.WriteLine("[SharedContext Server] Destroying. Connections still active > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                }
+
                 this.theServer.Stop();
                 this.disposed = true;
             }
@@ -55,14 +74,8 @@ namespace UiPathTeam.SharedContext.Activities
             Console.WriteLine("[SharedContext Server] Using message as new content > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             this.deserialisedContextContents = message;
 
-            Console.WriteLine("[SharedContext Server] Sending message to all other clients > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-            foreach(var aConnection in this.theServer._connections)
-            {
-                if(aConnection.Id != connection.Id)
-                {
-                    aConnection.PushMessage(this.deserialisedContextContents);
-                }
-            }
+            Console.WriteLine("[SharedContext Server] Sending message to all clients > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            this.theServer.PushMessage(this.deserialisedContextContents);
         }
 
         private void TheServer_ClientConnected(NamedPipeConnection<ContextContent, ContextContent> connection)

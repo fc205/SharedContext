@@ -2,11 +2,12 @@
 using System.Activities;
 using System.ComponentModel;
 using UiPath.Robot.Activities.Api;
+using UiPathTeam.SharedContext.Context;
 
 namespace UiPathTeam.SharedContext.Activities
 {
     [DisplayName("Send Message")]
-    public class SharedContextMessageSendActivity : CodeActivity
+    public class SendMessageActivity : CodeActivity
     {
         [Category("Input")]
         [RequiredArgument]

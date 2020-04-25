@@ -4,7 +4,7 @@ using System.Activities.Validation;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace UiPath.Framework.Activities
+namespace UiPathTeam.SharedContext.Dependencies
 {
     public class CheckParentConstraint
     {

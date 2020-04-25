@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using System.Linq;
 
-namespace UiPathTeam.SharedContext.Activities
+namespace UiPathTeam.SharedContext.Context
 {
     public abstract class IContextClient
     {

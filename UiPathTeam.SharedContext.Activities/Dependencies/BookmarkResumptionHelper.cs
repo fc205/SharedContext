@@ -2,7 +2,7 @@
 using System.Activities.Hosting;
 using System.Collections.Generic;
 
-namespace UiPath.Core.Activities
+namespace UiPathTeam.SharedContext.Dependencies
 {
     internal sealed class BookmarkResumptionHelper : IWorkflowInstanceExtension
     {

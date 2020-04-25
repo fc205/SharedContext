@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using NamedPipeWrapper;
 using System.Threading;
-using nsWin32Calls;
+using UiPathTeam.SharedContext.Dependencies;
 
-namespace UiPathTeam.SharedContext.Activities
+namespace UiPathTeam.SharedContext.Context
 {
     public class ContextClientNamedPipe : IContextClient
     {
@@ -14,25 +14,37 @@ namespace UiPathTeam.SharedContext.Activities
         private int retriesUsed;
 
         private bool disposed = false;
+        private bool expectingLastMessage = false;
+        private bool lastMessageReceived = false;
         private bool initialised = false;
+        private bool _lock = false;
 
         private const string _mutexName = "Local\\ContextClientNamedPipe";
 
         private Mutex _dotNetMutex;
 
-        public ContextClientNamedPipe(string iContextName, Dictionary<string, string> iArguments)
+        public ContextClientNamedPipe(string iContextName, Dictionary<string, string> iArguments, bool iLock = true)
         {
             this.retriesUsed = 0;
+            this._lock = iLock;
             this.contextName = iContextName;
             this.arguments = iArguments;
             this.retriesMax = int.Parse(this.arguments["Retries"]);
             this.theClient = null;
-            this._dotNetMutex = new Mutex(false, this.GetMutexName());
+            if(iLock)
+            {
+                this._dotNetMutex = new Mutex(false, this.GetMutexName());
+            }
         }
 
         public override void CreateClient(bool iLock = true)
         {
             bool mutexTaken = false;
+
+            if(!this._lock)
+            {
+                retriesUsed = retriesMax;
+            }
 
             while (this.retriesUsed < this.retriesMax)
             {
@@ -59,20 +71,26 @@ namespace UiPathTeam.SharedContext.Activities
                 }
             }
 
-            if (!mutexTaken)
+            if (!mutexTaken && this._lock)
             {
-                Console.WriteLine("[SharedContext Client] Could not open resource within the retries. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-                throw new Exception("[SharedContext Client] Could not open resource within the retries.");
+                Console.WriteLine("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Could not open resource within the retries. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                throw new Exception("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Could not open resource within the retries.");
             }
 
-            Console.WriteLine("[SharedContext Client] Connecting to Server. " + this.GetResource() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            Console.WriteLine("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Connecting to Server. " + this.GetResource() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
             this.deserialisedContextContents = new ContextContent();
 
             this.theClient = new NamedPipeClient<ContextContent>(this.GetResource());
             this.theClient.ServerMessage += TheClient_ServerMessage;
             this.theClient.Error += TheClient_Error;
+            this.theClient.AutoReconnect = false;
             this.theClient.Start();
+
+            if(!this._lock)
+            {
+                this.retriesMax = 0;
+            }
 
             for (int i = 0; i < this.retriesMax; i++)
             {
@@ -83,9 +101,9 @@ namespace UiPathTeam.SharedContext.Activities
                 Thread.Sleep(50);
             }
 
-            if (!this.initialised)
+            if (!this.initialised && this._lock)
             {
-                throw new Exception("[SharedContext Client] Did not receive a message from the server!");
+                throw new Exception("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Did not receive a message from the server!");
             }
         }
 
@@ -93,14 +111,36 @@ namespace UiPathTeam.SharedContext.Activities
         {
             if(!this.disposed)
             {
-                Console.WriteLine("[SharedContext Client] Destroying. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-                //                Win32Calls.ReleaseMutex(this.GetMutexName());
+                Console.WriteLine("[SharedContext " + (this._lock?"Client":"Trigger") + "] Destroying. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                if(this._lock)
+                {
+                    this.theClient.PushMessage(this.deserialisedContextContents);
 
-                this._dotNetMutex.ReleaseMutex();
+                    this.expectingLastMessage = true;
+                    for (int i = 0; i < 10; i++)
+                    {
+                        if (!this.lastMessageReceived)
+                        {
+                            Thread.Sleep(5);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
 
-                this.theClient.PushMessage(this.deserialisedContextContents);
-                Thread.Sleep(30);
+                    if (!this.lastMessageReceived)
+                    {
+                        Console.WriteLine("[SharedContext Client] Destroying. The last Server message hasn't been received > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                    }
+
+                    // Win32Calls.ReleaseMutex(this.GetMutexName());
+
+                    this._dotNetMutex.ReleaseMutex();
+                }
+
                 this.theClient.Stop();
+                this.theClient = null;
                 this.disposed = true;
             }
         }
@@ -110,20 +150,33 @@ namespace UiPathTeam.SharedContext.Activities
             this.MyDispose();
         }
 
+        public event Action<object, ContextContent> EventHandler;
+
         private void TheClient_ServerMessage(NamedPipeConnection<ContextContent, ContextContent> connection, ContextContent message)
         {
-            Console.WriteLine("[SharedContext Client] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            if (this.expectingLastMessage)
+            {
+                this.lastMessageReceived = true;
+            }
+
+            Console.WriteLine("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             this.deserialisedContextContents = message;
+
             if(!this.initialised)
             {
-                Console.WriteLine("[SharedContext Client] Client initialised: " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                Console.WriteLine("[SharedContext Client] " + (this._lock ? "Client" : "Trigger") + " initialised: " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             }
             this.initialised = true;
+
+            if(EventHandler != null)
+            {
+                EventHandler.Invoke((object)connection, message);
+            }
         }
 
         private void TheClient_Error(Exception exception)
         {
-            Console.WriteLine("[SharedContext Client] Exception > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") + " > " + exception.Message);
+            Console.WriteLine("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Exception > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") + " > " + exception.Message);
         }
 
         //////////////////////////////////////////////////

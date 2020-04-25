@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace UiPathTeam.SharedContext.Activities
+namespace UiPathTeam.SharedContext.Context
 {
     public enum contextType
     {

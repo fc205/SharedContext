@@ -3,13 +3,14 @@ using System.Activities;
 using System.Activities.Statements;
 using System.ComponentModel;
 using System.Collections.Generic;
+using UiPathTeam.SharedContext.Context;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [Designer(typeof(SharedContextScopeActivityDesigner))]
+    [Designer(typeof(ClientScopeActivityDesigner))]
     [DisplayName("Shared Context Scope")]
     [Description("Creates a connection to the shared context environment and locks it.")]
-    public class SharedContextScopeActivity : NativeActivity
+    public class ClientScopeActivity : NativeActivity
     {
         [Browsable(false)]
         public ActivityAction<ContextClient> Body { get; set; }
@@ -49,7 +50,7 @@ namespace UiPathTeam.SharedContext.Activities
         private ContextClient aContext;
         private string _context;
 
-        public SharedContextScopeActivity()
+        public ClientScopeActivity()
         {
             Body = new ActivityAction<ContextClient>
             {
@@ -88,14 +89,10 @@ namespace UiPathTeam.SharedContext.Activities
             {
                 aContext = new ContextClient(Type, this._context, aArguments);
 
-                if (this.Clear)
+                aContext.CreateClient();
+                if (Type == contextType.File && this.Clear)
                 {
-                    aContext.CreateClient();
                     aContext.ClearAll();
-                }
-                else
-                {
-                    aContext.CreateClient();
                 }
 
                 if (Body != null)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace nsWin32Calls
+namespace UiPathTeam.SharedContext.Dependencies
 {
     class Win32Calls
     {

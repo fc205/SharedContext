@@ -1,28 +1,41 @@
 ﻿using System;
 using System.Activities;
 using System.ComponentModel;
+using UiPathTeam.SharedContext.Context;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Set Variable in Context")]
-    public class SharedContextVariableSetActivity : CodeActivity
+    [DisplayName("Get Variable from Context")]
+    public class GetVariableActivity : CodeActivity
     {
         [Category("Input")]
         [RequiredArgument]
         [Description("Variable name")]
         public InArgument<string> Name { get; set; }
+
         [Category("Input")]
         [RequiredArgument]
-        [Description("Variable value (string).")]
-        public InArgument<string> Value { get; set; }
+        [DisplayName("Raise exception")]
+        [Description("Whether the activity will raise an Exception in case the Variable doesn't exist in the context")]
+        public bool RaiseException { get; set; }
 
         [Category("Input Optional")]
         [Description("Shared Context object to be used when not in a Shared Context Scope.")]
         public InArgument<ContextClient> ContextClient { get; set; }
 
+        [Category("Output")]
+        [Description("The Value of the variable.")]
+        public OutArgument<string> Value { get; set; }
+
+        public GetVariableActivity()
+        {
+            this.RaiseException = true;
+        }
+
         protected override void Execute(CodeActivityContext context)
         {
             ContextClient contextClient = null;
+            string aValue;
 
             if (ContextClient.Expression == null)
             {
@@ -38,7 +51,9 @@ namespace UiPathTeam.SharedContext.Activities
                 contextClient = ContextClient.Get(context);
             }
 
-            contextClient.SetVariable(Name.Get(context), Value.Get(context));
+            aValue = contextClient.GetVariable(Name.Get(context), this.RaiseException);
+
+            Value.Set(context, aValue);
         }
     }
 }

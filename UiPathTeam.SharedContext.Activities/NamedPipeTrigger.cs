@@ -2,9 +2,10 @@
 using System.Activities;
 using System.Activities.Statements;
 using System.ComponentModel;
-using UiPath.Core.Activities;
+
 using NamedPipeWrapper;
-using UiPath.Framework.Activities;
+using UiPathTeam.SharedContext.Dependencies;
+using UiPathTeam.SharedContext.Context;
 
 namespace UiPathTeam.SharedContext.Activities
 {
