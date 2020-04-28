@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace UiPathTeam.SharedContext.Dependencies
 {
+    /*
     class Win32Calls
     {
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -76,4 +77,5 @@ namespace UiPathTeam.SharedContext.Dependencies
                 Win32Calls.ReleaseMutex(ipHMutex);
         }
     }
+    */
 }

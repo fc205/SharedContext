@@ -294,7 +294,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             var aContextServer = this.SetUpContextServer();
             var aContextClient = this.SetUpContextClient();
 
-            const int runs = 2;
+            const int runs = 1;
 
             Variable<int> runCount = new Variable<int>
             {

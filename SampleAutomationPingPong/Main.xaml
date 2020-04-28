@@ -1,6 +1,6 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="969,1934" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:usa="clr-namespace:UiPathTeam.SharedContext.Activities;assembly=UiPathTeam.SharedContext.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="969,1998" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:usa="clr-namespace:UiPathTeam.SharedContext.Activities;assembly=UiPathTeam.SharedContext.Activities" xmlns:usc="clr-namespace:UiPathTeam.SharedContext.Context;assembly=UiPathTeam.SharedContext.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
-    <scg:List x:TypeArguments="x:String" Capacity="22">
+    <scg:List x:TypeArguments="x:String" Capacity="44">
       <x:String>System.Activities</x:String>
       <x:String>System.Activities.Statements</x:String>
       <x:String>System.Activities.Expressions</x:String>
@@ -23,6 +23,7 @@
       <x:String>UiPath.Core.Activities</x:String>
       <x:String>System.Windows.Markup</x:String>
       <x:String>UiPathTeam.SharedContext.Activities</x:String>
+      <x:String>UiPathTeam.SharedContext.Context</x:String>
     </scg:List>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -47,12 +48,13 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Agent Assistant Robot" sap:VirtualizedContainerService.HintSize="949,1874" sap2010:WorkflowViewState.IdRef="Sequence_28">
+  <Sequence DisplayName="Agent Assistant Robot" sap:VirtualizedContainerService.HintSize="949,1898" sap2010:WorkflowViewState.IdRef="Sequence_28">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:GenericValue" Name="aWhoAmI" />
       <Variable x:TypeArguments="x:String" Name="aFileName" />
       <Variable x:TypeArguments="x:String" Name="aReceivedMessage" />
       <Variable x:TypeArguments="x:String" Name="aWhoChangedLast" />
+      <Variable x:TypeArguments="x:String" Name="aContext" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -60,6 +62,14 @@
         <x:Boolean x:Key="IsPinned">False</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
+    <Assign sap:VirtualizedContainerService.HintSize="907,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[aContext]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">MyContext</InArgument>
+      </Assign.Value>
+    </Assign>
     <Sequence DisplayName="Init" sap:VirtualizedContainerService.HintSize="907,486" sap2010:WorkflowViewState.IdRef="Sequence_24">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:String" Name="aFileName" />
@@ -75,87 +85,78 @@
           <OutArgument x:TypeArguments="ui:GenericValue">[aWhoAmI]</OutArgument>
         </ui:InputDialog.Result>
       </ui:InputDialog>
-      <usa:SharedContextScopeActivity Folder="{x:Null}" Clear="True" DisplayName="Shared Context Scope" FilePath="[aFileName]" sap:VirtualizedContainerService.HintSize="434,262" sap2010:WorkflowViewState.IdRef="SharedContextScopeActivity_4" Name="MyContext" Retries="5" Type="NamedPipe">
-        <usa:SharedContextScopeActivity.Body>
-          <ActivityAction x:TypeArguments="usa:ContextClient">
+      <usa:ClientScopeActivity FilePath="{x:Null}" Folder="{x:Null}" Clear="False" DisplayName="Shared Context Scope" sap:VirtualizedContainerService.HintSize="434,262" sap2010:WorkflowViewState.IdRef="ClientScopeActivity_1" Name="[aContext]" Retries="5" Type="NamedPipe">
+        <usa:ClientScopeActivity.Body>
+          <ActivityAction x:TypeArguments="usc:ContextClient">
             <ActivityAction.Argument>
-              <DelegateInArgument x:TypeArguments="usa:ContextClient" Name="ContextClient" />
+              <DelegateInArgument x:TypeArguments="usc:ContextClient" Name="ContextClient" />
             </ActivityAction.Argument>
-            <Sequence DisplayName="Interact with the Context" sap:VirtualizedContainerService.HintSize="242,176" sap2010:WorkflowViewState.IdRef="Sequence_23">
+            <Sequence DisplayName="Interact with the Context" sap:VirtualizedContainerService.HintSize="242,176" sap2010:WorkflowViewState.IdRef="Sequence_29">
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
                   <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
-              <usa:SharedContextVariableSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableSetActivity_7" Name="aMessage" Value="[&quot;Starting execution of &quot; + aWhoAmI]" />
-              <usa:SharedContextVariableSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableSetActivity_8" Name="aWho" Value="[aWhoAmI]" />
+              <usa:SetVariableActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="SetVariableActivity_1" Name="aMessage" Value="[&quot;Starting execution of &quot; + aWhoAmI]" />
+              <usa:SetVariableActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="SetVariableActivity_2" Name="aWho" Value="[aWhoAmI]" />
             </Sequence>
           </ActivityAction>
-        </usa:SharedContextScopeActivity.Body>
-      </usa:SharedContextScopeActivity>
+        </usa:ClientScopeActivity.Body>
+      </usa:ClientScopeActivity>
     </Sequence>
-    <ui:MonitorEvents ContinueOnError="True" DisplayName="Monitor Agent Action" sap:VirtualizedContainerService.HintSize="907,1256" sap2010:WorkflowViewState.IdRef="MonitorEvents_5" RepeatForever="True">
-      <ui:MonitorEvents.Handler>
-        <ActivityAction x:TypeArguments="x:Object">
+    <usa:NamedPipeTriggerV2 ContextName="[aContext]" ContinueMonitoring="True" ContinueOnError="True" DisplayName="Named Pipe Trigger Standalone" sap:VirtualizedContainerService.HintSize="907,1180" sap2010:WorkflowViewState.IdRef="NamedPipeTriggerV2_1" Retries="5">
+      <usa:NamedPipeTriggerV2.Body>
+        <ActivityAction x:TypeArguments="usc:ContextContent">
           <ActivityAction.Argument>
-            <DelegateInArgument x:TypeArguments="x:Object" Name="args" />
+            <DelegateInArgument x:TypeArguments="usc:ContextContent" Name="ContextContent" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="873,1103" sap2010:WorkflowViewState.IdRef="Sequence_27">
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="873,1104" sap2010:WorkflowViewState.IdRef="Sequence_30">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="831,22" sap2010:WorkflowViewState.IdRef="Delay_8" />
-            <usa:SharedContextScopeActivity FilePath="{x:Null}" Folder="{x:Null}" Clear="False" DisplayName="Shared Context Scope" sap:VirtualizedContainerService.HintSize="831,949" sap2010:WorkflowViewState.IdRef="SharedContextScopeActivity_5" Name="MyContext" Retries="5" Type="NamedPipe">
-              <usa:SharedContextScopeActivity.Body>
-                <ActivityAction x:TypeArguments="usa:ContextClient">
+            <Delay Duration="00:00:02" sap:VirtualizedContainerService.HintSize="831,22" sap2010:WorkflowViewState.IdRef="Delay_9" />
+            <usa:ClientScopeActivity FilePath="{x:Null}" Folder="{x:Null}" Clear="False" DisplayName="Shared Context Scope" sap:VirtualizedContainerService.HintSize="831,950" sap2010:WorkflowViewState.IdRef="ClientScopeActivity_2" Name="[aContext]" Retries="5" Type="NamedPipe">
+              <usa:ClientScopeActivity.Body>
+                <ActivityAction x:TypeArguments="usc:ContextClient">
                   <ActivityAction.Argument>
-                    <DelegateInArgument x:TypeArguments="usa:ContextClient" Name="ContextClient" />
+                    <DelegateInArgument x:TypeArguments="usc:ContextClient" Name="ContextClient" />
                   </ActivityAction.Argument>
-                  <Sequence DisplayName="Interact with the Context" sap:VirtualizedContainerService.HintSize="797,863" sap2010:WorkflowViewState.IdRef="Sequence_26">
+                  <Sequence DisplayName="Interact with the Context" sap:VirtualizedContainerService.HintSize="797,864" sap2010:WorkflowViewState.IdRef="Sequence_31">
                     <sap:WorkflowViewStateService.ViewState>
                       <scg:Dictionary x:TypeArguments="x:String, x:Object">
                         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
-                    <usa:SharedContextVariableGetActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="755,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableGetActivity_5" Name="aWho" RaiseException="False" Value="[aWhoChangedLast]" />
-                    <usa:SharedContextVariableGetActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="755,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableGetActivity_6" Name="aMessage" RaiseException="False" Value="[aReceivedMessage]" />
-                    <If Condition="[aWhoChangedLast &lt;&gt; aWhoAmI]" sap:VirtualizedContainerService.HintSize="755,647" sap2010:WorkflowViewState.IdRef="If_3">
-                      <sap:WorkflowViewStateService.ViewState>
-                        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                          <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-                        </scg:Dictionary>
-                      </sap:WorkflowViewStateService.ViewState>
+                    <usa:GetVariableActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="755,22" sap2010:WorkflowViewState.IdRef="GetVariableActivity_1" Name="aWho" RaiseException="True" Value="[aWhoChangedLast]" />
+                    <usa:GetVariableActivity ContextClient="{x:Null}" DisplayName="Get Variable from Context" sap:VirtualizedContainerService.HintSize="755,22" sap2010:WorkflowViewState.IdRef="GetVariableActivity_2" Name="aMessage" RaiseException="True" Value="[aReceivedMessage]" />
+                    <If Condition="[aWhoChangedLast &lt;&gt; aWhoAmI]" sap:VirtualizedContainerService.HintSize="755,648" sap2010:WorkflowViewState.IdRef="If_1">
                       <If.Then>
-                        <Sequence sap:VirtualizedContainerService.HintSize="376,500" sap2010:WorkflowViewState.IdRef="Sequence_25">
+                        <Sequence sap:VirtualizedContainerService.HintSize="376,500" sap2010:WorkflowViewState.IdRef="Sequence_32">
                           <sap:WorkflowViewStateService.ViewState>
                             <scg:Dictionary x:TypeArguments="x:String, x:Object">
                               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                             </scg:Dictionary>
                           </sap:WorkflowViewStateService.ViewState>
-                          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Warn" Message="[&quot;Hello &quot; + aWhoChangedLast + &quot;! I'm &quot; + aWhoAmI + &quot; and I have received your message.&quot;]" />
-                          <Delay Duration="00:00:00.1000000" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_9" />
-                          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Warn" Message="[aReceivedMessage]" />
-                          <usa:SharedContextVariableSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableSetActivity_9" Name="aWho" Value="[aWhoAmI]" />
-                          <usa:SharedContextVariableSetActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="SharedContextVariableSetActivity_10" Name="aMessage" Value="[aWhoAmI + &quot; for &quot; + aWhoChangedLast + &quot; &gt; I read you loud and clear! &gt; &quot; + DateTime.Now.ToString(&quot;MM/dd/yyyy hh:mm:ss.fffff tt&quot;)]" />
+                          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Warn" Message="[&quot;Hello &quot; + aWhoChangedLast + &quot;! I'm &quot; + aWhoAmI + &quot; and I have received your message.&quot;]" />
+                          <Delay Duration="00:00:00.1000000" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delay_10" />
+                          <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Warn" Message="[aReceivedMessage]" />
+                          <usa:SetVariableActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="SetVariableActivity_3" Name="aWho" Value="[aWhoAmI]" />
+                          <usa:SetVariableActivity ContextClient="{x:Null}" DisplayName="Set Variable in Context" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="SetVariableActivity_4" Name="aMessage" Value="[aWhoAmI + &quot; for &quot; + aWhoChangedLast + &quot; &gt; I read you loud and clear! &gt; &quot; + DateTime.Now.ToString(&quot;MM/dd/yyyy hh:mm:ss.fffff tt&quot;)]" />
                         </Sequence>
                       </If.Then>
                       <If.Else>
-                        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Info" Message="[&quot;Nothing to do&quot;]" />
+                        <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Nothing to do&quot;]" />
                       </If.Else>
                     </If>
                   </Sequence>
                 </ActivityAction>
-              </usa:SharedContextScopeActivity.Body>
-            </usa:SharedContextScopeActivity>
+              </usa:ClientScopeActivity.Body>
+            </usa:ClientScopeActivity>
           </Sequence>
         </ActivityAction>
-      </ui:MonitorEvents.Handler>
-      <ui:MonitorEvents.Triggers>
-        <usa:NamedPipeTrigger Body="{x:Null}" DisplayName="Named Pipe Trigger" sap:VirtualizedContainerService.HintSize="200,69" sap2010:WorkflowViewState.IdRef="NamedPipeTrigger_2" Name="MyContext" Retries="5" />
-      </ui:MonitorEvents.Triggers>
-    </ui:MonitorEvents>
+      </usa:NamedPipeTriggerV2.Body>
+    </usa:NamedPipeTriggerV2>
   </Sequence>
 </Activity>

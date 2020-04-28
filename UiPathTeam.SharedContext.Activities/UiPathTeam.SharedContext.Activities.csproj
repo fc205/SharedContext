@@ -116,10 +116,6 @@
     <Compile Include="Context\ContextClient.cs" />
     <Compile Include="Dependencies\TriggerScope.cs" />
     <Compile Include="Dependencies\Win32Calls.cs" />
-    <Compile Include="NamedPipeTrigger.cs" />
-    <Compile Include="NamedPipeTriggerDesigner.xaml.cs">
-      <DependentUpon>NamedPipeTriggerDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="NamedPipeTriggerV2.cs" />
     <Compile Include="NamedPipeTriggerV2Designer.xaml.cs">
       <DependentUpon>NamedPipeTriggerV2Designer.xaml</DependentUpon>
@@ -134,10 +130,6 @@
     <Compile Include="ClientScopeActivity.cs" />
     <Compile Include="SendMessageActivity.cs" />
     <Compile Include="SetVariableActivity.cs" />
-    <Page Include="NamedPipeTriggerDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
-    </Page>
     <Page Include="NamedPipeTriggerV2Designer.xaml">
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>

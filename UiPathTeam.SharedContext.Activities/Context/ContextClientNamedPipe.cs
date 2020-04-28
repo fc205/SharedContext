@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using NamedPipeWrapper;
 using System.Threading;
-using UiPathTeam.SharedContext.Dependencies;
+// using UiPathTeam.SharedContext.Dependencies;
 
 namespace UiPathTeam.SharedContext.Context
 {
@@ -154,6 +154,17 @@ namespace UiPathTeam.SharedContext.Context
 
         private void TheClient_ServerMessage(NamedPipeConnection<ContextContent, ContextContent> connection, ContextContent message)
         {
+
+            if (!this.initialised)
+            {
+                Console.WriteLine("[SharedContext Client] " + (this._lock ? "Client" : "Trigger") + " initialised: " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                this.initialised = true;
+                if(!this._lock)
+                {
+                    return;
+                }
+            }
+
             if (this.expectingLastMessage)
             {
                 this.lastMessageReceived = true;
@@ -161,12 +172,6 @@ namespace UiPathTeam.SharedContext.Context
 
             Console.WriteLine("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             this.deserialisedContextContents = message;
-
-            if(!this.initialised)
-            {
-                Console.WriteLine("[SharedContext Client] " + (this._lock ? "Client" : "Trigger") + " initialised: " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-            }
-            this.initialised = true;
 
             if(EventHandler != null)
             {

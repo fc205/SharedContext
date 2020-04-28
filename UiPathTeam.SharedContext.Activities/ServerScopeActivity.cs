@@ -3,8 +3,9 @@ using System.Activities;
 using System.Activities.Statements;
 using System.ComponentModel;
 using System.Collections.Generic;
-using UiPathTeam.SharedContext.Dependencies;
+using System.Threading;
 using UiPathTeam.SharedContext.Context;
+// using UiPathTeam.SharedContext.Dependencies;
 
 namespace UiPathTeam.SharedContext.Activities
 {
@@ -26,6 +27,8 @@ namespace UiPathTeam.SharedContext.Activities
         private ContextServer aContext;
         private string _context;
 
+        private Mutex _dotNetMutex;
+
         public ServerScopeActivity()
         {
             Body = new ActivityAction<ContextServer>
@@ -33,6 +36,7 @@ namespace UiPathTeam.SharedContext.Activities
                 Argument = new DelegateInArgument<ContextServer>("ContextServer"),
                 Handler = new Sequence { DisplayName = "Interact with the Context" }
             };
+            this._dotNetMutex = new Mutex(false, this.GetMutexName());
         }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -46,7 +50,8 @@ namespace UiPathTeam.SharedContext.Activities
             {
                 this._context = Name.Get(context);
 
-                if (!Win32Calls.TakeMutex(this.GetMutexName()))
+                // if (!Win32Calls.TakeMutex(this.GetMutexName()))
+                if (!this._dotNetMutex.WaitOne())
                 {
                     throw new Exception("There is already a Shared Context Server running!");
                 }
@@ -82,7 +87,8 @@ namespace UiPathTeam.SharedContext.Activities
 
             if(releaseMutex)
             {
-                Win32Calls.ReleaseMutex(this.GetMutexName());
+                // Win32Calls.ReleaseMutex(this.GetMutexName());
+                this._dotNetMutex.ReleaseMutex();
             }
         }
         private void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
