@@ -1,4 +1,4 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="969,1998" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:usa="clr-namespace:UiPathTeam.SharedContext.Activities;assembly=UiPathTeam.SharedContext.Activities" xmlns:usc="clr-namespace:UiPathTeam.SharedContext.Context;assembly=UiPathTeam.SharedContext.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" mva:VisualBasic.Settings="{x:Null}" sap:VirtualizedContainerService.HintSize="969,2468" sap2010:WorkflowViewState.IdRef="ActivityBuilder_1" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:usa="clr-namespace:UiPathTeam.SharedContext.Activities;assembly=UiPathTeam.SharedContext.Activities" xmlns:usc="clr-namespace:UiPathTeam.SharedContext.Context;assembly=UiPathTeam.SharedContext.Activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="44">
       <x:String>System.Activities</x:String>
@@ -48,7 +48,7 @@
       <AssemblyReference>System.ServiceModel</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="Agent Assistant Robot" sap:VirtualizedContainerService.HintSize="949,1898" sap2010:WorkflowViewState.IdRef="Sequence_28">
+  <Sequence DisplayName="Agent Assistant Robot" sap:VirtualizedContainerService.HintSize="949,2368" sap2010:WorkflowViewState.IdRef="Sequence_28">
     <Sequence.Variables>
       <Variable x:TypeArguments="ui:GenericValue" Name="aWhoAmI" />
       <Variable x:TypeArguments="x:String" Name="aFileName" />
@@ -70,6 +70,39 @@
         <InArgument x:TypeArguments="x:String">MyContext</InArgument>
       </Assign.Value>
     </Assign>
+    <usa:GetProcessInfoActivity JobId="{x:Null}" ProcessName="{x:Null}" ProcessVersion="{x:Null}" WorkflowFilePath="{x:Null}" DisplayName="Get Process info" sap:VirtualizedContainerService.HintSize="907,22" sap2010:WorkflowViewState.IdRef="GetProcessInfoActivity_1" />
+    <usa:ClientScopeActivity FilePath="{x:Null}" Folder="{x:Null}" Name="{x:Null}" Clear="False" DisplayName="Shared Context Scope" sap:VirtualizedContainerService.HintSize="907,169" sap2010:WorkflowViewState.IdRef="ClientScopeActivity_3" Retries="5" Type="File">
+      <usa:ClientScopeActivity.Body>
+        <ActivityAction x:TypeArguments="usc:ContextClient">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="usc:ContextClient" Name="ContextClient" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Interact with the Context" sap:VirtualizedContainerService.HintSize="200,83" sap2010:WorkflowViewState.IdRef="Sequence_33">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </Sequence>
+        </ActivityAction>
+      </usa:ClientScopeActivity.Body>
+    </usa:ClientScopeActivity>
+    <usa:NamedPipeTriggerV2 ContextName="{x:Null}" ContinueMonitoring="{x:Null}" ContinueOnError="{x:Null}" DisplayName="Named Pipe Trigger Standalone" sap:VirtualizedContainerService.HintSize="907,159" sap2010:WorkflowViewState.IdRef="NamedPipeTriggerV2_2" Retries="5">
+      <usa:NamedPipeTriggerV2.Body>
+        <ActivityAction x:TypeArguments="usc:ContextContent">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="usc:ContextContent" Name="ContextContent" />
+          </ActivityAction.Argument>
+          <Sequence DisplayName="Do" sap:VirtualizedContainerService.HintSize="200,83" sap2010:WorkflowViewState.IdRef="Sequence_34">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+          </Sequence>
+        </ActivityAction>
+      </usa:NamedPipeTriggerV2.Body>
+    </usa:NamedPipeTriggerV2>
     <Sequence DisplayName="Init" sap:VirtualizedContainerService.HintSize="907,486" sap2010:WorkflowViewState.IdRef="Sequence_24">
       <Sequence.Variables>
         <Variable x:TypeArguments="x:String" Name="aFileName" />
