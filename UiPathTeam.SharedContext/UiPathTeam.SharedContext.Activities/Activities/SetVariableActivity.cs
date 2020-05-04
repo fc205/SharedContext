@@ -2,24 +2,30 @@
 using System.Activities;
 using System.ComponentModel;
 using UiPathTeam.SharedContext.Context;
+using UiPathTeam.SharedContext.Activities.Properties;
+using UiPath.Shared.Activities.Localization;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Set Variable in Context")]
-    [CategoryAttribute("UiPathTeam.SharedContext")]
+    [LocalizedDisplayName(nameof(Resources.SetVariableActivity_DisplayName))]
+    [LocalizedDescription(nameof(Resources.SetVariableActivity_Description))]
     public class SetVariableActivity : CodeActivity
     {
-        [Category("Input")]
         [RequiredArgument]
-        [Description("Variable name (string)")]
-        public InArgument<string> Name { get; set; }
-        [Category("Input")]
-        [RequiredArgument]
-        [Description("Variable value (string)")]
-        public InArgument<string> Value { get; set; }
+        [LocalizedDisplayName(nameof(Resources.SetVariableActivity_VariableName_DisplayName))]
+        [LocalizedDescription(nameof(Resources.SetVariableActivity_VariableName_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
+        public InArgument<string> VariableName { get; set; }
 
-        [Category("Input Optional")]
-        [Description("Shared Context object to be used when not in a Shared Context Scope.")]
+        [RequiredArgument]
+        [LocalizedDisplayName(nameof(Resources.SetVariableActivity_VariableValue_DisplayName))]
+        [LocalizedDescription(nameof(Resources.SetVariableActivity_VariableValue_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
+        public InArgument<string> VariableValue { get; set; }
+
+        [LocalizedDisplayName(nameof(Resources.SetVariableActivity_ContextClient_DisplayName))]
+        [LocalizedDescription(nameof(Resources.SetVariableActivity_ContextClient_Description))]
+        [LocalizedCategory(nameof(Resources.Options_Category))]
         public InArgument<ContextClient> ContextClient { get; set; }
 
         protected override void Execute(CodeActivityContext context)
@@ -40,7 +46,7 @@ namespace UiPathTeam.SharedContext.Activities
                 contextClient = ContextClient.Get(context);
             }
 
-            contextClient.SetVariable(Name.Get(context), Value.Get(context));
+            contextClient.SetVariable(VariableName.Get(context), VariableValue.Get(context));
         }
     }
 }

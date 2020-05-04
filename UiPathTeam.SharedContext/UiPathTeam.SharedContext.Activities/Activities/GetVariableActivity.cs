@@ -2,31 +2,36 @@
 using System.Activities;
 using System.ComponentModel;
 using UiPathTeam.SharedContext.Context;
+using UiPathTeam.SharedContext.Activities.Properties;
+using UiPath.Shared.Activities.Localization;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Get Variable from Context")]
-    [CategoryAttribute("UiPathTeam.SharedContext")]
+    [LocalizedDisplayName(nameof(Resources.GetVariableActivity_DisplayName))]
+    [LocalizedDescription(nameof(Resources.GetVariableActivity_Description))]
     public class GetVariableActivity : CodeActivity
     {
-        [Category("Input")]
         [RequiredArgument]
-        [Description("Variable name (string)")]
-        public InArgument<string> Name { get; set; }
+        [LocalizedDisplayName(nameof(Resources.GetVariableActivity_VariableName_DisplayName))]
+        [LocalizedDescription(nameof(Resources.GetVariableActivity_VariableName_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
+        public InArgument<string> VariableName { get; set; }
 
-        [Category("Input")]
         [RequiredArgument]
-        [DisplayName("Raise exception")]
-        [Description("Whether the activity will raise an Exception in case the Variable doesn't exist in the context")]
+        [LocalizedDisplayName(nameof(Resources.GetVariableActivity_RaiseException_DisplayName))]
+        [LocalizedDescription(nameof(Resources.GetVariableActivity_RaiseException_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
         public bool RaiseException { get; set; }
 
-        [Category("Input Optional")]
-        [Description("Shared Context object to be used when not in a Shared Context Scope.")]
+        [LocalizedDisplayName(nameof(Resources.GetVariableActivity_ContextClient_DisplayName))]
+        [LocalizedDescription(nameof(Resources.GetVariableActivity_ContextClient_Description))]
+        [LocalizedCategory(nameof(Resources.Options_Category))]
         public InArgument<ContextClient> ContextClient { get; set; }
 
-        [Category("Output")]
-        [Description("The Value of the variable (string)")]
-        public OutArgument<string> Value { get; set; }
+        [LocalizedDisplayName(nameof(Resources.GetVariableActivity_VariableValue_DisplayName))]
+        [LocalizedDescription(nameof(Resources.GetVariableActivity_VariableValue_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
+        public OutArgument<string> VariableValue { get; set; }
 
         public GetVariableActivity()
         {
@@ -52,9 +57,9 @@ namespace UiPathTeam.SharedContext.Activities
                 contextClient = ContextClient.Get(context);
             }
 
-            aValue = contextClient.GetVariable(Name.Get(context), this.RaiseException);
+            aValue = contextClient.GetVariable(VariableName.Get(context), this.RaiseException);
 
-            Value.Set(context, aValue);
+            VariableValue.Set(context, aValue);
         }
     }
 }

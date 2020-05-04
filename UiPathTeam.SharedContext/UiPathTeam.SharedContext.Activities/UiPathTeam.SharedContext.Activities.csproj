@@ -31,13 +31,10 @@
     <Reference Include="System.Windows" />
     <Reference Include="System.Xaml" />
     <Reference Include="UiPath.Api.Base">
-      <HintPath>..\..\..\..\..\..\.nuget\packages\uipath.activities.api\19.10.1\lib\net452\UiPath.Api.Base.dll</HintPath>
+      <HintPath>..\..\..\..\..\.nuget\packages\uipath.activities.api\19.10.1\lib\net452\UiPath.Api.Base.dll</HintPath>
     </Reference>
     <Reference Include="UiPath.Robot.Activities.Api">
-      <HintPath>..\..\..\..\..\..\.nuget\packages\uipath.activities.api\19.10.1\lib\net452\UiPath.Robot.Activities.Api.dll</HintPath>
-    </Reference>
-    <Reference Include="UiPath.Robot.Api">
-      <HintPath>..\..\..\..\..\..\.nuget\packages\uipath.robot.api\19.10.1\lib\net461\UiPath.Robot.Api.dll</HintPath>
+      <HintPath>..\..\..\..\..\.nuget\packages\uipath.activities.api\19.10.1\lib\net452\UiPath.Robot.Activities.Api.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>

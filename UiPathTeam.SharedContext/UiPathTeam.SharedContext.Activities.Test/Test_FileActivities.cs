@@ -56,8 +56,8 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var setContextActivity = new SetVariableActivity
             {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue,
+                VariableName = Test_SetVariableName,
+                VariableValue = Test_SetVariableValue,
                 ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
             };
 
@@ -77,14 +77,14 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var setContextActivity = new SetVariableActivity
             {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue,
+                VariableName = Test_SetVariableName,
+                VariableValue = Test_SetVariableValue,
                 ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
             };
 
             var getContextActivity = new GetVariableActivity
             {
-                Name = Test_SetVariableName,
+                VariableName = Test_SetVariableName,
                 ContextClient = new InArgument<ContextClient>((ctx) => contextClient)
             };
 
@@ -95,7 +95,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             string fileContents = File.ReadAllText(aFileName);
             Assert.IsTrue(fileContents == "{\"GlobalVariables\":{\"aVariable123\":\"aValue456\"},\"Messages\":{}}");
-            Assert.IsTrue(output["Value"].ToString() == Test_SetVariableValue);
+            Assert.IsTrue(output["VariableValue"].ToString() == Test_SetVariableValue);
         }
 
         [TestMethod]
@@ -150,7 +150,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             Assert.IsTrue(output["To"].ToString() == Test_SendOrigin);
             Assert.IsTrue(output["From"].ToString() == Test_SendOrigin);
             Assert.IsTrue(((DateTime)output["TimeSent"]).ToString("YYYY-MM-DD") == DateTime.Now.ToString("YYYY-MM-DD"));
-            Assert.IsTrue(!(bool)output["QueueEmpty"]);
+            Assert.IsTrue(!(bool)output["MessageQueueEmpty"]);
             Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]}}");
         }
 
@@ -171,7 +171,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             string fileContents = File.ReadAllText(aFileName);
 
-            Assert.IsTrue((bool)output["QueueEmpty"]);
+            Assert.IsTrue((bool)output["MessageQueueEmpty"]);
             Assert.IsTrue(fileContents == "{\"GlobalVariables\":{},\"Messages\":{\"DummyProcess\":[]}}");
         }
 
@@ -182,15 +182,15 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var sharedContextScopeActivity = new ClientScopeActivity
             {
-                Name = Test_ContextName,
-                Type = Test_ContextType,
+                ContextName = Test_ContextName,
+                ContextType = Test_ContextType,
                 Retries = Test_Retries
             };
 
             var setContextActivity = new SetVariableActivity
             {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue
+                VariableName = Test_SetVariableName,
+                VariableValue = Test_SetVariableValue
             };
 
             sharedContextScopeActivity.Body.Handler = new Sequence()
@@ -215,10 +215,10 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var sharedContextScopeActivity = new ClientScopeActivity
             {
-                Name = Test_ContextName,
-                Type = Test_ContextType,
+                ContextName = Test_ContextName,
+                ContextType = Test_ContextType,
                 Retries = Test_Retries,
-                Clear = true
+                ClearContext = true
             };
 
             sharedContextScopeActivity.Body.Handler = new Sequence()
@@ -230,7 +230,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var output = WorkflowInvoker.Invoke(sharedContextScopeActivity);
 
-            Assert.IsTrue(output["FilePath"].ToString() == aFileName);
+            Assert.IsTrue(output["OutputContextFile"].ToString() == aFileName);
             Assert.IsTrue(File.ReadAllText(aFileName) == "{\"GlobalVariables\":{},\"Messages\":{}}");
         }
 
@@ -241,14 +241,14 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var sharedContextScopeActivity = new ClientScopeActivity
             {
-                Name = Test_ContextName,
-                Type = Test_ContextType,
+                ContextName = Test_ContextName,
+                ContextType = Test_ContextType,
                 Retries = Test_Retries
             };
 
             var getContextActivity = new GetVariableActivity
             {
-                Name = Test_SetVariableName,
+                VariableName = Test_SetVariableName,
                 RaiseException = false
             };
 
@@ -261,7 +261,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             };
 
             var output = WorkflowInvoker.Invoke(sharedContextScopeActivity);
-            Assert.IsTrue(output["FilePath"].ToString() == aFileName);
+            Assert.IsTrue(output["OutputContextFile"].ToString() == aFileName);
         }
 
         [TestMethod]
@@ -271,14 +271,14 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var sharedContextScopeActivity = new ClientScopeActivity
             {
-                Name = Test_ContextName,
-                Type = Test_ContextType,
+                ContextName = Test_ContextName,
+                ContextType = Test_ContextType,
                 Retries = Test_Retries
             };
 
             var getContextActivity = new GetVariableActivity
             {
-                Name = Test_SetVariableName,
+                VariableName = Test_SetVariableName,
                 RaiseException = true
             };
 
@@ -307,15 +307,15 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var sharedContextScopeActivity = new ClientScopeActivity
             {
-                Name = Test_ContextName,
-                Type = Test_ContextType,
+                ContextName = Test_ContextName,
+                ContextType = Test_ContextType,
                 Retries = Test_Retries
             };
 
             var setContextActivity = new SetVariableActivity
             {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue
+                VariableName = Test_SetVariableName,
+                VariableValue = Test_SetVariableValue
             };
 
             sharedContextScopeActivity.Body.Handler = new Sequence()

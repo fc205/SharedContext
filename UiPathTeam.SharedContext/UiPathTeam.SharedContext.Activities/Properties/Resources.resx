@@ -158,7 +158,7 @@
     <comment>category</comment>
   </data>
   <data name="Options_Category" xml:space="preserve">
-    <value>Options</value>
+    <value>Input Optional</value>
     <comment>category</comment>
   </data>
   <data name="ValidationScope_Error" xml:space="preserve">
@@ -177,76 +177,380 @@
     <value>Please provide values for both {0} and {1}.</value>
     <comment>error message; {0} &amp; {1} are complementary properties</comment>
   </data>
-  <data name="TestActivity_DisplayName" xml:space="preserve">
-    <value>TestActivity</value>
+  <data name="ActivityCategories_DisplayName" xml:space="preserve">
+    <value>Activity Categories</value>
     <comment>activity name</comment>
   </data>
-  <data name="TestActivity_Description" xml:space="preserve">
-    <value>TestActivity Desc</value>
+  <data name="ActivityCategories_Description" xml:space="preserve">
+    <value>CategoriesActivity</value>
     <comment>activity description</comment>
   </data>
-  <data name="TestActivity_Name_DisplayName" xml:space="preserve">
-    <value>Name</value>
+  <data name="ActivityCategories_Input_DisplayName" xml:space="preserve">
+    <value>Input</value>
     <comment>property name</comment>
   </data>
-  <data name="TestActivity_Name_Description" xml:space="preserve">
-    <value>Name Desc</value>
+  <data name="ActivityCategories_Input_Description" xml:space="preserve">
+    <value>Category Input</value>
     <comment>property description</comment>
   </data>
-  <data name="Authentication_Category" xml:space="preserve">
-    <value>Authentication</value>
-    <comment>category</comment>
-  </data>
-  <data name="Common_Category" xml:space="preserve">
-    <value>Common</value>
-    <comment>category</comment>
-  </data>
-  <data name="Input_Category" xml:space="preserve">
-    <value>Input</value>
-    <comment>category</comment>
-  </data>
-  <data name="Output_Category" xml:space="preserve">
+  <data name="ActivityCategories_Output_DisplayName" xml:space="preserve">
     <value>Output</value>
-    <comment>category</comment>
-  </data>
-  <data name="Options_Category" xml:space="preserve">
-    <value>Options</value>
-    <comment>category</comment>
-  </data>
-  <data name="ValidationScope_Error" xml:space="preserve">
-    <value>Cannot be used outside of a {0}.</value>
-    <comment>error message; {0} is a container activity (e.g. a scope)</comment>
-  </data>
-  <data name="ValidationValue_Error" xml:space="preserve">
-    <value>Please provide a value for {0}.</value>
-    <comment>error message; {0} is the name of a missing property</comment>
-  </data>
-  <data name="ValidationExclusiveProperties_Error" xml:space="preserve">
-    <value>Please provide a value either for {0} or {1}, but not both.</value>
-    <comment>error message; {0} &amp; {1} are mutually exclusive activities</comment>
-  </data>
-  <data name="ValidationOverloadGroup_Error" xml:space="preserve">
-    <value>Please provide values for both {0} and {1}.</value>
-    <comment>error message; {0} &amp; {1} are complementary properties</comment>
-  </data>
-  <data name="SecondActivity_DisplayName" xml:space="preserve">
-    <value>SecondActivity</value>
-    <comment>activity name</comment>
-  </data>
-  <data name="SecondActivity_Description" xml:space="preserve">
-    <value>SecondActivity desc</value>
-    <comment>activity description</comment>
-  </data>
-  <data name="SecondActivity_Name_DisplayName" xml:space="preserve">
-    <value>Name</value>
     <comment>property name</comment>
   </data>
-  <data name="SecondActivity_Name_Description" xml:space="preserve">
-    <value>Name Desc</value>
+  <data name="ActivityCategories_Output_Description" xml:space="preserve">
+    <value>Category Output</value>
     <comment>property description</comment>
   </data>
-  <data name="Input_Category" xml:space="preserve">
-    <value>Input</value>
+  <data name="ActivityCategories_Context_DisplayName" xml:space="preserve">
+    <value>Context</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ActivityCategories_Context_Description" xml:space="preserve">
+    <value>Category Context</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ActivityCategories_File_DisplayName" xml:space="preserve">
+    <value>File</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ActivityCategories_File_Description" xml:space="preserve">
+    <value>Category File</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ActivityCategories_InputOptional_DisplayName" xml:space="preserve">
+    <value>Input Optional</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ActivityCategories_InputOptional_Description" xml:space="preserve">
+    <value>Category Input Optional</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ClientScopeActivity_DisplayName" xml:space="preserve">
+    <value>Shared Context Scope</value>
+    <comment>activity name</comment>
+  </data>
+  <data name="ClientScopeActivity_Description" xml:space="preserve">
+    <value>Creates a connection to the shared context environment and locks it</value>
+    <comment>activity description</comment>
+  </data>
+  <data name="ClientScopeActivity_ContextName_DisplayName" xml:space="preserve">
+    <value>Context Name</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ClientScopeActivity_ContextName_Description" xml:space="preserve">
+    <value>Name of the context that will store the information. It will be locked for exclusive use for this scope</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ClientScopeActivity_ContextType_DisplayName" xml:space="preserve">
+    <value>Context Type</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ClientScopeActivity_ContextType_Description" xml:space="preserve">
+    <value>Type of context to use (File and Named Pipes are available currently)</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ClientScopeActivity_ClearContext_DisplayName" xml:space="preserve">
+    <value>Clear Context</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ClientScopeActivity_ClearContext_Description" xml:space="preserve">
+    <value>Clear the context at the beginning of the scope</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ClientScopeActivity_Retries_DisplayName" xml:space="preserve">
+    <value>Retries</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ClientScopeActivity_Retries_Description" xml:space="preserve">
+    <value>Number of retries of the opening of the file that the Scope activity will try before raising an exception</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ClientScopeActivity_InputFolder_DisplayName" xml:space="preserve">
+    <value>Input Folder</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ClientScopeActivity_InputFolder_Description" xml:space="preserve">
+    <value>Path to the folder where the context file will be stored. Will default to System.IO.Path.GetTempPath</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ClientScopeActivity_OutputContextFile_DisplayName" xml:space="preserve">
+    <value>Output Context File</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ClientScopeActivity_OutputContextFile_Description" xml:space="preserve">
+    <value>Path to the file where the context will be stored</value>
+    <comment>property description</comment>
+  </data>
+  <data name="GetProcessInfoActivity_DisplayName" xml:space="preserve">
+    <value>Get Process info</value>
+    <comment>activity name</comment>
+  </data>
+  <data name="GetProcessInfoActivity_Description" xml:space="preserve">
+    <value>Gets information about the current job and process</value>
+    <comment>activity description</comment>
+  </data>
+  <data name="GetProcessInfoActivity_JobId_DisplayName" xml:space="preserve">
+    <value>Job Id</value>
+    <comment>property name</comment>
+  </data>
+  <data name="GetProcessInfoActivity_JobId_Description" xml:space="preserve">
+    <value>The ID of the current Job</value>
+    <comment>property description</comment>
+  </data>
+  <data name="GetProcessInfoActivity_ProcessName_DisplayName" xml:space="preserve">
+    <value>Process Name</value>
+    <comment>property name</comment>
+  </data>
+  <data name="GetProcessInfoActivity_ProcessName_Description" xml:space="preserve">
+    <value>The Name of the Process currently running</value>
+    <comment>property description</comment>
+  </data>
+  <data name="GetProcessInfoActivity_ProcessVersion_DisplayName" xml:space="preserve">
+    <value>Process Version</value>
+    <comment>property name</comment>
+  </data>
+  <data name="GetProcessInfoActivity_ProcessVersion_Description" xml:space="preserve">
+    <value>The Version of the Process currently running</value>
+    <comment>property description</comment>
+  </data>
+  <data name="GetProcessInfoActivity_WorflowFilePath_DisplayName" xml:space="preserve">
+    <value>Worflow File Path</value>
+    <comment>property name</comment>
+  </data>
+  <data name="GetProcessInfoActivity_WorflowFilePath_Description" xml:space="preserve">
+    <value>Full Path of the current Workflow file</value>
+    <comment>property description</comment>
+  </data>
+  <data name="GetVariableActivity_DisplayName" xml:space="preserve">
+    <value>Get Variable from Context</value>
+    <comment>activity name</comment>
+  </data>
+  <data name="GetVariableActivity_Description" xml:space="preserve">
+    <value>Get Variable from Context</value>
+    <comment>activity description</comment>
+  </data>
+  <data name="GetVariableActivity_VariableName_DisplayName" xml:space="preserve">
+    <value>Variable Name</value>
+    <comment>property name</comment>
+  </data>
+  <data name="GetVariableActivity_VariableName_Description" xml:space="preserve">
+    <value>Variable name (string)</value>
+    <comment>property description</comment>
+  </data>
+  <data name="GetVariableActivity_RaiseException_DisplayName" xml:space="preserve">
+    <value>Raise Exception</value>
+    <comment>property name</comment>
+  </data>
+  <data name="GetVariableActivity_RaiseException_Description" xml:space="preserve">
+    <value>Whether the activity will raise an Exception in case the Variable doesn't exist in the context</value>
+    <comment>property description</comment>
+  </data>
+  <data name="GetVariableActivity_ContextClient_DisplayName" xml:space="preserve">
+    <value>ContextClient</value>
+    <comment>property name</comment>
+  </data>
+  <data name="GetVariableActivity_ContextClient_Description" xml:space="preserve">
+    <value>Shared Context object to be used when not in a Shared Context Scope</value>
+    <comment>property description</comment>
+  </data>
+  <data name="GetVariableActivity_VariableValue_DisplayName" xml:space="preserve">
+    <value>Variable Value</value>
+    <comment>property name</comment>
+  </data>
+  <data name="GetVariableActivity_VariableValue_Description" xml:space="preserve">
+    <value>The Value of the variable (string)</value>
+    <comment>property description</comment>
+  </data>
+  <data name="NamedPipeTriggerV2_DisplayName" xml:space="preserve">
+    <value>Named Pipe Trigger Standalone</value>
+    <comment>activity name</comment>
+  </data>
+  <data name="NamedPipeTriggerV2_Description" xml:space="preserve">
+    <value>Named Pipe Trigger Standalone Activity (does not require MonitorEvents)</value>
+    <comment>activity description</comment>
+  </data>
+  <data name="NamedPipeTriggerV2_ContextName_DisplayName" xml:space="preserve">
+    <value>Context Name</value>
+    <comment>property name</comment>
+  </data>
+  <data name="NamedPipeTriggerV2_ContextName_Description" xml:space="preserve">
+    <value>Name of the context that will store the information</value>
+    <comment>property description</comment>
+  </data>
+  <data name="NamedPipeTriggerV2_Retries_DisplayName" xml:space="preserve">
+    <value>Retries</value>
+    <comment>property name</comment>
+  </data>
+  <data name="NamedPipeTriggerV2_Retries_Description" xml:space="preserve">
+    <value>Number of retries of the opening of the file that the Scope activity will try before raising an exception</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ReceiveMessageActivity_DisplayName" xml:space="preserve">
+    <value>Receive Latest Message</value>
+    <comment>activity name</comment>
+  </data>
+  <data name="ReceiveMessageActivity_Description" xml:space="preserve">
+    <value>Receive Latest Message</value>
+    <comment>activity description</comment>
+  </data>
+  <data name="ReceiveMessageActivity_ContextClient_DisplayName" xml:space="preserve">
+    <value>ContextClient</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ReceiveMessageActivity_ContextClient_Description" xml:space="preserve">
+    <value>Shared Context object to be used when not in a Shared Context Scope</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ReceiveMessageActivity_Action_DisplayName" xml:space="preserve">
+    <value>Action</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ReceiveMessageActivity_Action_Description" xml:space="preserve">
+    <value>The action to be performed</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ReceiveMessageActivity_ArgumentsJson_DisplayName" xml:space="preserve">
+    <value>ArgumentsJson</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ReceiveMessageActivity_ArgumentsJson_Description" xml:space="preserve">
+    <value>The arguments of the Action (in Json format)</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ReceiveMessageActivity_From_DisplayName" xml:space="preserve">
+    <value>From</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ReceiveMessageActivity_From_Description" xml:space="preserve">
+    <value>Origin Process of the Message</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ReceiveMessageActivity_TimeSent_DisplayName" xml:space="preserve">
+    <value>TimeSent</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ReceiveMessageActivity_TimeSent_Description" xml:space="preserve">
+    <value>Time when the message was sent</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ReceiveMessageActivity_MessageQueueEmpty_DisplayName" xml:space="preserve">
+    <value>Message Queue Empty</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ReceiveMessageActivity_MessageQueueEmpty_Description" xml:space="preserve">
+    <value>True if the message queue is now empty after getting the last message</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ReceiveMessageActivity_To_DisplayName" xml:space="preserve">
+    <value>To</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ReceiveMessageActivity_To_Description" xml:space="preserve">
+    <value>Destination Process of the Message (for reference)</value>
+    <comment>property description</comment>
+  </data>
+  <data name="SendMessageActivity_DisplayName" xml:space="preserve">
+    <value>Send Message</value>
+    <comment>activity name</comment>
+  </data>
+  <data name="SendMessageActivity_Description" xml:space="preserve">
+    <value>Send Message</value>
+    <comment>activity description</comment>
+  </data>
+  <data name="SendMessageActivity_To_DisplayName" xml:space="preserve">
+    <value>To</value>
+    <comment>property name</comment>
+  </data>
+  <data name="SendMessageActivity_To_Description" xml:space="preserve">
+    <value>Destination Process for the Message</value>
+    <comment>property description</comment>
+  </data>
+  <data name="SendMessageActivity_Action_DisplayName" xml:space="preserve">
+    <value>Action</value>
+    <comment>property name</comment>
+  </data>
+  <data name="SendMessageActivity_Action_Description" xml:space="preserve">
+    <value>The action to be performed</value>
+    <comment>property description</comment>
+  </data>
+  <data name="SendMessageActivity_ArgumentsJson_DisplayName" xml:space="preserve">
+    <value>ArgumentsJson</value>
+    <comment>property name</comment>
+  </data>
+  <data name="SendMessageActivity_ArgumentsJson_Description" xml:space="preserve">
+    <value>The arguments of the Action (in Json format)</value>
+    <comment>property description</comment>
+  </data>
+  <data name="SendMessageActivity_ContextClient_DisplayName" xml:space="preserve">
+    <value>ContextClient</value>
+    <comment>property name</comment>
+  </data>
+  <data name="SendMessageActivity_ContextClient_Description" xml:space="preserve">
+    <value>Shared Context object to be used when not in a Shared Context Scope</value>
+    <comment>property description</comment>
+  </data>
+  <data name="SendMessageActivity_From_DisplayName" xml:space="preserve">
+    <value>From</value>
+    <comment>property name</comment>
+  </data>
+  <data name="SendMessageActivity_From_Description" xml:space="preserve">
+    <value>Origin Process of the Message (for reference)</value>
+    <comment>property description</comment>
+  </data>
+  <data name="ServerScopeActivity_DisplayName" xml:space="preserve">
+    <value>Named Pipe Server Scope</value>
+    <comment>activity name</comment>
+  </data>
+  <data name="ServerScopeActivity_Description" xml:space="preserve">
+    <value>Creates a Named Pipe server for the shared context environment</value>
+    <comment>activity description</comment>
+  </data>
+  <data name="ServerScopeActivity_ContextName_DisplayName" xml:space="preserve">
+    <value>Context Name</value>
+    <comment>property name</comment>
+  </data>
+  <data name="ServerScopeActivity_ContextName_Description" xml:space="preserve">
+    <value>Name of the context that will store the information. It will remain available for this scope</value>
+    <comment>property description</comment>
+  </data>
+  <data name="SetVariableActivity_DisplayName" xml:space="preserve">
+    <value>Set Variable in Context</value>
+    <comment>activity name</comment>
+  </data>
+  <data name="SetVariableActivity_Description" xml:space="preserve">
+    <value>Set Variable in Context</value>
+    <comment>activity description</comment>
+  </data>
+  <data name="SetVariableActivity_VariableName_DisplayName" xml:space="preserve">
+    <value>Variable Name</value>
+    <comment>property name</comment>
+  </data>
+  <data name="SetVariableActivity_VariableName_Description" xml:space="preserve">
+    <value>Variable name (String)</value>
+    <comment>property description</comment>
+  </data>
+  <data name="SetVariableActivity_VariableValue_DisplayName" xml:space="preserve">
+    <value>Variable Value</value>
+    <comment>property name</comment>
+  </data>
+  <data name="SetVariableActivity_VariableValue_Description" xml:space="preserve">
+    <value>Variable value (String)</value>
+    <comment>property description</comment>
+  </data>
+  <data name="SetVariableActivity_ContextClient_DisplayName" xml:space="preserve">
+    <value>ContextClient</value>
+    <comment>property name</comment>
+  </data>
+  <data name="SetVariableActivity_ContextClient_Description" xml:space="preserve">
+    <value>Shared Context object to be used when not in a Shared Context Scope</value>
+    <comment>property description</comment>
+  </data>
+  <data name="InteractWithContext" xml:space="preserve">
+    <value>Interact with the Context</value>
+    <comment>property name</comment>
+  </data>
+  <data name="File_Category" xml:space="preserve">
+    <value>Input - File Context (optional)</value>
     <comment>category</comment>
   </data>
 </root>

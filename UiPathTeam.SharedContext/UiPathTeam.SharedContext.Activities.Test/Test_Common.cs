@@ -22,6 +22,6 @@ namespace UiPathTeam.SharedContext.Activities.Test
             var output = WorkflowInvoker.Invoke(getProcessInfoActivity);
 
             Assert.IsTrue(output["Value"].ToString() == "sss");
-*       }
+*/      }
     }
 }

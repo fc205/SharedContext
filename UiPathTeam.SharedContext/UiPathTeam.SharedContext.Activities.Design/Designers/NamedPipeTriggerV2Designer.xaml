@@ -33,10 +33,10 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Label Content="Context Name" Grid.Row="0" />
-            <sapv:ExpressionTextBox Grid.Row="1" ExpressionType="{Binding ModelItem.Properties[Name].PropertyType.GenericTypeArguments[0]}" OwnerActivity="{Binding Path=ModelItem}" HintText="Name of the context that will store the information" UseLocationExpression="False">
+            <Label Content="{x:Static activity:Resources.NamedPipeTriggerV2_ContextName_DisplayName}" Grid.Row="0" />
+            <sapv:ExpressionTextBox Grid.Row="1" ExpressionType="{Binding ModelItem.Properties[ContextName].PropertyType.GenericTypeArguments[0]}" OwnerActivity="{Binding Path=ModelItem}" HintText="{x:Static activity:Resources.NamedPipeTriggerV2_ContextName_Description}" UseLocationExpression="False">
                 <sapv:ExpressionTextBox.Expression>
-                    <Binding Path="ModelItem.Name" Converter="{StaticResource ArgumentToExpressionConverter}" Mode="TwoWay" ConverterParameter="In" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="ModelItem.ContextName" Converter="{StaticResource ArgumentToExpressionConverter}" Mode="TwoWay" ConverterParameter="In" UpdateSourceTrigger="PropertyChanged" />
                 </sapv:ExpressionTextBox.Expression>
             </sapv:ExpressionTextBox>
 			<DockPanel LastChildFill="True" Grid.Row="2">

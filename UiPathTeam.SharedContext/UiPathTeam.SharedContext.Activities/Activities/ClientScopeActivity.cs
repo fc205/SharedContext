@@ -4,62 +4,69 @@ using System.Activities.Statements;
 using System.ComponentModel;
 using System.Collections.Generic;
 using UiPathTeam.SharedContext.Context;
+using UiPathTeam.SharedContext.Activities.Properties;
+using UiPath.Shared.Activities.Localization;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Shared Context Scope")]
-    [CategoryAttribute("UiPathTeam.SharedContext")]
-    [Description("Creates a connection to the shared context environment and locks it.")]
+    [LocalizedDisplayName(nameof(Resources.ClientScopeActivity_DisplayName))]
+    [LocalizedDescription(nameof(Resources.ClientScopeActivity_Description))]
     public class ClientScopeActivity : NativeActivity
     {
+        #region Properties
+
         [Browsable(false)]
         public ActivityAction<ContextClient> Body { get; set; }
 
-        [Category("Context")]
         [RequiredArgument]
-        [DisplayName("Context Name")]
-        [Description("Name of the context that will store the information. It will be locked for exclusive use for this scope")]
-        public InArgument<string> Name { get; set; }
+        [LocalizedDisplayName(nameof(Resources.ClientScopeActivity_ContextName_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ClientScopeActivity_ContextName_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
+        public InArgument<string> ContextName { get; set; }
 
-        [Category("Context")]
         [RequiredArgument]
-        [Description("Type of context to use (File and Named Pipes are available currently).")]
-        public contextType Type { get; set; }
+        [LocalizedDisplayName(nameof(Resources.ClientScopeActivity_ContextType_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ClientScopeActivity_ContextType_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
+        public contextType ContextType { get; set; }
 
-        [Category("Context")]
         [RequiredArgument]
-        [DisplayName("Clear context")]
-        [Description("Clear the context at the beginning of the scope")]
-        public bool Clear { get; set; }
+        [LocalizedDisplayName(nameof(Resources.ClientScopeActivity_ClearContext_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ClientScopeActivity_ClearContext_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
+        public bool ClearContext { get; set; }
 
-        [Category("Context")]
         [RequiredArgument]
-        [DisplayName("Retries")]
-        [Description("Number of retries of the opening of the file that the Scope activity will try before raising an exception.")]
+        [LocalizedDisplayName(nameof(Resources.ClientScopeActivity_Retries_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ClientScopeActivity_Retries_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
         public InArgument<int> Retries { get; set; }
 
-        [Category("File")]
-        [DisplayName("Folder")]
-        [Description("Path to the folder where the file will be stored. Will default to System.IO.Path.GetTempPath")]
-        public InArgument<string> Folder { get; set; }
+        [LocalizedDisplayName(nameof(Resources.ClientScopeActivity_InputFolder_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ClientScopeActivity_InputFolder_Description))]
+        [LocalizedCategory(nameof(Resources.File_Category))]
+        public InArgument<string> InputFolder { get; set; }
 
-        [Category("File")]
-        [DisplayName("Output File Path")]
-        [Description("Path to the file where the context will be stored")]
-        public OutArgument<string> FilePath { get; set; }
+        [LocalizedDisplayName(nameof(Resources.ClientScopeActivity_OutputContextFile_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ClientScopeActivity_OutputContextFile_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
+        public OutArgument<string> OutputContextFile { get; set; }
 
         private ContextClient aContext;
         private string _context;
+
+        #endregion
+
 
         public ClientScopeActivity()
         {
             Body = new ActivityAction<ContextClient>
             {
                 Argument = new DelegateInArgument<ContextClient>("ContextClient"),
-                Handler = new Sequence { DisplayName = "Interact with the Context" }
+                Handler = new Sequence { DisplayName = Resources.InteractWithContext }
             };
             this.Retries = 5;
-            this.Clear = false;
+            this.ClearContext = false;
         }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -69,7 +76,7 @@ namespace UiPathTeam.SharedContext.Activities
 
         protected override void Execute(NativeActivityContext context)
         {
-            this._context = Name.Get(context);
+            this._context = ContextName.Get(context);
             string aFolder = "";
 
             if (Retries == null || Retries.Get(context) <= 0) 
@@ -77,9 +84,9 @@ namespace UiPathTeam.SharedContext.Activities
                 throw new Exception("Retries cannot be zero or negative.");
             }
 
-            if(Folder != null)
+            if(InputFolder != null)
             {
-                aFolder = Folder.Get(context);
+                aFolder = InputFolder.Get(context);
             }
 
             Dictionary<string, string> aArguments = new Dictionary<string, string>();
@@ -89,10 +96,10 @@ namespace UiPathTeam.SharedContext.Activities
 
             try
             {
-                aContext = new ContextClient(Type, this._context, aArguments);
+                aContext = new ContextClient(ContextType, this._context, aArguments);
 
                 aContext.CreateClient();
-                if (Type == contextType.File && this.Clear)
+                if (ContextType == contextType.File && this.ClearContext)
                 {
                     aContext.ClearAll();
                 }
@@ -128,7 +135,7 @@ namespace UiPathTeam.SharedContext.Activities
 
         private void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance)
         {
-            FilePath.Set(context, aContext.GetResource());
+            OutputContextFile.Set(context, aContext.GetResource());
             CleanupContext();
         }
     }

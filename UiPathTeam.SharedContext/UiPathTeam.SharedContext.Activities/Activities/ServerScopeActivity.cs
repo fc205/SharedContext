@@ -5,12 +5,13 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Threading;
 using UiPathTeam.SharedContext.Context;
+using UiPathTeam.SharedContext.Activities.Properties;
+using UiPath.Shared.Activities.Localization;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Shared Context Server Scope")]
-    [CategoryAttribute("UiPathTeam.SharedContext")]
-    [Description("Creates a Named Pipe server for the shared context environment.")]
+    [LocalizedDisplayName(nameof(Resources.ServerScopeActivity_DisplayName))]
+    [LocalizedDescription(nameof(Resources.ServerScopeActivity_Description))]
     public class ServerScopeActivity : NativeActivity
     {
         private const string _mutexName = "Local\\ServerScopeActivity";
@@ -18,11 +19,11 @@ namespace UiPathTeam.SharedContext.Activities
         [Browsable(false)]
         public ActivityAction<ContextServer> Body { get; set; }
 
-        [Category("Context")]
         [RequiredArgument]
-        [DisplayName("Context Name")]
-        [Description("Name of the context that will store the information. It will remain available for this scope")]
-        public InArgument<string> Name { get; set; }
+        [LocalizedDisplayName(nameof(Resources.ServerScopeActivity_ContextName_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ServerScopeActivity_ContextName_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
+        public InArgument<string> ContextName { get; set; }
 
         private ContextServer aContext;
         private string _context;
@@ -34,7 +35,7 @@ namespace UiPathTeam.SharedContext.Activities
             Body = new ActivityAction<ContextServer>
             {
                 Argument = new DelegateInArgument<ContextServer>("ContextServer"),
-                Handler = new Sequence { DisplayName = "Interact with the Context" }
+                Handler = new Sequence { DisplayName = Resources.InteractWithContext }
             };
             this._dotNetMutex = new Mutex(false, this.GetMutexName());
         }
@@ -48,7 +49,7 @@ namespace UiPathTeam.SharedContext.Activities
         {
             try
             {
-                this._context = Name.Get(context);
+                this._context = ContextName.Get(context);
 
                 if (!this._dotNetMutex.WaitOne())
                 {

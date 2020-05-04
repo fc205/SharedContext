@@ -51,26 +51,26 @@ namespace UiPathTeam.SharedContext.Activities.Test
         {
             var sharedContextServerScope = new ServerScopeActivity
             {
-                Name = Test_ContextName
+                ContextName = Test_ContextName
             };
 
             var sharedContextScopeActivity = new ClientScopeActivity
             {
-                Name = Test_ContextName,
-                Type = Test_ContextType,
-                Clear = true,
+                ContextName = Test_ContextName,
+                ContextType = Test_ContextType,
+                ClearContext = true,
                 Retries = Test_Retries
             };
 
             var setContextActivity = new SetVariableActivity
             {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue
+                VariableName = Test_SetVariableName,
+                VariableValue = Test_SetVariableValue
             };
 
             var getContextActivity = new GetVariableActivity
             {
-                Name = Test_SetVariableName
+                VariableName = Test_SetVariableName
             };
 
             sharedContextServerScope.Body.Handler = new Sequence()
@@ -101,21 +101,21 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var setContextActivity = new SetVariableActivity
             {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue,
+                VariableName = Test_SetVariableName,
+                VariableValue = Test_SetVariableValue,
                 ContextClient = new InArgument<ContextClient>((ctx) => aContextClient)
             };
 
             var getContextActivity = new GetVariableActivity
             {
-                Name = Test_SetVariableName,
+                VariableName = Test_SetVariableName,
                 ContextClient = new InArgument<ContextClient>((ctx) => aContextClient)
             };
 
             WorkflowInvoker.Invoke(setContextActivity);
             var output = WorkflowInvoker.Invoke(getContextActivity);
 
-            Assert.IsTrue(output["Value"].ToString() == Test_SetVariableValue);
+            Assert.IsTrue(output["VariableValue"].ToString() == Test_SetVariableValue);
 
             aContextClient.MyDispose();
             aContextServer.MyDispose();
@@ -128,16 +128,16 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var sharedContextScopeActivity = new ClientScopeActivity
             {
-                Name = Test_ContextName,
-                Type = Test_ContextType,
-                Clear = true,
+                ContextName = Test_ContextName,
+                ContextType = Test_ContextType,
+                ClearContext = true,
                 Retries = Test_Retries
             };
 
             var setContextActivity = new SetVariableActivity
             {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue
+                VariableName = Test_SetVariableName,
+                VariableValue = Test_SetVariableValue
             };
 
             sharedContextScopeActivity.Body.Handler = new Sequence()
@@ -169,15 +169,15 @@ namespace UiPathTeam.SharedContext.Activities.Test
                     {
                         var sharedContextScopeActivity = new ClientScopeActivity
                         {
-                            Name = Test_ContextName,
-                            Type = Test_ContextType,
+                            ContextName = Test_ContextName,
+                            ContextType = Test_ContextType,
                             Retries = Test_Retries
                         };
 
                         var setContextActivity = new SetVariableActivity
                         {
-                            Name = Test_SetVariableName,
-                            Value = Test_SetVariableValue
+                            VariableName = Test_SetVariableName,
+                            VariableValue = Test_SetVariableValue
                         };
 
                         sharedContextScopeActivity.Body.Handler = new Sequence()
@@ -210,17 +210,17 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var sharedContextScopeActivityInner = new ClientScopeActivity
             {
-                Name = Test_ContextName,
-                Type = Test_ContextType,
-                Clear = true,
+                ContextName = Test_ContextName,
+                ContextType = Test_ContextType,
+                ClearContext = true,
                 Retries = Test_Retries
             };
 
             var sharedContextScopeActivityOuter = new ClientScopeActivity
             {
-                Name = Test_ContextName,
-                Type = Test_ContextType,
-                Clear = true,
+                ContextName = Test_ContextName,
+                ContextType = Test_ContextType,
+                ClearContext = true,
                 Retries = Test_Retries
             };
 
@@ -252,27 +252,27 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var setContextActivity1 = new SetVariableActivity
             {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue,
+                VariableName = Test_SetVariableName,
+                VariableValue = Test_SetVariableValue,
                 ContextClient = new InArgument<ContextClient>((ctx) => aContextClient)
             };
 
             var getContextActivity1 = new GetVariableActivity
             {
-                Name = Test_SetVariableName,
+                VariableName = Test_SetVariableName,
                 ContextClient = new InArgument<ContextClient>((ctx) => aContextClient)
             };
 
             var setContextActivity2 = new SetVariableActivity
             {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue2,
+                VariableName = Test_SetVariableName,
+                VariableValue = Test_SetVariableValue2,
                 ContextClient = new InArgument<ContextClient>((ctx) => aContextClient)
             };
 
             var getContextActivity2 = new GetVariableActivity
             {
-                Name = Test_SetVariableName,
+                VariableName = Test_SetVariableName,
                 ContextClient = new InArgument<ContextClient>((ctx) => aContextClient)
             };
 
@@ -281,8 +281,8 @@ namespace UiPathTeam.SharedContext.Activities.Test
             WorkflowInvoker.Invoke(setContextActivity2);
             var output2 = WorkflowInvoker.Invoke(getContextActivity2);
 
-            Assert.IsTrue(output1["Value"].ToString() == Test_SetVariableValue);
-            Assert.IsTrue(output2["Value"].ToString() == Test_SetVariableValue2);
+            Assert.IsTrue(output1["VariableValue"].ToString() == Test_SetVariableValue);
+            Assert.IsTrue(output2["VariableValue"].ToString() == Test_SetVariableValue2);
 
             aContextClient.MyDispose();
             aContextServer.MyDispose();
@@ -308,7 +308,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
                 {
                     new NamedPipeTriggerV2()
                     {
-                        Name = Test_ContextName,
+                        ContextName = Test_ContextName,
                         Body = new ActivityAction<ContextContent>
                         {
                             Argument = new DelegateInArgument<ContextContent>(typeof(ContextContent).Name),
@@ -339,8 +339,8 @@ namespace UiPathTeam.SharedContext.Activities.Test
 
             var setContextActivity = new SetVariableActivity
             {
-                Name = Test_SetVariableName,
-                Value = Test_SetVariableValue,
+                VariableName = Test_SetVariableName,
+                VariableValue = Test_SetVariableValue,
                 ContextClient = new InArgument<ContextClient>((ctx) => aContextClient)
             };
 

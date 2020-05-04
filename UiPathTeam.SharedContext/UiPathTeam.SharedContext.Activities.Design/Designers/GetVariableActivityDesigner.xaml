@@ -29,10 +29,10 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <Label Content="Name" Grid.Row="0" />
-            <sapv:ExpressionTextBox Grid.Row="1" ExpressionType="{Binding ModelItem.Properties[Name].PropertyType.GenericTypeArguments[0]}" OwnerActivity="{Binding Path=ModelItem}" HintText="Variable name (string)" UseLocationExpression="False">
+            <Label Content="{x:Static activity:Resources.GetVariableActivity_VariableName_DisplayName}" Grid.Row="0" />
+            <sapv:ExpressionTextBox Grid.Row="1" ExpressionType="{Binding ModelItem.Properties[VariableName].PropertyType.GenericTypeArguments[0]}" OwnerActivity="{Binding Path=ModelItem}" HintText="{x:Static activity:Resources.GetVariableActivity_VariableName_Description}" UseLocationExpression="False">
                 <sapv:ExpressionTextBox.Expression>
-                    <Binding Path="ModelItem.Name" Converter="{StaticResource ArgumentToExpressionConverter}" Mode="TwoWay" ConverterParameter="In" UpdateSourceTrigger="PropertyChanged" />
+                    <Binding Path="ModelItem.VariableName" Converter="{StaticResource ArgumentToExpressionConverter}" Mode="TwoWay" ConverterParameter="In" UpdateSourceTrigger="PropertyChanged" />
                 </sapv:ExpressionTextBox.Expression>
             </sapv:ExpressionTextBox>
         </Grid>

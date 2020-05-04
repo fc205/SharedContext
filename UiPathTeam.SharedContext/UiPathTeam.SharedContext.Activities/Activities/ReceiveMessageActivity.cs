@@ -3,45 +3,49 @@ using System.Activities;
 using System.ComponentModel;
 using UiPath.Robot.Activities.Api;
 using UiPathTeam.SharedContext.Context;
+using UiPathTeam.SharedContext.Activities.Properties;
+using UiPath.Shared.Activities.Localization;
+
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Receive Latest Message")]
-    [CategoryAttribute("UiPathTeam.SharedContext")]
+    [LocalizedDisplayName(nameof(Resources.ReceiveMessageActivity_DisplayName))]
+    [LocalizedDescription(nameof(Resources.ReceiveMessageActivity_Description))]
     public class ReceiveMessageActivity : CodeActivity
     {
-        [Category("Input Optional")]
-        [Description("Shared Context object to be used when not in a Shared Context Scope.")]
+        [LocalizedDisplayName(nameof(Resources.ReceiveMessageActivity_ContextClient_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ReceiveMessageActivity_ContextClient_Description))]
+        [LocalizedCategory(nameof(Resources.Options_Category))]
         public InArgument<ContextClient> ContextClient { get; set; }
 
-        [Category("Output")]
-        [DisplayName("Action")]
-        [Description("The action to be performed")]
+        [LocalizedDisplayName(nameof(Resources.ReceiveMessageActivity_Action_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ReceiveMessageActivity_Action_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
         public OutArgument<string> Action { get; set; }
 
-        [Category("Output")]
-        [DisplayName("Arguments")]
-        [Description("The arguments of the Action (in Json format)")]
+        [LocalizedDisplayName(nameof(Resources.ReceiveMessageActivity_ArgumentsJson_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ReceiveMessageActivity_ArgumentsJson_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
         public OutArgument<string> ArgumentsJson { get; set; }
 
-        [Category("Output")]
-        [DisplayName("From")]
-        [Description("Origin Process of the Message.")]
+        [LocalizedDisplayName(nameof(Resources.ReceiveMessageActivity_From_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ReceiveMessageActivity_From_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
         public OutArgument<string> From { get; set; }
 
-        [Category("Output")]
-        [DisplayName("Time sent")]
-        [Description("Time sent.")]
+        [LocalizedDisplayName(nameof(Resources.ReceiveMessageActivity_TimeSent_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ReceiveMessageActivity_TimeSent_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
         public OutArgument<DateTime> TimeSent { get; set; }
 
-        [Category("Output")]
-        [DisplayName("Message Queue empty")]
-        [Description("Was this Message Queue empty?")]
-        public OutArgument<bool> QueueEmpty { get; set; }
+        [LocalizedDisplayName(nameof(Resources.ReceiveMessageActivity_MessageQueueEmpty_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ReceiveMessageActivity_MessageQueueEmpty_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
+        public OutArgument<bool> MessageQueueEmpty { get; set; }
 
-        [Category("Output")]
-        [DisplayName("To")]
-        [Description("Destination Process of the Message (for reference).")]
+        [LocalizedDisplayName(nameof(Resources.ReceiveMessageActivity_To_DisplayName))]
+        [LocalizedDescription(nameof(Resources.ReceiveMessageActivity_To_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
         public OutArgument<string> To { get; set; }
 
         protected override void Execute(CodeActivityContext context)
@@ -92,11 +96,11 @@ namespace UiPathTeam.SharedContext.Activities
 
                 this.To.Set(context, currentProcess);
 
-                this.QueueEmpty.Set(context, false);
+                this.MessageQueueEmpty.Set(context, false);
             }
             else
             {
-                this.QueueEmpty.Set(context, true);
+                this.MessageQueueEmpty.Set(context, true);
             }
         }
     }

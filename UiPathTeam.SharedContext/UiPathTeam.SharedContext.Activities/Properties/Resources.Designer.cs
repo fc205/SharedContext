@@ -61,11 +61,245 @@ namespace UiPathTeam.SharedContext.Activities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category Context.
+        /// </summary>
+        public static string ActivityCategories_Context_Description {
+            get {
+                return ResourceManager.GetString("ActivityCategories_Context_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Context.
+        /// </summary>
+        public static string ActivityCategories_Context_DisplayName {
+            get {
+                return ResourceManager.GetString("ActivityCategories_Context_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CategoriesActivity.
+        /// </summary>
+        public static string ActivityCategories_Description {
+            get {
+                return ResourceManager.GetString("ActivityCategories_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activity Categories.
+        /// </summary>
+        public static string ActivityCategories_DisplayName {
+            get {
+                return ResourceManager.GetString("ActivityCategories_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category File.
+        /// </summary>
+        public static string ActivityCategories_File_Description {
+            get {
+                return ResourceManager.GetString("ActivityCategories_File_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File.
+        /// </summary>
+        public static string ActivityCategories_File_DisplayName {
+            get {
+                return ResourceManager.GetString("ActivityCategories_File_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category Input.
+        /// </summary>
+        public static string ActivityCategories_Input_Description {
+            get {
+                return ResourceManager.GetString("ActivityCategories_Input_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input.
+        /// </summary>
+        public static string ActivityCategories_Input_DisplayName {
+            get {
+                return ResourceManager.GetString("ActivityCategories_Input_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category Input Optional.
+        /// </summary>
+        public static string ActivityCategories_InputOptional_Description {
+            get {
+                return ResourceManager.GetString("ActivityCategories_InputOptional_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input Optional.
+        /// </summary>
+        public static string ActivityCategories_InputOptional_DisplayName {
+            get {
+                return ResourceManager.GetString("ActivityCategories_InputOptional_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category Output.
+        /// </summary>
+        public static string ActivityCategories_Output_Description {
+            get {
+                return ResourceManager.GetString("ActivityCategories_Output_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output.
+        /// </summary>
+        public static string ActivityCategories_Output_DisplayName {
+            get {
+                return ResourceManager.GetString("ActivityCategories_Output_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authentication.
         /// </summary>
         public static string Authentication_Category {
             get {
                 return ResourceManager.GetString("Authentication_Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear the context at the beginning of the scope.
+        /// </summary>
+        public static string ClientScopeActivity_ClearContext_Description {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_ClearContext_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Clear Context.
+        /// </summary>
+        public static string ClientScopeActivity_ClearContext_DisplayName {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_ClearContext_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the context that will store the information. It will be locked for exclusive use for this scope.
+        /// </summary>
+        public static string ClientScopeActivity_ContextName_Description {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_ContextName_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Context Name.
+        /// </summary>
+        public static string ClientScopeActivity_ContextName_DisplayName {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_ContextName_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of context to use (File and Named Pipes are available currently).
+        /// </summary>
+        public static string ClientScopeActivity_ContextType_Description {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_ContextType_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Context Type.
+        /// </summary>
+        public static string ClientScopeActivity_ContextType_DisplayName {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_ContextType_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a connection to the shared context environment and locks it.
+        /// </summary>
+        public static string ClientScopeActivity_Description {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shared Context Scope.
+        /// </summary>
+        public static string ClientScopeActivity_DisplayName {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path to the folder where the context file will be stored. Will default to System.IO.Path.GetTempPath.
+        /// </summary>
+        public static string ClientScopeActivity_InputFolder_Description {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_InputFolder_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input Folder.
+        /// </summary>
+        public static string ClientScopeActivity_InputFolder_DisplayName {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_InputFolder_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Path to the file where the context will be stored.
+        /// </summary>
+        public static string ClientScopeActivity_OutputContextFile_Description {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_OutputContextFile_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Output Context File.
+        /// </summary>
+        public static string ClientScopeActivity_OutputContextFile_DisplayName {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_OutputContextFile_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of retries of the opening of the file that the Scope activity will try before raising an exception.
+        /// </summary>
+        public static string ClientScopeActivity_Retries_Description {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_Retries_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retries.
+        /// </summary>
+        public static string ClientScopeActivity_Retries_DisplayName {
+            get {
+                return ResourceManager.GetString("ClientScopeActivity_Retries_DisplayName", resourceCulture);
             }
         }
         
@@ -106,6 +340,195 @@ namespace UiPathTeam.SharedContext.Activities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Input - File Context (optional).
+        /// </summary>
+        public static string File_Category {
+            get {
+                return ResourceManager.GetString("File_Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gets information about the current job and process.
+        /// </summary>
+        public static string GetProcessInfoActivity_Description {
+            get {
+                return ResourceManager.GetString("GetProcessInfoActivity_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Process info.
+        /// </summary>
+        public static string GetProcessInfoActivity_DisplayName {
+            get {
+                return ResourceManager.GetString("GetProcessInfoActivity_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ID of the current Job.
+        /// </summary>
+        public static string GetProcessInfoActivity_JobId_Description {
+            get {
+                return ResourceManager.GetString("GetProcessInfoActivity_JobId_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job Id.
+        /// </summary>
+        public static string GetProcessInfoActivity_JobId_DisplayName {
+            get {
+                return ResourceManager.GetString("GetProcessInfoActivity_JobId_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Name of the Process currently running.
+        /// </summary>
+        public static string GetProcessInfoActivity_ProcessName_Description {
+            get {
+                return ResourceManager.GetString("GetProcessInfoActivity_ProcessName_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Name.
+        /// </summary>
+        public static string GetProcessInfoActivity_ProcessName_DisplayName {
+            get {
+                return ResourceManager.GetString("GetProcessInfoActivity_ProcessName_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Version of the Process currently running.
+        /// </summary>
+        public static string GetProcessInfoActivity_ProcessVersion_Description {
+            get {
+                return ResourceManager.GetString("GetProcessInfoActivity_ProcessVersion_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process Version.
+        /// </summary>
+        public static string GetProcessInfoActivity_ProcessVersion_DisplayName {
+            get {
+                return ResourceManager.GetString("GetProcessInfoActivity_ProcessVersion_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Path of the current Workflow file.
+        /// </summary>
+        public static string GetProcessInfoActivity_WorflowFilePath_Description {
+            get {
+                return ResourceManager.GetString("GetProcessInfoActivity_WorflowFilePath_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Worflow File Path.
+        /// </summary>
+        public static string GetProcessInfoActivity_WorflowFilePath_DisplayName {
+            get {
+                return ResourceManager.GetString("GetProcessInfoActivity_WorflowFilePath_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shared Context object to be used when not in a Shared Context Scope.
+        /// </summary>
+        public static string GetVariableActivity_ContextClient_Description {
+            get {
+                return ResourceManager.GetString("GetVariableActivity_ContextClient_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ContextClient.
+        /// </summary>
+        public static string GetVariableActivity_ContextClient_DisplayName {
+            get {
+                return ResourceManager.GetString("GetVariableActivity_ContextClient_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Variable from Context.
+        /// </summary>
+        public static string GetVariableActivity_Description {
+            get {
+                return ResourceManager.GetString("GetVariableActivity_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get Variable from Context.
+        /// </summary>
+        public static string GetVariableActivity_DisplayName {
+            get {
+                return ResourceManager.GetString("GetVariableActivity_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Whether the activity will raise an Exception in case the Variable doesn&apos;t exist in the context.
+        /// </summary>
+        public static string GetVariableActivity_RaiseException_Description {
+            get {
+                return ResourceManager.GetString("GetVariableActivity_RaiseException_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raise Exception.
+        /// </summary>
+        public static string GetVariableActivity_RaiseException_DisplayName {
+            get {
+                return ResourceManager.GetString("GetVariableActivity_RaiseException_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable name (string).
+        /// </summary>
+        public static string GetVariableActivity_VariableName_Description {
+            get {
+                return ResourceManager.GetString("GetVariableActivity_VariableName_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable Name.
+        /// </summary>
+        public static string GetVariableActivity_VariableName_DisplayName {
+            get {
+                return ResourceManager.GetString("GetVariableActivity_VariableName_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Value of the variable (string).
+        /// </summary>
+        public static string GetVariableActivity_VariableValue_Description {
+            get {
+                return ResourceManager.GetString("GetVariableActivity_VariableValue_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable Value.
+        /// </summary>
+        public static string GetVariableActivity_VariableValue_DisplayName {
+            get {
+                return ResourceManager.GetString("GetVariableActivity_VariableValue_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input.
         /// </summary>
         public static string Input_Category {
@@ -115,7 +538,70 @@ namespace UiPathTeam.SharedContext.Activities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Options.
+        ///   Looks up a localized string similar to Interact with the Context.
+        /// </summary>
+        public static string InteractWithContext {
+            get {
+                return ResourceManager.GetString("InteractWithContext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the context that will store the information.
+        /// </summary>
+        public static string NamedPipeTriggerV2_ContextName_Description {
+            get {
+                return ResourceManager.GetString("NamedPipeTriggerV2_ContextName_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Context Name.
+        /// </summary>
+        public static string NamedPipeTriggerV2_ContextName_DisplayName {
+            get {
+                return ResourceManager.GetString("NamedPipeTriggerV2_ContextName_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Named Pipe Trigger Standalone Activity (does not require MonitorEvents).
+        /// </summary>
+        public static string NamedPipeTriggerV2_Description {
+            get {
+                return ResourceManager.GetString("NamedPipeTriggerV2_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Named Pipe Trigger Standalone.
+        /// </summary>
+        public static string NamedPipeTriggerV2_DisplayName {
+            get {
+                return ResourceManager.GetString("NamedPipeTriggerV2_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of retries of the opening of the file that the Scope activity will try before raising an exception.
+        /// </summary>
+        public static string NamedPipeTriggerV2_Retries_Description {
+            get {
+                return ResourceManager.GetString("NamedPipeTriggerV2_Retries_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retries.
+        /// </summary>
+        public static string NamedPipeTriggerV2_Retries_DisplayName {
+            get {
+                return ResourceManager.GetString("NamedPipeTriggerV2_Retries_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input Optional.
         /// </summary>
         public static string Options_Category {
             get {
@@ -133,74 +619,362 @@ namespace UiPathTeam.SharedContext.Activities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SecondActivity desc.
+        ///   Looks up a localized string similar to The action to be performed.
         /// </summary>
-        public static string SecondActivity_Description {
+        public static string ReceiveMessageActivity_Action_Description {
             get {
-                return ResourceManager.GetString("SecondActivity_Description", resourceCulture);
+                return ResourceManager.GetString("ReceiveMessageActivity_Action_Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SecondActivity.
+        ///   Looks up a localized string similar to Action.
         /// </summary>
-        public static string SecondActivity_DisplayName {
+        public static string ReceiveMessageActivity_Action_DisplayName {
             get {
-                return ResourceManager.GetString("SecondActivity_DisplayName", resourceCulture);
+                return ResourceManager.GetString("ReceiveMessageActivity_Action_DisplayName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name Desc.
+        ///   Looks up a localized string similar to The arguments of the Action (in Json format).
         /// </summary>
-        public static string SecondActivity_Name_Description {
+        public static string ReceiveMessageActivity_ArgumentsJson_Description {
             get {
-                return ResourceManager.GetString("SecondActivity_Name_Description", resourceCulture);
+                return ResourceManager.GetString("ReceiveMessageActivity_ArgumentsJson_Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to ArgumentsJson.
         /// </summary>
-        public static string SecondActivity_Name_DisplayName {
+        public static string ReceiveMessageActivity_ArgumentsJson_DisplayName {
             get {
-                return ResourceManager.GetString("SecondActivity_Name_DisplayName", resourceCulture);
+                return ResourceManager.GetString("ReceiveMessageActivity_ArgumentsJson_DisplayName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TestActivity Desc.
+        ///   Looks up a localized string similar to Shared Context object to be used when not in a Shared Context Scope.
         /// </summary>
-        public static string TestActivity_Description {
+        public static string ReceiveMessageActivity_ContextClient_Description {
             get {
-                return ResourceManager.GetString("TestActivity_Description", resourceCulture);
+                return ResourceManager.GetString("ReceiveMessageActivity_ContextClient_Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TestActivity.
+        ///   Looks up a localized string similar to ContextClient.
         /// </summary>
-        public static string TestActivity_DisplayName {
+        public static string ReceiveMessageActivity_ContextClient_DisplayName {
             get {
-                return ResourceManager.GetString("TestActivity_DisplayName", resourceCulture);
+                return ResourceManager.GetString("ReceiveMessageActivity_ContextClient_DisplayName", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name Desc.
+        ///   Looks up a localized string similar to Receive Latest Message.
         /// </summary>
-        public static string TestActivity_Name_Description {
+        public static string ReceiveMessageActivity_Description {
             get {
-                return ResourceManager.GetString("TestActivity_Name_Description", resourceCulture);
+                return ResourceManager.GetString("ReceiveMessageActivity_Description", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Name.
+        ///   Looks up a localized string similar to Receive Latest Message.
         /// </summary>
-        public static string TestActivity_Name_DisplayName {
+        public static string ReceiveMessageActivity_DisplayName {
             get {
-                return ResourceManager.GetString("TestActivity_Name_DisplayName", resourceCulture);
+                return ResourceManager.GetString("ReceiveMessageActivity_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Origin Process of the Message.
+        /// </summary>
+        public static string ReceiveMessageActivity_From_Description {
+            get {
+                return ResourceManager.GetString("ReceiveMessageActivity_From_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string ReceiveMessageActivity_From_DisplayName {
+            get {
+                return ResourceManager.GetString("ReceiveMessageActivity_From_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to True if the message queue is now empty after getting the last message.
+        /// </summary>
+        public static string ReceiveMessageActivity_MessageQueueEmpty_Description {
+            get {
+                return ResourceManager.GetString("ReceiveMessageActivity_MessageQueueEmpty_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message Queue Empty.
+        /// </summary>
+        public static string ReceiveMessageActivity_MessageQueueEmpty_DisplayName {
+            get {
+                return ResourceManager.GetString("ReceiveMessageActivity_MessageQueueEmpty_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time when the message was sent.
+        /// </summary>
+        public static string ReceiveMessageActivity_TimeSent_Description {
+            get {
+                return ResourceManager.GetString("ReceiveMessageActivity_TimeSent_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TimeSent.
+        /// </summary>
+        public static string ReceiveMessageActivity_TimeSent_DisplayName {
+            get {
+                return ResourceManager.GetString("ReceiveMessageActivity_TimeSent_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination Process of the Message (for reference).
+        /// </summary>
+        public static string ReceiveMessageActivity_To_Description {
+            get {
+                return ResourceManager.GetString("ReceiveMessageActivity_To_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To.
+        /// </summary>
+        public static string ReceiveMessageActivity_To_DisplayName {
+            get {
+                return ResourceManager.GetString("ReceiveMessageActivity_To_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The action to be performed.
+        /// </summary>
+        public static string SendMessageActivity_Action_Description {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_Action_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Action.
+        /// </summary>
+        public static string SendMessageActivity_Action_DisplayName {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_Action_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The arguments of the Action (in Json format).
+        /// </summary>
+        public static string SendMessageActivity_ArgumentsJson_Description {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_ArgumentsJson_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ArgumentsJson.
+        /// </summary>
+        public static string SendMessageActivity_ArgumentsJson_DisplayName {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_ArgumentsJson_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shared Context object to be used when not in a Shared Context Scope.
+        /// </summary>
+        public static string SendMessageActivity_ContextClient_Description {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_ContextClient_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ContextClient.
+        /// </summary>
+        public static string SendMessageActivity_ContextClient_DisplayName {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_ContextClient_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Message.
+        /// </summary>
+        public static string SendMessageActivity_Description {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send Message.
+        /// </summary>
+        public static string SendMessageActivity_DisplayName {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Origin Process of the Message (for reference).
+        /// </summary>
+        public static string SendMessageActivity_From_Description {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_From_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string SendMessageActivity_From_DisplayName {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_From_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destination Process for the Message.
+        /// </summary>
+        public static string SendMessageActivity_To_Description {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_To_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To.
+        /// </summary>
+        public static string SendMessageActivity_To_DisplayName {
+            get {
+                return ResourceManager.GetString("SendMessageActivity_To_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name of the context that will store the information. It will remain available for this scope.
+        /// </summary>
+        public static string ServerScopeActivity_ContextName_Description {
+            get {
+                return ResourceManager.GetString("ServerScopeActivity_ContextName_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Context Name.
+        /// </summary>
+        public static string ServerScopeActivity_ContextName_DisplayName {
+            get {
+                return ResourceManager.GetString("ServerScopeActivity_ContextName_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creates a Named Pipe server for the shared context environment.
+        /// </summary>
+        public static string ServerScopeActivity_Description {
+            get {
+                return ResourceManager.GetString("ServerScopeActivity_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Named Pipe Server Scope.
+        /// </summary>
+        public static string ServerScopeActivity_DisplayName {
+            get {
+                return ResourceManager.GetString("ServerScopeActivity_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shared Context object to be used when not in a Shared Context Scope.
+        /// </summary>
+        public static string SetVariableActivity_ContextClient_Description {
+            get {
+                return ResourceManager.GetString("SetVariableActivity_ContextClient_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ContextClient.
+        /// </summary>
+        public static string SetVariableActivity_ContextClient_DisplayName {
+            get {
+                return ResourceManager.GetString("SetVariableActivity_ContextClient_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Variable in Context.
+        /// </summary>
+        public static string SetVariableActivity_Description {
+            get {
+                return ResourceManager.GetString("SetVariableActivity_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Variable in Context.
+        /// </summary>
+        public static string SetVariableActivity_DisplayName {
+            get {
+                return ResourceManager.GetString("SetVariableActivity_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable name (String).
+        /// </summary>
+        public static string SetVariableActivity_VariableName_Description {
+            get {
+                return ResourceManager.GetString("SetVariableActivity_VariableName_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable Name.
+        /// </summary>
+        public static string SetVariableActivity_VariableName_DisplayName {
+            get {
+                return ResourceManager.GetString("SetVariableActivity_VariableName_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable value (String).
+        /// </summary>
+        public static string SetVariableActivity_VariableValue_Description {
+            get {
+                return ResourceManager.GetString("SetVariableActivity_VariableValue_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable Value.
+        /// </summary>
+        public static string SetVariableActivity_VariableValue_DisplayName {
+            get {
+                return ResourceManager.GetString("SetVariableActivity_VariableValue_DisplayName", resourceCulture);
             }
         }
         

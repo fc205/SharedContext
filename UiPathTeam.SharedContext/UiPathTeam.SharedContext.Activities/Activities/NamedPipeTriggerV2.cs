@@ -3,27 +3,27 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel;
-
+using UiPathTeam.SharedContext.Activities.Properties;
+using UiPath.Shared.Activities.Localization;
 using UiPathTeam.SharedContext.Context;
 using UiPathTeam.SharedContext.Activities.Dependencies;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Named Pipe Trigger Standalone")]
-    [CategoryAttribute("UiPathTeam.SharedContext")]
-    [Description("Named Pipe Trigger Standalone Activity (does not require MonitorEvents)")]
+    [LocalizedDisplayName(nameof(Resources.NamedPipeTriggerV2_DisplayName))]
+    [LocalizedDescription(nameof(Resources.NamedPipeTriggerV2_Description))]
     public class NamedPipeTriggerV2 : TriggerScope<ContextContent>
     {
-        [Category("Context")]
         [RequiredArgument]
-        [DisplayName("Context Name")]
-        [Description("Name of the context that will store the information")]
-        public InArgument<string> Name { get; set; }
+        [LocalizedDisplayName(nameof(Resources.NamedPipeTriggerV2_ContextName_DisplayName))]
+        [LocalizedDescription(nameof(Resources.NamedPipeTriggerV2_ContextName_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
+        public InArgument<string> ContextName { get; set; }
 
-        [Category("Context")]
         [RequiredArgument]
-        [DisplayName("Retries")]
-        [Description("Number of retries of the opening of the file that the Scope activity will try before raising an exception.")]
+        [LocalizedDisplayName(nameof(Resources.NamedPipeTriggerV2_Retries_DisplayName))]
+        [LocalizedDescription(nameof(Resources.NamedPipeTriggerV2_Retries_Description))]
+        [LocalizedCategory(nameof(Resources.Input_Category))]
         public InArgument<int> Retries { get; set; }
 
         private ContextClientNamedPipe _aContextClient;
@@ -45,7 +45,7 @@ namespace UiPathTeam.SharedContext.Activities
 
             aArguments["Retries"] = Retries.Get(context).ToString();
 
-            _aContextClient = new ContextClientNamedPipe(Name.Get(context), aArguments, false);
+            _aContextClient = new ContextClientNamedPipe(ContextName.Get(context), aArguments, false);
             _aContextClient.CreateClient();
             _aContextClient.EventHandler += HandleEvent;
         }

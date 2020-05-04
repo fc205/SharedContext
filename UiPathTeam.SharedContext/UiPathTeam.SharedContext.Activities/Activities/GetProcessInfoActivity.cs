@@ -1,34 +1,34 @@
 ﻿using System;
 using System.Activities;
 using System.ComponentModel;
-using UiPath.Robot.Api;
 using UiPath.Robot.Activities.Api;
+using UiPathTeam.SharedContext.Activities.Properties;
+using UiPath.Shared.Activities.Localization;
 
 namespace UiPathTeam.SharedContext.Activities
 {
-    [DisplayName("Get Process info")]
-    [CategoryAttribute("UiPathTeam.SharedContext")]
-    [Description("Gets information about the current job and process")]
+    [LocalizedDisplayName(nameof(Resources.GetProcessInfoActivity_DisplayName))]
+    [LocalizedDescription(nameof(Resources.GetProcessInfoActivity_Description))]
     public class GetProcessInfoActivity : CodeActivity
     {
-        [Category("Output")]
-        [DisplayName("Job Id")]
-        [Description("Job Id")]
+        [LocalizedDisplayName(nameof(Resources.GetProcessInfoActivity_JobId_DisplayName))]
+        [LocalizedDescription(nameof(Resources.GetProcessInfoActivity_JobId_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
         public OutArgument<string> JobId { get; set; }
 
-        [Category("Output")]
-        [DisplayName("Process Name")]
-        [Description("Process Name")]
+        [LocalizedDisplayName(nameof(Resources.GetProcessInfoActivity_ProcessName_DisplayName))]
+        [LocalizedDescription(nameof(Resources.GetProcessInfoActivity_ProcessName_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
         public OutArgument<string> ProcessName { get; set; }
 
-        [Category("Output")]
-        [DisplayName("Process Version")]
-        [Description("Process Version")]
+        [LocalizedDisplayName(nameof(Resources.GetProcessInfoActivity_ProcessVersion_DisplayName))]
+        [LocalizedDescription(nameof(Resources.GetProcessInfoActivity_ProcessVersion_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
         public OutArgument<string> ProcessVersion { get; set; }
 
-        [Category("Output")]
-        [DisplayName("Workflow File Path")]
-        [Description("Workflow File Path")]
+        [LocalizedDisplayName(nameof(Resources.GetProcessInfoActivity_WorflowFilePath_DisplayName))]
+        [LocalizedDescription(nameof(Resources.GetProcessInfoActivity_WorflowFilePath_Description))]
+        [LocalizedCategory(nameof(Resources.Output_Category))]
         public OutArgument<string> WorkflowFilePath { get; set; }
 
         protected override void Execute(CodeActivityContext context)
