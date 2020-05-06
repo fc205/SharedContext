@@ -19,7 +19,7 @@
     <!--<PackageIcon>packageIcon.png</PackageIcon>--> <!--PackageIcon not yet supported in UiPath Studio-->
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>1.0.0.0</FileVersion>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
   <!-- Package Versions -->
@@ -54,7 +54,7 @@
 
     <ItemGroup>
       <!--Add file to package with consideration of sub folder. If empty, the root folder is chosen.-->
-      <BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
+      <BuildOutputInPackage Condition="%(_ReferenceCopyLocalPaths.Filename) != 'UiPath.Robot.Activities.Api' AND %(_ReferenceCopyLocalPaths.Filename) != 'UiPath.Api.Base' AND %(_ReferenceCopyLocalPaths.Filename) != 'UiPath.Activities.Api.Base'" Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
     </ItemGroup>
   </Target>
   <PropertyGroup>
