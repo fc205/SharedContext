@@ -96,7 +96,7 @@ namespace UiPathTeam.SharedContext.Context
                 {
                     break;
                 }
-                Thread.Sleep(50);
+                Thread.Sleep(100);
             }
 
             if (!this.initialised && this._lock)
