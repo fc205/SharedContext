@@ -71,11 +71,18 @@ namespace UiPathTeam.SharedContext.Context
         {
             Console.WriteLine("[SharedContext Server] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
-            Console.WriteLine("[SharedContext Server] Using message as new content > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-            this.deserialisedContextContents = message;
+            if(this.deserialisedContextContents.ToString() != message.ToString())
+            {
+                Console.WriteLine("[SharedContext Server] Using message as new content > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                this.deserialisedContextContents = message;
 
-            Console.WriteLine("[SharedContext Server] Sending message to all clients > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
-            this.theServer.PushMessage(this.deserialisedContextContents);
+                Console.WriteLine("[SharedContext Server] Sending message to all clients > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                this.theServer.PushMessage(this.deserialisedContextContents);
+            }
+            else
+            {
+                Console.WriteLine("[SharedContext Server] No need to notify others. The context is the same as before. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            }
         }
 
         private void TheServer_ClientConnected(NamedPipeConnection<ContextContent, ContextContent> connection)
