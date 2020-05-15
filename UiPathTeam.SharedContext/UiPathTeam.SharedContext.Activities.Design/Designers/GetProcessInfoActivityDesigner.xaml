@@ -1,0 +1,24 @@
+﻿<sap:ActivityDesigner x:Class="UiPathTeam.SharedContext.Activities.Design.Designers.GetProcessInfoActivityDesigner"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sa="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+    xmlns:p="clr-namespace:UiPathTeam.SharedContext.Activities.Design.Properties"
+    xmlns:sharedres="clr-namespace:UiPath.Shared.Localization"
+    xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
+    xmlns:converters="clr-namespace:UiPath.Shared.Activities.Design.Converters"
+    xmlns:uip="clr-namespace:UiPath.Shared.Activities.Design.Controls" >
+	 
+    <sap:ActivityDesigner.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="..\Themes\Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:ActivityIconConverter x:Key="ActivityIconConverter" />
+        </ResourceDictionary>
+    </sap:ActivityDesigner.Resources>
+ 
+    <sap:ActivityDesigner.Icon>
+        <DrawingBrush Stretch="Uniform" Drawing="{Binding Path=ModelItem, Converter={StaticResource ActivityIconConverter}, ConverterParameter=pack://application:\,\,\,/UiPathTeam.SharedContext.Activities.Design;component/themes/icons.xaml}" />
+    </sap:ActivityDesigner.Icon>
+	
+</sap:ActivityDesigner>
