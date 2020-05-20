@@ -73,19 +73,19 @@ namespace UiPathTeam.SharedContext.Activities
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                CleanupContext(false);
+                CleanupContext();
                 throw;
             }
         }
 
-        private void CleanupContext(bool releaseMutex)
+        private void CleanupContext(bool releaseMutex = true)
         {
             if (aContext != null)
             {
                 aContext.MyDispose();
             }
 
-            if(releaseMutex)
+            if(releaseMutex && this._dotNetMutex != null)
             {
                 this._dotNetMutex.ReleaseMutex();
             }
@@ -93,12 +93,12 @@ namespace UiPathTeam.SharedContext.Activities
         private void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
         {
             faultContext.CancelChildren();
-            CleanupContext(true);
+            CleanupContext();
         }
 
         private void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance)
         {
-            CleanupContext(true);
+            CleanupContext();
         }
 
         private string GetMutexName()
