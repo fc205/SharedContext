@@ -14,11 +14,12 @@ namespace UiPathTeam.SharedContext.Context {
 
         private bool disposed = false;
 
-        public ContextClientFile(string iContextName, Dictionary<string, string> iArguments)
+        public ContextClientFile(string iContextName, Dictionary<string, string> iArguments, bool iDebug)
         {
             this.fileName = "";
             this.contextName = iContextName;
             this.arguments = iArguments;
+            this.Debug = iDebug;
         }
 
         public override void CreateClient(bool iLock = true)
@@ -30,7 +31,7 @@ namespace UiPathTeam.SharedContext.Context {
             {
                 try
                 {
-                    Console.WriteLine("[SharedContext] Opening FileStream. Taking a lock on the file");
+                    this.Log("[SharedContext] Opening FileStream. Taking a lock on the file");
                     this.fileStream = new FileStream(this.GetFileName(),
                                                         FileMode.OpenOrCreate,
                                                         FileAccess.ReadWrite,
@@ -44,7 +45,7 @@ namespace UiPathTeam.SharedContext.Context {
 
                 if (this.fileStream != null) break;
 
-                Console.WriteLine("[SharedContext] FileStream conflict with " +
+                this.Log("[SharedContext] FileStream conflict with " +
                                     this.GetFileName() +
                                     " @ " +
                                     DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") +
@@ -64,7 +65,7 @@ namespace UiPathTeam.SharedContext.Context {
                 StreamReader sr = new StreamReader(this.fileStream);
                 this.originalContextContents = sr.ReadToEnd();
 
-                Console.WriteLine("[SharedContext] Read File Contents: " + this.originalContextContents);
+                this.Log("[SharedContext] Read File Contents: " + this.originalContextContents);
 
 
                 try
@@ -73,7 +74,7 @@ namespace UiPathTeam.SharedContext.Context {
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("[SharedContext] Error deserializing the file. Emptying the file. > " +
+                    this.Log("[SharedContext] Error deserializing the file. Emptying the file. > " +
                                                 DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") +
                                                 " > " +
                                                 e.Message);
@@ -100,7 +101,7 @@ namespace UiPathTeam.SharedContext.Context {
 
                 newFileContents = JsonConvert.SerializeObject(this.deserialisedContextContents);
 
-                Console.WriteLine("[SharedContext] End File Contents before write: " + newFileContents);
+                this.Log("[SharedContext] End File Contents before write: " + newFileContents);
 
                 try
                 {
@@ -114,26 +115,26 @@ namespace UiPathTeam.SharedContext.Context {
                             this.fileStream.SetLength(newFileContentsBytes.Length);
                             this.fileStream.Write(newFileContentsBytes, 0, newFileContentsBytes.Length);
                             this.fileStream.Flush();
-                            Console.WriteLine("[SharedContext] Writing new contents to file");
+                            this.Log("[SharedContext] Writing new contents to file");
                         }
                     }
                     else
                     {
-                        Console.WriteLine("[SharedContext] Same contents, not writing");
+                        this.Log("[SharedContext] Same contents, not writing");
                     }
 
                     if (this.fileStream != null)
                     {
-                        Console.WriteLine("[SharedContext] Closing file");
+                        this.Log("[SharedContext] Closing file");
                         this.fileStream.Close();
                         this.fileStream.Dispose();
                     }
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine("[SharedContext] Something went wrong on " + this.GetHashCode().ToString());
-                    Console.WriteLine("[SharedContext] Error: " + e.Message);
-                    Console.WriteLine("[SharedContext] Stack Trace: " + e.StackTrace);
+                    this.Log("[SharedContext] Something went wrong on " + this.GetHashCode().ToString());
+                    this.Log("[SharedContext] Error: " + e.Message);
+                    this.Log("[SharedContext] Stack Trace: " + e.StackTrace);
                 }
 
                 this.disposed = true;

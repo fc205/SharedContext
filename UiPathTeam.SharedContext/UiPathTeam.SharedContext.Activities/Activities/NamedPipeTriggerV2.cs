@@ -45,10 +45,11 @@ namespace UiPathTeam.SharedContext.Activities
 
             aArguments["Retries"] = Retries.Get(context).ToString();
 
-            _aContextClient = new ContextClientNamedPipe(ContextName.Get(context), aArguments, false);
+            _aContextClient = new ContextClientNamedPipe(ContextName.Get(context), aArguments, this.Debug, false);
             _aContextClient.CreateClient();
             _aContextClient.EventHandler += HandleEvent;
         }
+
 
         protected override void StopMonitoring(ActivityContext context)
         {

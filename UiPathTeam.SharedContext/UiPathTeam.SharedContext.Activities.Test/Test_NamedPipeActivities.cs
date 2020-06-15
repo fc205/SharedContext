@@ -30,7 +30,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             aDictionary["Retries"] = Test_Retries.ToString();
 
             ContextClient aContext;
-            aContext = new ContextClient(Test_ContextType, Test_ContextName, aDictionary);
+            aContext = new ContextClient(Test_ContextType, Test_ContextName, aDictionary, true);
             aContext.CreateClient();
             return aContext;
         }
@@ -41,7 +41,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             aDictionary["Retries"] = Test_Retries.ToString();
 
             ContextServer aContext;
-            aContext = new ContextServer(Test_ContextType, Test_ContextName, aDictionary);
+            aContext = new ContextServer(Test_ContextType, Test_ContextName, aDictionary, true);
             aContext.CreateServer();
             return aContext;
         }
@@ -243,7 +243,6 @@ namespace UiPathTeam.SharedContext.Activities.Test
             aContextServer.MyDispose();
         }
 
-
         [TestMethod]
         public void SCNamedPipeScopeNakedSetGetTwice()
         {
@@ -309,6 +308,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
                     new NamedPipeTriggerV2()
                     {
                         ContextName = Test_ContextName,
+                        Debug = true,
                         Body = new ActivityAction<ContextContent>
                         {
                             Argument = new DelegateInArgument<ContextContent>(typeof(ContextContent).Name),
@@ -335,7 +335,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             var task = Task.Run(() => { host.TestActivity(TimeSpan.FromSeconds(10)); });
 
             // Trigger initialization takes time.
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
             var setContextActivity = new SetVariableActivity
             {

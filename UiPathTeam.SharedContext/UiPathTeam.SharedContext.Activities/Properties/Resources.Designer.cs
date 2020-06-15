@@ -331,6 +331,24 @@ namespace UiPathTeam.SharedContext.Activities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Debug this activity.
+        /// </summary>
+        public static string Debug_Description {
+            get {
+                return ResourceManager.GetString("Debug_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Debug.
+        /// </summary>
+        public static string Debug_DisplayName {
+            get {
+                return ResourceManager.GetString("Debug_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do.
         /// </summary>
         public static string Do {
@@ -543,6 +561,15 @@ namespace UiPathTeam.SharedContext.Activities.Properties {
         public static string InteractWithContext {
             get {
                 return ResourceManager.GetString("InteractWithContext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Misc.
+        /// </summary>
+        public static string Misc_Category {
+            get {
+                return ResourceManager.GetString("Misc_Category", resourceCulture);
             }
         }
         

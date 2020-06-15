@@ -10,6 +10,27 @@ namespace UiPathTeam.SharedContext.Context
         File
     }
 
+    public class Logger
+    {
+        protected bool Debug = false;
+
+        protected void Log(string iMessage)
+        {
+            if (this.Debug)
+            {
+                Console.WriteLine(iMessage);
+            }
+        }
+
+        protected void Error(string iMessage)
+        {
+            if (this.Debug)
+            {
+                Console.Error.WriteLine(iMessage);
+            }
+        }
+    }
+
     [Serializable]
     public class ContextContent : Object
     {

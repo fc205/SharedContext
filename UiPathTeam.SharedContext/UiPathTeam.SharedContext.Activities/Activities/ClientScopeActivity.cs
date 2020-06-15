@@ -19,6 +19,12 @@ namespace UiPathTeam.SharedContext.Activities
         public ActivityAction<ContextClient> Body { get; set; }
 
         [RequiredArgument]
+        [LocalizedDisplayName(nameof(Resources.Debug_DisplayName))]
+        [LocalizedDescription(nameof(Resources.Debug_Description))]
+        [LocalizedCategory(nameof(Resources.Misc_Category))]
+        public bool Debug { get; set; }
+
+        [RequiredArgument]
         [LocalizedDisplayName(nameof(Resources.ClientScopeActivity_ContextName_DisplayName))]
         [LocalizedDescription(nameof(Resources.ClientScopeActivity_ContextName_Description))]
         [LocalizedCategory(nameof(Resources.Input_Category))]
@@ -67,6 +73,7 @@ namespace UiPathTeam.SharedContext.Activities
             };
             this.Retries = 5;
             this.ClearContext = false;
+            this.Debug = false;
         }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -96,7 +103,7 @@ namespace UiPathTeam.SharedContext.Activities
 
             try
             {
-                aContext = new ContextClient(ContextType, this._context, aArguments);
+                aContext = new ContextClient(ContextType, this._context, aArguments, this.Debug);
 
                 aContext.CreateClient();
                 if (ContextType == contextType.File && this.ClearContext)
@@ -113,8 +120,11 @@ namespace UiPathTeam.SharedContext.Activities
             }
             catch (Exception exception)
             {
-                Console.WriteLine("[SharedContext Scope] There is an error!!");
-                Console.WriteLine(exception.Message);
+                if(this.Debug)
+                {
+                    Console.WriteLine("[SharedContext Scope] There is an error!!");
+                    Console.WriteLine(exception.Message);
+                }
                 CleanupContext();
                 throw;
             }

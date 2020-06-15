@@ -553,4 +553,16 @@
     <value>Input - File Context (optional)</value>
     <comment>category</comment>
   </data>
+  <data name="Misc_Category" xml:space="preserve">
+    <value>Misc</value>
+    <comment>category</comment>
+  </data>
+  <data name="Debug_Description" xml:space="preserve">
+    <value>Debug this activity</value>
+    <comment>property description</comment>
+  </data>
+  <data name="Debug_DisplayName" xml:space="preserve">
+    <value>Debug</value>
+    <comment>property name</comment>
+  </data>
 </root>
