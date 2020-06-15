@@ -7,6 +7,7 @@ using System.Threading;
 using UiPathTeam.SharedContext.Context;
 using UiPathTeam.SharedContext.Activities.Properties;
 using UiPath.Shared.Activities.Localization;
+using System.Text;
 
 namespace UiPathTeam.SharedContext.Activities
 {
@@ -14,10 +15,14 @@ namespace UiPathTeam.SharedContext.Activities
     [LocalizedDescription(nameof(Resources.ServerScopeActivity_Description))]
     public class ServerScopeActivity : NativeActivity
     {
-        private const string _mutexName = "Local\\ServerScopeActivity";
-
         [Browsable(false)]
         public ActivityAction<ContextServer> Body { get; set; }
+
+        [RequiredArgument]
+        [LocalizedDisplayName(nameof(Resources.Debug_DisplayName))]
+        [LocalizedDescription(nameof(Resources.Debug_Description))]
+        [LocalizedCategory(nameof(Resources.Misc_Category))]
+        public bool Debug { get; set; }
 
         [RequiredArgument]
         [LocalizedDisplayName(nameof(Resources.ServerScopeActivity_ContextName_DisplayName))]
@@ -28,8 +33,6 @@ namespace UiPathTeam.SharedContext.Activities
         private ContextServer aContext;
         private string _context;
 
-        private Mutex _dotNetMutex;
-
         public ServerScopeActivity()
         {
             Body = new ActivityAction<ContextServer>
@@ -37,7 +40,7 @@ namespace UiPathTeam.SharedContext.Activities
                 Argument = new DelegateInArgument<ContextServer>("ContextServer"),
                 Handler = new Sequence { DisplayName = Resources.InteractWithContext }
             };
-            this._dotNetMutex = new Mutex(false, this.GetMutexName());
+            this.Debug = false;
         }
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -51,16 +54,11 @@ namespace UiPathTeam.SharedContext.Activities
             {
                 this._context = ContextName.Get(context);
 
-                if (!this._dotNetMutex.WaitOne())
-                {
-                    throw new Exception("There is already a Shared Context Server running!");
-                }
-
                 Dictionary<string, string>  aArguments = new Dictionary<string, string>();
 
                 aArguments["Retries"] = "5";
 
-                aContext = new ContextServer(contextType.NamedPipe, this._context, aArguments);
+                aContext = new ContextServer(contextType.NamedPipe, this._context, aArguments, this.Debug);
                 aContext.CreateServer();
 
                 if (Body != null)
@@ -72,22 +70,16 @@ namespace UiPathTeam.SharedContext.Activities
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
                 CleanupContext();
                 throw;
             }
         }
 
-        private void CleanupContext(bool releaseMutex = true)
+        private void CleanupContext()
         {
             if (aContext != null)
             {
                 aContext.MyDispose();
-            }
-
-            if(releaseMutex && this._dotNetMutex != null)
-            {
-                this._dotNetMutex.ReleaseMutex();
             }
         }
         private void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
@@ -99,11 +91,6 @@ namespace UiPathTeam.SharedContext.Activities
         private void OnCompleted(NativeActivityContext context, ActivityInstance completedInstance)
         {
             CleanupContext();
-        }
-
-        private string GetMutexName()
-        {
-            return _mutexName + this._context;
         }
     }
 }

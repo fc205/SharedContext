@@ -4,6 +4,7 @@ using System.ComponentModel;
 using UiPath.Robot.Activities.Api;
 using UiPathTeam.SharedContext.Activities.Properties;
 using UiPath.Shared.Activities.Localization;
+using System.Diagnostics;
 
 namespace UiPathTeam.SharedContext.Activities
 {

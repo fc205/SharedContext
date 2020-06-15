@@ -6,11 +6,12 @@ using System.Linq;
 
 namespace UiPathTeam.SharedContext.Context
 {
-    public abstract class IContextClient
+    public abstract class IContextClient : Logger
     {
         protected Dictionary<string, string> arguments;
 
         public string contextName;
+
         public ContextContent deserialisedContextContents;
 
         abstract public void CreateClient(bool iLock = true);
@@ -18,20 +19,22 @@ namespace UiPathTeam.SharedContext.Context
         abstract public string GetResource();
     }
 
-    public class ContextClient
+    public class ContextClient : Logger
     {
         private IContextClient myContextClient;
 
-        public ContextClient(contextType iType, string iContextName, Dictionary<string, string> iArguments)
+        public ContextClient(contextType iType, string iContextName, Dictionary<string, string> iArguments, bool iDebug)
         {
             this.myContextClient = null;
+            this.Debug = iDebug;
+
             switch (iType)
             {
                 case contextType.File:
-                    this.myContextClient = new ContextClientFile(iContextName, iArguments);
+                    this.myContextClient = new ContextClientFile(iContextName, iArguments, iDebug);
                     return;
                 case contextType.NamedPipe:
-                    this.myContextClient = new ContextClientNamedPipe(iContextName, iArguments);
+                    this.myContextClient = new ContextClientNamedPipe(iContextName, iArguments, iDebug);
                     return;
                 default:
                     throw new Exception("[SharedContext] Unknown Context Type");
@@ -71,7 +74,10 @@ namespace UiPathTeam.SharedContext.Context
             {
                 throw new Exception(errorMessage);
             }
-            Console.Error.WriteLine(errorMessage);
+            else
+            {
+                this.Error(errorMessage);
+            }
             return "";
         }
 

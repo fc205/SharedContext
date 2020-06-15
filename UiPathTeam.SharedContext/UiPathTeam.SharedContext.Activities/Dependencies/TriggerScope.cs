@@ -4,11 +4,19 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using UiPath.Shared.Activities.Localization;
+using UiPathTeam.SharedContext.Activities.Properties;
 
 namespace UiPathTeam.SharedContext.Activities.Dependencies
 {
     public abstract class TriggerScope<T> : NativeActivity
     {
+        [RequiredArgument]
+        [LocalizedDisplayName(nameof(Resources.Debug_DisplayName))]
+        [LocalizedDescription(nameof(Resources.Debug_Description))]
+        [LocalizedCategory(nameof(Resources.Misc_Category))]
+        public bool Debug { get; set; }
+
         /// <summary>
         /// We require an activity here so the expression can be re-evaluated
         /// multiple time after the "Do" block is complete.
@@ -36,6 +44,7 @@ namespace UiPathTeam.SharedContext.Activities.Dependencies
                 Argument = new DelegateInArgument<T>(typeof(T).Name),
                 Handler = new Sequence { DisplayName = "Do" }
             };
+            this.Debug = false;
         }
 
         /// <summary>
@@ -84,7 +93,10 @@ namespace UiPathTeam.SharedContext.Activities.Dependencies
 
         protected void HandleEvent(object sender, T args)
         {
-            Console.WriteLine("[SharedContext Trigger] Fired!!! > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            if(this.Debug)
+            {
+                Console.WriteLine("[SharedContext Trigger] Fired!!! > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            }
             if (_triggerBookmark != null)
             {
                 _bookmarkResumptionHelper.BeginResumeBookmark(_triggerBookmark, args);

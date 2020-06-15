@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace UiPathTeam.SharedContext.Context
 {
-    public abstract class IContextServer
+    public abstract class IContextServer : Logger
     {
         protected Dictionary<string, string> arguments;
 
@@ -19,20 +19,22 @@ namespace UiPathTeam.SharedContext.Context
         abstract public void CreateServer();
         abstract public void MyDispose();
         abstract public string GetResource();
+
+
     }
 
     public class ContextServer
     {
         private IContextServer myContextServer;
 
-        public ContextServer(contextType iType, string iContextName, Dictionary<string, string> iArguments)
+        public ContextServer(contextType iType, string iContextName, Dictionary<string, string> iArguments, bool iDebug)
         {
             this.myContextServer = null;
 
             switch (iType)
             {
                 case contextType.NamedPipe:
-                    this.myContextServer = new ContextServerNamedPipe(iContextName, iArguments);
+                    this.myContextServer = new ContextServerNamedPipe(iContextName, iArguments, iDebug);
                     return;
                 default:
                     throw new Exception("[SharedContext] Unknown Context Type");

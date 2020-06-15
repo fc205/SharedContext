@@ -8,7 +8,6 @@ namespace UiPathTeam.SharedContext.Context
     public class ContextClientNamedPipe : IContextClient
     {
         private NamedPipeClient<ContextContent> theClient;
-
         private int retriesMax;
         private int retriesUsed;
 
@@ -22,7 +21,7 @@ namespace UiPathTeam.SharedContext.Context
 
         private Mutex _dotNetMutex;
 
-        public ContextClientNamedPipe(string iContextName, Dictionary<string, string> iArguments, bool iLock = true)
+        public ContextClientNamedPipe(string iContextName, Dictionary<string, string> iArguments, bool iDebug, bool iLock = true)
         {
             this.retriesUsed = 0;
             this._lock = iLock;
@@ -30,7 +29,8 @@ namespace UiPathTeam.SharedContext.Context
             this.arguments = iArguments;
             this.retriesMax = int.Parse(this.arguments["Retries"]);
             this.theClient = null;
-            if(iLock)
+            this.Debug = iDebug;
+            if (iLock)
             {
                 this._dotNetMutex = new Mutex(false, this.GetMutexName());
             }
@@ -54,7 +54,7 @@ namespace UiPathTeam.SharedContext.Context
                 }
                 else
                 {
-                    Console.WriteLine("[SharedContext Client] Mutex conflict with " +
+                    this.Log("[SharedContext Client] Mutex conflict with " +
                         this.GetMutexName() +
                         " @ " +
                         DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") +
@@ -71,17 +71,18 @@ namespace UiPathTeam.SharedContext.Context
 
             if (!mutexTaken && this._lock)
             {
-                Console.WriteLine("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Could not open resource within the retries. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                this.Log("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Could not open resource within the retries. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                 throw new Exception("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Could not open resource within the retries.");
             }
 
-            Console.WriteLine("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Connecting to Server. " + this.GetResource() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            this.Log("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Connecting to Server. " + this.GetResource() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
 
             this.deserialisedContextContents = new ContextContent();
 
             this.theClient = new NamedPipeClient<ContextContent>(this.GetResource());
             this.theClient.ServerMessage += TheClient_ServerMessage;
             this.theClient.Error += TheClient_Error;
+            this.theClient.Disconnected += TheClient_Disconnected;
             this.theClient.AutoReconnect = false;
             this.theClient.Start();
 
@@ -101,15 +102,20 @@ namespace UiPathTeam.SharedContext.Context
 
             if (!this.initialised && this._lock)
             {
-                throw new Exception("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Did not receive a message from the server!");
+                this.Error("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Did not receive a message from the server!");
             }
+        }
+
+        private void TheClient_Disconnected(NamedPipeConnection<ContextContent, ContextContent> connection)
+        {
+            this.Log("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Disconnected " + connection.Name);
         }
 
         public override void MyDispose()
         {
             if(!this.disposed)
             {
-                Console.WriteLine("[SharedContext " + (this._lock?"Client":"Trigger") + "] Destroying. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                this.Log("[SharedContext " + (this._lock?"Client":"Trigger") + "] Destroying. > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                 if(this._lock)
                 {
                     this.theClient.PushMessage(this.deserialisedContextContents);
@@ -129,7 +135,7 @@ namespace UiPathTeam.SharedContext.Context
 
                     if (!this.lastMessageReceived)
                     {
-                        Console.WriteLine("[SharedContext Client] Destroying. The last Server message hasn't been received > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                        this.Log("[SharedContext Client] Destroying. The last Server message hasn't been received > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                     }
 
                     this._dotNetMutex.ReleaseMutex();
@@ -153,7 +159,7 @@ namespace UiPathTeam.SharedContext.Context
 
             if (!this.initialised)
             {
-                Console.WriteLine("[SharedContext Client] " + (this._lock ? "Client" : "Trigger") + " initialised: " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+                this.Log("[SharedContext Client] " + (this._lock ? "Client" : "Trigger") + " initialised: " + connection.Name + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
                 this.initialised = true;
                 if(!this._lock)
                 {
@@ -166,7 +172,7 @@ namespace UiPathTeam.SharedContext.Context
                 this.lastMessageReceived = true;
             }
 
-            Console.WriteLine("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
+            this.Log("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Message received . " + connection.Name + " > Message: " + message.ToString() + " > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt"));
             this.deserialisedContextContents = message;
 
             if(EventHandler != null)
@@ -177,7 +183,7 @@ namespace UiPathTeam.SharedContext.Context
 
         private void TheClient_Error(Exception exception)
         {
-            Console.WriteLine("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Exception > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") + " > " + exception.Message);
+            this.Error("[SharedContext " + (this._lock ? "Client" : "Trigger") + "] Exception > " + DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss.fffff tt") + " > " + exception.Message);
         }
 
         //////////////////////////////////////////////////

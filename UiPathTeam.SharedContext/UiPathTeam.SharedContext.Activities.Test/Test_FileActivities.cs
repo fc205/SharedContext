@@ -42,7 +42,7 @@ namespace UiPathTeam.SharedContext.Activities.Test
             aDictionary["Retries"] = Test_Retries.ToString();
 
             ContextClient aContext;
-            aContext = new ContextClient(Test_ContextType, Test_ContextName, aDictionary);
+            aContext = new ContextClient(Test_ContextType, Test_ContextName, aDictionary, true);
             aContext.CreateClient();
             aContext.ClearAll();
             return aContext;
